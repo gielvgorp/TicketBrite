@@ -1,0 +1,6 @@
+@TicketBriteAPI_HostAddress = http://localhost:5285
+
+GET {{TicketBriteAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
