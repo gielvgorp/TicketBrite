@@ -1,0 +1,30 @@
+.welcomeSection {
+    height: 400px;
+    background-image: url('https://www.thebannerhub.co.uk/media/theme/festival-banners-image.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.welcomeSection .overlay {
+    background: rgba(0, 0, 0, .5);
+}
+
+.overlayInfo {
+    color: white;
+    font-family: var(--font);
+}
+
+.overlayInfo h1 {
+    font-size: 3rem;
+}
+
+.overlayInfo p {
+    font-size: 1.2rem;
+}
+
+.eventsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    background-color: var(--bg);
+}

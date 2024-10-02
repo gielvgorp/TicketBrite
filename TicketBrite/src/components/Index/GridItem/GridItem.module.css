@@ -1,0 +1,55 @@
+.gridItem {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.banner .hoverOverlay {
+    height: 100%;
+    background-color: rgba(2, 77, 223, 25%);
+    width: 0;
+    position: absolute;
+    transition: .5s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: end;
+}
+
+.hoverOverlay .end {
+    height: 100%;
+    width: 40px;
+    background: rgb(2, 77, 223);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.banner:hover .hoverOverlay {
+    width: 100%;
+}
+
+.gridItem>.banner {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background: white;
+    border-radius: 10px;
+    flex: 1;
+    background-image: url('https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg');
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+
+.gridItem>p {
+    font-family: var(--font);
+}
+
+.gridItem .category {
+    color: gray !important;
+    font-size: 1.2rem;
+}
+
+.gridItem .artist {
+    font-size: 1.5rem;
+}
