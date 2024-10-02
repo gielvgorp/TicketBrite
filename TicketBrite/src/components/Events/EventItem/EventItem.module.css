@@ -1,0 +1,29 @@
+.eventItem{
+    border-bottom: 1px solid gray;
+    height: 100px;
+}
+
+.dateContaienr{
+    width: 100px;
+    font-family: var(--font);
+}
+
+.subInfo{
+    color: gray;
+    font-weight: 400;
+}
+
+.eventInfo .eventName{
+    font-family: var(--font);
+    font-weight: 400;
+}
+
+.ticketBtn{
+    height: 40px !important;
+    width: 200px;
+}
+
+.dateSelctor{
+    height: 55px !important;
+    width: 20% !important;
+}

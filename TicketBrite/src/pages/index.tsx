@@ -18,6 +18,7 @@ function Index(){
         <div className={`w-100 p-5 gap-5 ${styles.eventsGrid}`}>
             <GridItem key="Snelle" category="Muziek" artist="Snelle" />
             <GridItem key="Sport" category="Sport" artist="Voetbal" />
+            <GridItem key="Sport" category="Sport" artist="Voetbal" />
         </div>
        </>
     )
