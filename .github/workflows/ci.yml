@@ -18,15 +18,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
 
       - name: Restore dependencies
-        run: dotnet restore ./TicketBriteAPI/TicketBriteAPI.csproj  # Restore vanuit de API map
+        run: dotnet restore ./TicketBriteAPI/TicketBriteAPI.sln  # Restore vanuit de API map
 
       - name: Build
-        run: dotnet build ./TicketBriteAPI/TicketBriteAPI.csproj --configuration Release --no-restore
+        run: dotnet build ./TicketBriteAPI/TicketBriteAPI.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test ./TicketBriteAPI/TicketBriteAPI.csproj --no-restore --verbosity normal
+        run: dotnet test ./TicketBriteAPI/TicketBriteAPI.sln --no-restore --verbosity normal
