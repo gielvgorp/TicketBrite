@@ -35,7 +35,7 @@ jobs:
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/TicketBrite:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/TicketBrite:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/TicketBrite:latest
 
-           - name: Debug values
+      - name: Debug values
         run: |
           echo "DockerHub Username: ${{ secrets.DOCKERHUB_USERNAME }}"
           echo "Git SHA: ${{ github.sha }}"
