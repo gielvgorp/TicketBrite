@@ -25,7 +25,8 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./TicketBriteAPI/TicketBriteAPI.csproj --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test ./TicketBriteAPI/TicketBriteAPI.csproj --no-restore --verbosity normal
+
