@@ -1,0 +1,66 @@
+.mainContainer {
+    display: flex;
+    height: calc(100vh - 8vh);
+    width: 100%;
+}
+
+.mainContainer .eventInfoContainer {
+    flex: 1;
+    height: 100%;
+    background-color: var(--bg);
+}
+
+.mainContainer .sideBar {
+    width: 0;
+    background: white;
+    height: 100%;
+    transition: .5s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sideBar.show {
+    width: 400px;
+}
+
+.eventInfoContainer .header {
+    background-color: rgb(23, 23, 23);
+    width: 100%;
+    height: 150px;
+}
+
+.eventInfoContainer .header .eventImage {
+    height: 90%;
+}
+
+.eventInfoContainer .eventInfo {
+    height: 90%;
+    color: white;
+    font-family: var(--font);
+}
+
+.eventInfoContainer .eventInfo p {
+    font-family: sans-serif !important;
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.sideBar .topContainer,
+.sideBar .bottomContainer {
+    width: 100%;
+    height: 55px;
+    background-color: var(--bg);
+    font-family: var(--font);
+    text-wrap: nowrap;
+    overflow: hidden;
+}
+
+.ticketSelectorContainer {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}

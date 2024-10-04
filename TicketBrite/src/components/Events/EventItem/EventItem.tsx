@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import styles from './EventItem.module.css'
 
 function EventItem(){

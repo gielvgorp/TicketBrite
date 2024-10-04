@@ -1,0 +1,31 @@
+.ticketSelector {
+    border-bottom: 1px solid gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    height: 60px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.ticketSelector .selectTicket {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.selectTicket button {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.selectTicket button:disabled {
+    background: gray;
+    color: white;
+    border: none;
+}
