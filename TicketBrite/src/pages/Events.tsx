@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../events.module.css';
 import EventItem from '../components/Events/EventItem/EventItem';
+import events from '../mockdata';
 
 function Events() {
     const { id } = useParams();
@@ -10,7 +11,7 @@ function Events() {
         navigate(`/events/${event.target.value}`, { replace: true });
     };
 
-    const events = [...Array(5)];
+    const eventss = events();
 
     return (
         <>
@@ -35,9 +36,7 @@ function Events() {
                         <input type="date" className={`${styles.dateSelctor} form-control p-2 w-25`} />
                     </div>
                     {/* Example of mapping over events */}
-                    {events.map((_, i) => (
-                        <EventItem key={i} />
-                    ))}
+                    {eventss.map((event: any, index: number) => <EventItem key={event.id} id={event.id} />)}
                 </div>
             </div>
         </>

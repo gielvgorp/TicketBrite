@@ -1,7 +1,9 @@
 import GridItem from '../components/Index/GridItem/GridItem'
 import styles from '../index.module.css'
+import events from '../mockdata'
 
 function Index(){
+    const festivals = events();
     return (
        <>
         <section className={`w-100 ${styles.welcomeSection}`}>
@@ -16,9 +18,7 @@ function Index(){
             </div>
         </section>
         <div className={`w-100 p-5 gap-5 ${styles.eventsGrid}`}>
-            <GridItem key="Snelle" category="Muziek" artist="Snelle" />
-            <GridItem key="Sport" category="Sport" artist="Voetbal" />
-            <GridItem key="Sport" category="Sport" artist="Voetbal" />
+            {festivals.map((event: any, index: number) => <GridItem id={event.id} key={index} category={event.category} artist={event.artist} />)}
         </div>
        </>
     )

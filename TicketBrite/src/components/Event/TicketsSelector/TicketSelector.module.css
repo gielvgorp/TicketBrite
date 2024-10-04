@@ -29,3 +29,9 @@
     color: white;
     border: none;
 }
+
+.ticketPrice{
+    color: gray;
+    font-size: .8rem;
+    font-weight: 300;
+}
