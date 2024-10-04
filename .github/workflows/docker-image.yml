@@ -13,26 +13,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        - name: Checkout code
-            uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       # Log in to Docker Hub
-        - name: Log in to Docker Hub
-            run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      # Build the Docker image
-        - name: Build Docker Image
-            run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ./TicketBrite
+      # Build the Docker image for TicketBrite frontend
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ./TicketBrite
 
-        - name: Build Docker API Image
-            run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ./TicketBriteAPI
+      # Build the Docker image for TicketBriteAPI backend
+      - name: Build Docker API Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ./TicketBriteAPI
 
       # Push the Docker image to Docker Hub
-        - name: Push Docker Image
-            run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }}
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }}
 
-      # Optionally, add a 'latest' tag and push
-        - name: Tag Docker Image as latest
-            run: |
-              docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
-              docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
+      # Optionally, tag and push the latest version
+      - name: Tag Docker Image as latest
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
