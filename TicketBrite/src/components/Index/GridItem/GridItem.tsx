@@ -5,6 +5,7 @@ type Props = {
     artist: String;
     category: string;
     id: number;
+    image: string;
 }
 
 function GridItem(props: Props){
@@ -12,7 +13,7 @@ function GridItem(props: Props){
 
     return (
         <div className={styles.gridItem} onClick={() => navigate(`/event/${props.id}`, { replace: true, state: { id: props.id} })}>
-            <div className={styles.banner}>
+            <div className={styles.banner} style={{backgroundImage: `url(${props.image})`}}>
                 <div className={styles.hoverOverlay}>
                     <div className={styles.end}>
                     <i className="fa-solid fa-chevron-right"></i>

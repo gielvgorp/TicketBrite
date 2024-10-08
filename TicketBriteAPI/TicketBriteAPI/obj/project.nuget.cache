@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "GvMopQBbMspWNUGghOSAiv1fGIQNEFrJlzXYLrPGnVin79A2Aert0QvqAFHqaewIZrtgZwiiwizU7xD2u3bP+Q==",
+  "dgSpecHash": "eQYKnUeE0wk=",
   "success": true,
-  "projectFilePath": "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBriteAPI\\TicketBriteAPI.csproj",
+  "projectFilePath": "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj",
   "expectedPackageFiles": [
-    "D:\\.nuget\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
-    "D:\\.nuget\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "D:\\.nuget\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
-    "D:\\.nuget\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
-    "D:\\.nuget\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
-    "D:\\.nuget\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+    "/Users/gielvangorp/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/gielvangorp/.nuget/packages/microsoft.openapi/1.6.14/microsoft.openapi.1.6.14.nupkg.sha512",
+    "/Users/gielvangorp/.nuget/packages/swashbuckle.aspnetcore/6.8.1/swashbuckle.aspnetcore.6.8.1.nupkg.sha512",
+    "/Users/gielvangorp/.nuget/packages/swashbuckle.aspnetcore.swagger/6.8.1/swashbuckle.aspnetcore.swagger.6.8.1.nupkg.sha512",
+    "/Users/gielvangorp/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.8.1/swashbuckle.aspnetcore.swaggergen.6.8.1.nupkg.sha512",
+    "/Users/gielvangorp/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.8.1/swashbuckle.aspnetcore.swaggerui.6.8.1.nupkg.sha512"
   ],
   "logs": []
 }

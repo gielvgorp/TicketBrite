@@ -29,12 +29,11 @@
     width: 100%;
 }
 
-.gridItem>.banner {
+.gridItem > .banner {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     background: white;
     border-radius: 10px;
     flex: 1;
-    background-image: url('https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg');
     background-position: center;
     background-size: cover;
     position: relative;

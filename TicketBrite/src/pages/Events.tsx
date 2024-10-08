@@ -32,7 +32,7 @@ function Events() {
                 <h1>Alle {id} evenementen</h1>
                 <div className="w-75 m-auto d-flex flex-column p-3 mt-5 bg-white shadow gap-3">
                     <div className="d-flex w-100 justify-content-between">
-                        <span className="text-secondary">{events.length} evenementen gevonden</span>
+                        <span className="text-secondary">{eventss.length} evenementen gevonden</span>
                         <input type="date" className={`${styles.dateSelctor} form-control p-2 w-25`} />
                     </div>
                     {/* Example of mapping over events */}

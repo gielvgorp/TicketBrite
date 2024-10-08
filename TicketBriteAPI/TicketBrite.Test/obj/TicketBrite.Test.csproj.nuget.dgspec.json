@@ -1,31 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBrite.Test\\TicketBrite.Test.csproj": {}
+    "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Test/TicketBrite.Test.csproj": {}
   },
   "projects": {
-    "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBrite.Test\\TicketBrite.Test.csproj": {
+    "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Test/TicketBrite.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBrite.Test\\TicketBrite.Test.csproj",
+        "projectUniqueName": "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Test/TicketBrite.Test.csproj",
         "projectName": "TicketBrite.Test",
-        "projectPath": "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBrite.Test\\TicketBrite.Test.csproj",
-        "packagesPath": "D:\\.nuget",
-        "outputPath": "D:\\repos\\TicketBrite\\TickeBrite\\TicketBriteAPI\\TicketBrite.Test\\obj\\",
+        "projectPath": "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Test/TicketBrite.Test.csproj",
+        "packagesPath": "/Users/gielvangorp/.nuget/packages/",
+        "outputPath": "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Test/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Gebruiker\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/gielvangorp/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Twinvision Projects\\Packages": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://office.twinvision.nl/devfeed/index.json": {},
-          "https://office.twinvision.nl/feed/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -37,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -76,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
