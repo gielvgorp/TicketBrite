@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from '../EventInfo.module.css'
 import TicketSelector from '../components/Event/TicketsSelector/TicketSelector';
 import events from '../mockdata';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function EventInfo(){
     const { id } = useParams();

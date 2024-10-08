@@ -36,7 +36,7 @@ function Events() {
                         <input type="date" className={`${styles.dateSelctor} form-control p-2 w-25`} />
                     </div>
                     {/* Example of mapping over events */}
-                    {eventss.map((event: any, index: number) => <EventItem key={event.id} id={event.id} />)}
+                    {eventss.map((event: any) => <EventItem key={event.id} id={event.id} />)}
                 </div>
             </div>
         </>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import GridItem from '../components/Index/GridItem/GridItem'
 import styles from '../index.module.css'
-import events from '../mockdata'
 
 function Index(){
     const [events, setEvents] = useState([]);  // State to store the fetched events
