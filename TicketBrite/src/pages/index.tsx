@@ -6,19 +6,18 @@ function Index(){
     const [events, setEvents] = useState([]);  // State to store the fetched events
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
-    useEffect(() => {
-        // Fetch data from the API when the component mounts
-        fetch('http://localhost:5285/get-events')  // Replace with your actual API URL
-            .then(response => response.json())  // Parse JSON response
+    useEffect(() => {       
+        fetch('https://localhost:7150/get-events')
+            .then(response => response.json())
             .then(data => {
-                setEvents(data.value);  // Set events data to state
-                setLoading(false);  // Stop loading spinner
+                setEvents(data.value);
+                setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);  // Handle any errors
-                setLoading(false);  // Stop loading spinner even if there's an error
+                console.error('Error fetching data:', error);  
+                setLoading(false);
             });
-    }, []);  // Empty dependency array ensures this runs only once, when the component mounts
+    }, []);
 
     if (loading) {
         return <p>Loading...</p>;  // Display loading message while fetching data
