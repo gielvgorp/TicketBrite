@@ -11,8 +11,17 @@
 html,
 body {
   background-color: var(--bg);
+  height: 100dvh;
 }
 
-.font{
+#root {
+  height: 100%;
+}
+
+.bg {
+  background-color: var(--bg) !important;
+}
+
+.font {
   font-family: var(--font);
 }

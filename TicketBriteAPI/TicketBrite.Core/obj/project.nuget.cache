@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "S0OueGi7iHY=",
+  "dgSpecHash": "0AUMXhGgqRFo1GbsNol+5Ob3ebS0uSSImIlgb6OROQET8rTVitJsXuVoLBunkbC3bJq6DHDxIapj+690phPAbw==",
   "success": true,
-  "projectFilePath": "/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/TicketBrite.Core.csproj",
+  "projectFilePath": "D:\\React-projects\\TicketBrite\\TicketBriteAPI\\TicketBrite.Core\\TicketBrite.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

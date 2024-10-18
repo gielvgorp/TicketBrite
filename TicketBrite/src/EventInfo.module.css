@@ -8,20 +8,20 @@
     flex: 1;
     height: 100%;
     background-color: var(--bg);
+    display: flex;
+    flex-direction: column;
 }
 
+.event-information {}
+
 .mainContainer .sideBar {
-    width: 0;
+    width: 100%;
     background: white;
     height: 100%;
     transition: .5s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-}
-
-.sideBar.show {
-    width: 400px;
 }
 
 .eventInfoContainer .header {
@@ -38,6 +38,7 @@
     height: 90%;
     color: white;
     font-family: var(--font);
+    flex-direction: ;
 }
 
 .eventInfoContainer .eventInfo p {
