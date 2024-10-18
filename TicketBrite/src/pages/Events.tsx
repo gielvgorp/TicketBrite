@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../events.module.css';
 import EventItem from '../components/Events/EventItem/EventItem';
-import events from '../mockdata';
+import { useEffect, useState } from 'react';
+import { Event } from '../Types';
 
 function Events() {
     const { id } = useParams();
@@ -11,7 +12,36 @@ function Events() {
         navigate(`/events/${event.target.value}`, { replace: true });
     };
 
-    const eventss = events();
+    const [events, setEvent] = useState<Array<Event>>([]);  // State to store the fetched events
+    const [loading, setLoading] = useState(true); // State to show loading spinner or message
+
+    useEffect(() => {      
+        console.log(id); 
+        fetchEvents();
+    }, []);
+
+    useEffect(() => {
+        console.log(id); 
+        fetchEvents();
+    }, [id]);
+
+    const fetchEvents = () => {
+        const url = id == null ? "https://localhost:7150/get-events" : `https://localhost:7150/get-events/${id}`;
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            setEvent(data.value);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);  
+            setLoading(false);
+        });
+    }
+
+    if (loading) {
+        return <p>Loading...</p>;  // Display loading message while fetching data
+    }
 
     return (
         <>
@@ -32,11 +62,11 @@ function Events() {
                 <h1>Alle {id} evenementen</h1>
                 <div className="w-75 m-auto d-flex flex-column p-3 mt-5 bg-white shadow gap-3">
                     <div className="d-flex w-100 justify-content-between">
-                        <span className="text-secondary">{eventss.length} evenementen gevonden</span>
+                        <span className="text-secondary">{events.length} evenementen gevonden</span>
                         <input type="date" className={`${styles.dateSelctor} form-control p-2 w-25`} />
                     </div>
                     {/* Example of mapping over events */}
-                    {eventss.map((event: any) => <EventItem key={event.id} id={event.id} />)}
+                    {events.map((event: Event) => <EventItem key={event.eventID} id={event.eventID} />)}
                 </div>
             </div>
         </>

@@ -2,10 +2,10 @@ import { useState } from 'react';
 import styles from '../TicketsSelector/TicketSelector.module.css'
 
 type Props = {
-    name: string
+    name: String;
     maxAmount: number;
     onTicketSelect: (value: number) => void;
-    ticketPrice: number;
+    ticketPrice: String;
 }
 
 function TicketSelector(props: Props){

@@ -1,33 +1,31 @@
-.header{
+.header {
     background-image: url('https://studentensportvlaanderen.be/assets/components/phpthumbof/cache/980_atletiek_shutterstock_303117407.143de5d066a507c31716d16947082fb9.jpg');
     background-size: cover;
     background-position: center;
-    height: 300px;
+    height: 200px;
 }
 
 .header .overlay {
     background: rgba(0, 0, 0, .5);
 }
 
-.overlayInfo{
+.overlayInfo {
     color: white;
     font-family: var(--font);
 }
 
-.filterContainer{
+.filterContainer {}
 
-}
-
-.eventList{
+.eventList {
     background: var(--bg);
 }
 
-.eventList h1{
+.eventList h1 {
     font-family: var(--font);
     position: relative;
 }
 
-.eventList h1::after{
+.eventList h1::after {
     content: '';
     width: 40px;
     height: 3px;

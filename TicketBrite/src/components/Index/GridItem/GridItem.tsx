@@ -4,7 +4,7 @@ import styles from './GridItem.module.css'
 type Props = {
     artist: String;
     category: string;
-    id: number;
+    eventID: String;
     image: string;
 }
 
@@ -12,7 +12,7 @@ function GridItem(props: Props){
     const navigate = useNavigate();
 
     return (
-        <div className={styles.gridItem} onClick={() => navigate(`/event/${props.id}`, { replace: true, state: { id: props.id} })}>
+        <div className={styles.gridItem} onClick={() => navigate(`/event/${props.eventID}`, { replace: true, state: { id: props.eventID} })}>
             <div className={styles.banner} style={{backgroundImage: `url(${props.image})`}}>
                 <div className={styles.hoverOverlay}>
                     <div className={styles.end}>

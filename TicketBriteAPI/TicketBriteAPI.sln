@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBriteAPI", "TicketBriteAPI\TicketBriteAPI.csproj", "{D763FBE1-6A7E-4097-80EF-0C299CC64938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketBriteAPI", "TicketBriteAPI\TicketBriteAPI.csproj", "{D763FBE1-6A7E-4097-80EF-0C299CC64938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Test", "TicketBrite.Test\TicketBrite.Test.csproj", "{BB225392-5DB4-4163-9A5E-D504AB562F36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketBrite.Test", "TicketBrite.Test\TicketBrite.Test.csproj", "{BB225392-5DB4-4163-9A5E-D504AB562F36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Core", "TicketBrite.Core\TicketBrite.Core.csproj", "{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketBrite.Core", "TicketBrite.Core\TicketBrite.Core.csproj", "{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Data", "TicketBrite.Data\TicketBrite.Data.csproj", "{2632E9EB-A926-4DD4-8846-28FA14D14D03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2632E9EB-A926-4DD4-8846-28FA14D14D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2632E9EB-A926-4DD4-8846-28FA14D14D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2632E9EB-A926-4DD4-8846-28FA14D14D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2632E9EB-A926-4DD4-8846-28FA14D14D03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

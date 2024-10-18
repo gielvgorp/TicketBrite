@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketBriteAPI.Models;
+using TicketBrite.Core.Entities;
+using TicketBrite.Data;
+using TicketBrite.Core.Services;
+using TicketBrite.Data.ApplicationDbContext;
+using TicketBrite.Data.Repositories;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -8,49 +13,58 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        private readonly EventService eventService;
+        private readonly TicketService ticketService;
+
+        public HomeController(ApplicationDbContext context) 
+        {
+            eventService = new EventService(new EventRepository(context));
+            ticketService = new TicketService(new TicketRepository(context));
+        }
+
         [HttpGet("/get-events")]
         public JsonResult GetEvents(){
-            var events = new List<EventModel>
-        {
-            new EventModel
-            {
-                Id = 1,
-                EventName = "Snelle: LIVE!",
-                Artist = "Snelle",
-                EventDate = new DateTime(2024, 10, 1, 19, 15, 0),
-                EventLocation = "Jaarbeurs, Utrecht",
-                EventAge = 12,
-                Category = "Muziek",
-                Image = "https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg",
-                Description = "Op 1 oktober 2024 staat Snelle in de Johan Cruijff ArenA voor een spectaculaire liveshow...",
-                Tickets = new List<TicketModel>
-                {
-                    new TicketModel { Name = "Staanplaatsen", Price = 45 },
-                    new TicketModel { Name = "Zitplaatsen", Price = 65 },
-                    new TicketModel { Name = "VIP Area", Price = 65 }
-                }
-            },
-            new EventModel
-            {
-                Id = 2,
-                EventName = "Snollebollekes",
-                Artist = "Snollebollekes",
-                EventDate = new DateTime(2024, 10, 12, 19, 15, 0),
-                EventLocation = "Johan Cruijff ArenA, Amsterdam",
-                EventAge = 18,
-                Category = "Muziek",
-                Image = "https://www.voxweb.nl/wp-content/uploads/2021/10/Nijmeegs-Studentenorkest-Snollebollekes.jpeg",
-                Description = "Op 12 oktober 2024 neemt Snollebollekes de Johan Cruijff ArenA over voor een onvergetelijke avond...",
-                Tickets = new List<TicketModel>
-                {
-                    new TicketModel { Name = "Staanplaatsen", Price = 45 },
-                    new TicketModel { Name = "Zitplaatsen", Price = 65 },
-                    new TicketModel { Name = "Golden Circle", Price = 150 }
-                }
-            }
-        };
+            return new JsonResult(Ok(eventService.GetEvents()));
+        }
 
-        return new JsonResult(Ok(events));
+        [HttpGet("/get-events/{category}")]
+        public JsonResult GetEvents(string category)
+        {
+            return new JsonResult(Ok(eventService.GetEvents(category)));
+        }
+
+        [HttpPost("/event/new")]
+        public JsonResult AddEvent(Event model)
+        {
+            eventService.AddEvent(model);
+
+
+            return new JsonResult(Ok());
+        }
+
+        [HttpGet("/get-event/{eventID}")]
+        public JsonResult GetEvent(Guid eventID)
+        {
+            EventInfoViewModel result = new EventInfoViewModel();
+
+            result.Event = eventService.GetEvent(eventID);
+            result.Tickets = ticketService.GetTicketsOfEvent(eventID);
+
+            if (result == null) 
+            {
+                return new JsonResult(NotFound());
+            }
+
+            return new JsonResult(Ok(result));
+        }
+
+        [HttpPost("/ticket/new")]
+        public JsonResult AddTIcket(EventTicket model)
+        {
+            ticketService.CreateTicket(model);
+
+
+            return new JsonResult(Ok());
         }
     }
 }
