@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useUser = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const useUser = () => {
             }
 
             try {
-                const response = await fetch('https://localhost:7150/get-user', {
+                const response = await fetch('https://localhost:7150/api/User/get-user', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

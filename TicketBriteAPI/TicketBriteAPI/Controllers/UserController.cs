@@ -9,12 +9,12 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet("/get-user")]
+        [HttpGet("get-user")]
         [Authorize] // Beveilig het eindpunt met JWT-authenticatie
         public IActionResult GetUserData()
         {
             // Haal de gebruikersnaam van de claims
-            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+            var username = User.FindFirst("name")?.Value;
 
             if (string.IsNullOrEmpty(username))
             {

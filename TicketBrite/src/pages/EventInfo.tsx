@@ -22,18 +22,18 @@ function EventInfo(){
 
     useEffect(() => {      
         console.log(id); 
-          fetch(`https://localhost:7150/get-event/${id}`)
-              .then(response => response.json())
-              .then(data => {
-                    setLoading(false);
-                  setEvent(data.value.event);
-                  setTickets(data.value.tickets)
-                  console.log(data.value);
-              })
-              .catch(error => {
-                  console.error('Error fetching data:', error);  
-                  setLoading(false);
-              });
+        fetch(`https://localhost:7150/get-event/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                setLoading(false);
+                setEvent(data.value.event);
+                setTickets(data.value.tickets)
+                console.log(data.value);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);  
+                setLoading(false);
+            });
       }, []);
 
     if (loading) {

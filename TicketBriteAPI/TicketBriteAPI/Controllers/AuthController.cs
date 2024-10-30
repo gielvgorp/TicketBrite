@@ -27,10 +27,10 @@ namespace TicketBriteAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginViewModel model)
         {
-            // Valideer de gebruiker...
+            User user = _applicationDbContext.Users.FirstOrDefault(u => u.userEmail == model.UserEmail && u.userPasswordHash == model.Password);
 
+            if (user == null) return NotFound("Gebruiker niet gevonden");
 
-            User user = _applicationDbContext.Users.FirstOrDefault();
             var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
             return Ok(new { Token = token });
         }
