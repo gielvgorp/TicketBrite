@@ -59,7 +59,7 @@ function EventInfo(){
         {
             event ? (
             <div className={styles.mainContainer}>
-                <div className={styles.eventInfoContainer}>
+                <div className={`${styles.eventInfoContainer} col-9`}>
                     <div className={`${styles.header} p-3 d-flex align-items-center shadow`}>
                         <img className={styles.eventImage} src={event.eventImage} alt="" />
                         <div className={`${styles.eventInfo} ps-3`}>
@@ -77,7 +77,7 @@ function EventInfo(){
                         </p>
                     </div>
                 </div>
-                <div className={`${styles.sideBar} shadow ${showTickets ? styles.show : ''}`}>
+                <div className={`${styles.sideBar} shadow ${showTickets ? styles.show : ''} col-3`}>
                     <div className={`${styles.topContainer} d-flex align-items-center justify-content-center`}>
                         <h4>Koop nu je tickets van Snelle!</h4>
                     </div>
