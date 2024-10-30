@@ -3,7 +3,7 @@ import GridItem from '../components/Index/GridItem/GridItem'
 import styles from '../index.module.css'
 
 function Index(){
-    const [events, setEvents] = useState([]);  // State to store the fetched events
+    const [events, setEvents] = useState<Array<Event>>([]);  // State to store the fetched events
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
     useEffect(() => {       
@@ -37,7 +37,7 @@ function Index(){
             </div>
         </section>
         <div className={`w-100 p-5 gap-5 ${styles.eventsGrid}`}>
-            {events.map((event: any, index: number) => <GridItem image={event.image} id={event.id} key={index} category={event.category} artist={event.artist} />)}
+            {events.map((event: any, index: number) => <GridItem image={event.eventImage} eventID={event.eventID} key={index} category={event.category} artist={event.eventName} />)}
         </div>
        </>
     )
