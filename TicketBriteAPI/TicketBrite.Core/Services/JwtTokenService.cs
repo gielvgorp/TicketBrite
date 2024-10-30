@@ -23,6 +23,7 @@ namespace TicketBrite.Core.Services
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.userID.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.userName.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.userEmail)
             };
 
