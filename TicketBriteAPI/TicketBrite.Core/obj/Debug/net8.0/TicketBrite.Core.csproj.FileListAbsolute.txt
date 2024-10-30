@@ -1,0 +1,5 @@
+/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/obj/Debug/net8.0/TicketBrite.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/obj/Debug/net8.0/TicketBrite.Core.AssemblyInfoInputs.cache
+/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/obj/Debug/net8.0/TicketBrite.Core.AssemblyInfo.cs
+/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/obj/Debug/net8.0/TicketBrite.Core.csproj.CoreCompileInputs.cache
+/Users/gielvangorp/Documents/TicketBrite/TicketBriteAPI/TicketBrite.Core/obj/Debug/net8.0/TicketBrite.Core.sourcelink.json

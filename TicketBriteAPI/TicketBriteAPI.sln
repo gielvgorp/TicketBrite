@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Test", "TicketB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Core", "TicketBrite.Core\TicketBrite.Core.csproj", "{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketBrite.Data", "TicketBrite.Data\TicketBrite.Data.csproj", "{60B58303-59CA-4E5D-B366-8B103B2BF7B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9FD57B7-9C35-4393-876E-FD2DCB36ADF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B58303-59CA-4E5D-B366-8B103B2BF7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B58303-59CA-4E5D-B366-8B103B2BF7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B58303-59CA-4E5D-B366-8B103B2BF7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B58303-59CA-4E5D-B366-8B103B2BF7B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

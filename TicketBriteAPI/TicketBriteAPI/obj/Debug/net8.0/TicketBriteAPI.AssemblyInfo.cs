@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74dd484ee7c2a3f13e6d02069979d05f6392653a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d42a9c06370ddd074c208eda72f2fed835b16051")]
 [assembly: System.Reflection.AssemblyProductAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
