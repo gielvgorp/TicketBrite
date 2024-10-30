@@ -396,3 +396,19 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+TicketBriteAPI/.vs/ProjectEvaluation/ticketbriteapi.metadata.v7.bin
+TicketBriteAPI/.vs/ProjectEvaluation/ticketbriteapi.projects.v7.bin
+TicketBriteAPI/.vs/TicketBriteAPI/v17/.futdcache.v2
+TicketBriteAPI/.vs/TicketBriteAPI/v17/.suo
+TicketBriteAPI/TicketBriteAPI/bin/Debug/net8.0/TicketBriteAPI.dll
+TicketBriteAPI/TicketBriteAPI/bin/Debug/net8.0/TicketBriteAPI.exe
+TicketBriteAPI/TicketBriteAPI/bin/Debug/net8.0/TicketBriteAPI.pdb
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/apphost.exe
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/ref/TicketBriteAPI.dll
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/refint/TicketBriteAPI.dll
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.AssemblyInfo.cs
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.AssemblyInfoInputs.cache
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.csproj.AssemblyReference.cache
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.dll
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.pdb
+TicketBriteAPI/TicketBriteAPI/obj/Debug/net8.0/TicketBriteAPI.sourcelink.json

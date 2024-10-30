@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95a118903e683b4dc20625e531158fc5c3c97ad5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e1bae06ca4c1e8f67ac5ea00841e3754ca0c6604")]
 [assembly: System.Reflection.AssemblyProductAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TicketBriteAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
