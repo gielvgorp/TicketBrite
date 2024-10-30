@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function LoginForm(){
+type Props = {
+    msg: string;
+}
+
+function LoginForm({msg}: Props){
+
+    const [errorMsg, setErrorMsg] = useState(msg);
+
     return (
         <>
             <h1 className="font">Inloggen</h1>
@@ -16,6 +24,7 @@ function LoginForm(){
                     <label htmlFor="exampleInputPassword1">Password</label>
                     <input type="password" className="form-control p-2" id="exampleInputPassword1" placeholder="**********" />
                 </div>
+                <p className="text-danger">{errorMsg}</p>
                 <button type="submit" className="btn btn-primary d-block ms-auto mt-3 w-25 py-2">Inloggen</button>
             </form>
         </>

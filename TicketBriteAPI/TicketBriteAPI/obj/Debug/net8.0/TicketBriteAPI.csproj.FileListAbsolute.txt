@@ -178,3 +178,5 @@ D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\obj\Debug\net8.0\ref
 D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\obj\Debug\net8.0\TicketBriteAPI.pdb
 D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\obj\Debug\net8.0\TicketBriteAPI.genruntimeconfig.cache
 D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\obj\Debug\net8.0\ref\TicketBriteAPI.dll
+D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\React-projects\TicketBrite\TicketBriteAPI\TicketBriteAPI\bin\Debug\net8.0\Microsoft.Bcl.TimeProvider.dll
