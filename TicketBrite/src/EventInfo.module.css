@@ -15,7 +15,6 @@
 .event-information {}
 
 .mainContainer .sideBar {
-    width: 100%;
     background: white;
     height: 100%;
     transition: .5s ease;
@@ -38,7 +37,6 @@
     height: 90%;
     color: white;
     font-family: var(--font);
-    flex-direction: ;
 }
 
 .eventInfoContainer .eventInfo p {
