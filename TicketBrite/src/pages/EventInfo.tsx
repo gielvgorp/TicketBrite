@@ -3,6 +3,7 @@ import styles from '../EventInfo.module.css'
 import TicketSelector from '../components/Event/TicketsSelector/TicketSelector';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Event, Ticket } from '../Types'
+import LoginModal from '../components/Event/LoginModal/LoginModal';
 
 function EventInfo(){
     const { id } = useParams();
@@ -12,6 +13,7 @@ function EventInfo(){
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
     const [showTickets, setShowTickets] = useState(false);
     const [ticketAmount, setTicketAmount] = useState(0);
+    const [showLoginWarning, setShowLoginWarning] = useState(false);
 
     useEffect(() => {
         // Check if the parsed ID is NaN and navigate if necessary
@@ -25,10 +27,9 @@ function EventInfo(){
           fetch(`https://localhost:7150/get-event/${id}`)
               .then(response => response.json())
               .then(data => {
-                    setLoading(false);
-                  setEvent(data.value.event);
-                  setTickets(data.value.tickets)
-                  console.log(data.value);
+                setLoading(false);
+                setEvent(data.value.event);
+                setTickets(data.value.tickets)
               })
               .catch(error => {
                   console.error('Error fetching data:', error);  
@@ -37,7 +38,19 @@ function EventInfo(){
       }, []);
 
     if (loading) {
-        return <p>Loading...</p>;  // Display loading message while fetching data
+        return <p>Loading...</p>;
+    }
+
+    const handlePayTickets = () => {
+        const jwt = localStorage.getItem('jwtToken');
+
+        if(jwt === null){
+            setShowLoginWarning(true);
+            console.log("not logged in!");
+            return;
+        } 
+
+        console.log("loggin!");
     }
 
     const handleShowTickets = () => {
@@ -55,7 +68,6 @@ function EventInfo(){
     return (
     
     <>
-
         {
             event ? (
             <div className={styles.mainContainer}>
@@ -92,13 +104,14 @@ function EventInfo(){
                         }     
                     </div>
                     <div className='align-self-end p-3'>
-                        <button className='btn btn-success px-4 py-2'>Toevoegen <i className="fa-solid fa-cart-shopping ps-3"></i></button>
+                        <button onClick={handlePayTickets} className='btn btn-success px-4 py-2'>Betalen <i className="fa-solid fa-money-bill px-2"></i></button>
                     </div>
                     <div className={`${styles.bottomContainer} px-3 py-2 d-flex align-items-center justify-content-between`}>
                         <p>Maximale aantal tickets: 10</p>
                         <p><i className="fa-solid fa-ticket"></i> <span className='ps-2'>{ticketAmount}</span></p>
                     </div>
                 </div>
+                { showLoginWarning && <LoginModal /> }
             </div>
             ) : (
                 <h3>Loading...</h3>

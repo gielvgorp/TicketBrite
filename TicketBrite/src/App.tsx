@@ -6,6 +6,7 @@ import Events from './pages/Events'
 import EventInfo from './pages/EventInfo'
 import Authentication from './pages/Authentication'
 import { useState } from 'react'
+import ShoppingCart from './pages/ShoppingCart'
 
 function App() {
   const [showNav, setShowNav] = useState(true);
@@ -17,6 +18,7 @@ function App() {
       <Route path="/Events" element={<Events />} />
       <Route path="/Events/:id" element={<Events />} />
       <Route path="/Event/:id" element={<EventInfo />} />
+      <Route path="/Shopping-cart" element={<ShoppingCart />} />
         {/* Route zonder :id parameter */}
       <Route path="/Authenticatie" element={<Authentication setShowNav={(value) => setShowNav(value)} />} />
 
