@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 type Props = {
     msg: string;
 }
 
 function LoginForm({msg}: Props){
+    const {login} = useAuth();
 
     const navigate = useNavigate();
 
@@ -44,7 +46,7 @@ function LoginForm({msg}: Props){
 
             // successful registered
             if(res.status === 200){
-                localStorage.setItem('jwtToken', data.token);
+                login(data.token);
                 console.log("Token:", localStorage.getItem('jwtToken'));
                 navigate("/", {replace: true});
             }           

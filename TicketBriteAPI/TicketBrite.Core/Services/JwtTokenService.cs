@@ -27,7 +27,7 @@ namespace TicketBrite.Core.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.userID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.userName),
-                new Claim(ClaimTypes.Role, role.roleName),
+                new Claim("role", role.roleName),
                 new Claim(JwtRegisteredClaimNames.Email, user.userEmail)
             };
 
