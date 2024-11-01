@@ -18,8 +18,8 @@ namespace TicketBriteAPI.Controllers
 
         public AuthController(IConfiguration iConfig, ApplicationDbContext context)
         {
-            _jwtTokenService = new JwtTokenService(iConfig);
             _userService = new UserService(new UserRepository(context));
+            _jwtTokenService = new JwtTokenService(iConfig, _userService);
             _applicationDbContext = context;
         }
 

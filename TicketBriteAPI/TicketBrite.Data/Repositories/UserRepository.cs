@@ -27,5 +27,17 @@ namespace TicketBrite.Data.Repositories
         {
             return _dbContext.Users.FirstOrDefault(u => u.userID == uid);
         }
+
+        public Role GetUserRole(Guid userID)
+        {
+            User user = GetUser(userID);
+
+            if (user != null)
+            {
+                return _dbContext.Roles.FirstOrDefault(r => r.roleID == user.roleID);
+            }
+
+            return null;
+        }
     }
 }

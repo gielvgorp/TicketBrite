@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,5 +12,6 @@ namespace TicketBrite.Core.Interfaces
     {
         public void AddUser(User user);
         public User GetUser(Guid uid);
+        public Role GetUserRole(Guid userID);
     }
 }

@@ -26,5 +26,10 @@ namespace TicketBrite.Core.Services
         {
             return _userRepository.GetUser(uid);
         }
+
+        public Role GetUserRole(Guid userID)
+        {
+            return _userRepository.GetUserRole(userID);
+        }
     }
 }

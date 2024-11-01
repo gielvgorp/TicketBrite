@@ -12,18 +12,22 @@ namespace TicketBrite.Core.Services
     public class JwtTokenService
     {
         private readonly IConfiguration _configuration;
+        private readonly UserService userService;
 
-        public JwtTokenService(IConfiguration configuration)
+        public JwtTokenService(IConfiguration configuration, UserService _userService)
         {
             _configuration = configuration;
+            userService = _userService;
         }
 
         public string GenerateJwtToken(User user)
         {
+            Role role = userService.GetUserRole(user.userID);
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.userID.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.userName),
+                new Claim(ClaimTypes.Role, role.roleName),
                 new Claim(JwtRegisteredClaimNames.Email, user.userEmail)
             };
 
