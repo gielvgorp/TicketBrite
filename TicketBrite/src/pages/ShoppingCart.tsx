@@ -1,112 +1,134 @@
-import React, { useState } from 'react';
-import { Button, Card, ListGroup, Form } from 'react-bootstrap';
+import React from 'react';
+import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
+import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
 
 interface Ticket {
+    id: string;
     name: string;
+    price: number;
     quantity: number;
-    price: number; // prijs per ticket
 }
 
-const ShoppingCart: React.FC = () => {
-    const navigate = useNavigate();
-    const [tickets, setTickets] = useState<Ticket[]>([
-        { name: 'Concert A', quantity: 2, price: 50 },
-        { name: 'Concert B', quantity: 1, price: 75 },
+const banks = [
+    "ABN AMRO", "ASN Bank", "Bunq", "ING", "Knab", "Rabobank", "RegioBank", "SNS Bank", "Triodos Bank", "Van Lanschot"
+];
+
+function ShoppingCart(){
+    const navigte = useNavigate();
+    const [tickets, setTickets] = React.useState<Ticket[]>([
+        { id: "1", name: "Concert Ticket", price: 45.00, quantity: 2 },
+        { id: "2", name: "VIP Pass", price: 75.00, quantity: 1 }
     ]);
-    const [paymentMethod, setPaymentMethod] = useState<string>('iDeal');
-    const [selectedBank, setSelectedBank] = useState<string>(''); // Huidige geselecteerde bank
+    const [paymentMethod, setPaymentMethod] = React.useState<string>("iDeal");
+    const [selectedBank, setSelectedBank] = React.useState<string | null>(null);
 
-    // Lijst van banken die iDeal ondersteunen
-    const idealBanks = [
-        'ABN AMRO',
-        'ING',
-        'Rabobank',
-        'SNS Bank',
-        'ASN Bank',
-        'Triodos Bank',
-        'Van Lanschot',
-        'Bunq',
-        'Revolut'
-    ];
+    // Calculating total cost
+    const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toFixed(2);
 
-    // Bereken de totale prijs
-    const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0);
+    const handleQuantityChange = (id: string, delta: number) => {
+        setTickets(prevTickets =>
+            prevTickets.map(ticket =>
+                ticket.id === id ? { ...ticket, quantity: Math.max(1, ticket.quantity + delta) } : ticket
+            )
+        );
+    };
+
+    const handleRemoveTicket = (id: string) => {
+        setTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== id));
+    };
 
     return (
         <div className="container mt-5">
-            <h2>Winkelwagen</h2>
-            <Card className="mb-4">
-                <Card.Header>Gekozen Tickets</Card.Header>
-                <ListGroup variant="flush">
-                    {tickets.map((ticket, index) => (
-                        <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>{ticket.name}</strong> (x{ticket.quantity})
-                            </div>
-                            <span>€{(ticket.price * ticket.quantity).toFixed(2)}</span>
-                        </ListGroup.Item>
-                    ))}
-                </ListGroup>
-                <Card.Footer className="d-flex justify-content-between">
-                    <strong>Totaal:</strong>
-                    <strong>€{totalCost.toFixed(2)}</strong>
-                </Card.Footer>
-            </Card>
-
-            <Card>
-                <Card.Header>Kies uw Betaalmethode</Card.Header>
+            <Card className="p-4 shadow-lg shopping-cart-card mx-auto" style={{ maxWidth: '850px' }}>
                 <Card.Body>
-                    <Form>
-                        <Form.Check
-                            type="radio"
-                            label="iDeal"
-                            name="paymentMethod"
-                            id="ideal"
-                            checked={paymentMethod === 'iDeal'}
-                            onChange={() => {
-                                setPaymentMethod('iDeal');
-                                setSelectedBank(''); // Reset de geselecteerde bank als iDeal is geselecteerd
-                            }}
+                    <h2 className="text-center mb-4" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
+                        <i className="fas fa-shopping-cart me-3 text-primary"></i>Winkelwagen
+                    </h2>
+
+                    <ListGroup variant="flush" className="mb-4">
+                        {tickets.map(ticket => (
+                            <ListGroup.Item key={ticket.id} className="d-flex justify-content-between align-items-center">
+                                <div className="d-flex align-items-center col-5">
+                                    <Image src="https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg" alt="Ticket Icon" rounded className="ticket-icon me-2" />
+                                    <span className="ticket-name">{ticket.name} - <strong>Festival name 123 Live in concert</strong></span>
+                                </div>
+                                <div className='col-3 text-center'>
+                                <span className="price"><strong>00:00</strong></span>
+                                </div>
+                                <div className='col-2 text-end'>
+                                    <span className="price">€{(ticket.price * ticket.quantity).toFixed(2)}</span>
+                                </div>
+                                <div className='col-1 text-end'>
+                                    <Button variant="outline-danger" size="sm" onClick={() => handleRemoveTicket(ticket.id)}>
+                                        <i className="fas fa-trash"></i>
+                                    </Button>
+                                </div>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+
+                    <hr />
+
+                    <Row className="align-items-center mb-4">
+                        <Col>
+                            <h5>Totaal:</h5>
+                        </Col>
+                        <Col className="text-end">
+                            <h5 className="text-success">€{totalCost}</h5>
+                        </Col>
+                    </Row>
+
+                    <h5 className="mb-3">Kies uw betaalmethode:</h5>
+                    <div className="d-flex align-items-center mb-4">
+                        <Form.Check 
+                            inline 
+                            label="iDeal" 
+                            type="radio" 
+                            name="paymentMethod" 
+                            checked={paymentMethod === "iDeal"} 
+                            onChange={() => setPaymentMethod("iDeal")} 
                         />
-                        {paymentMethod === 'iDeal' && (
-                            <Form.Group controlId="formBankSelection" className="mb-3">
-                                <Form.Label>Selecteer uw Bank</Form.Label>
-                                <Form.Control as="select" value={selectedBank} onChange={(e) => setSelectedBank(e.target.value)}>
-                                    <option value="">Kies een bank...</option>
-                                    {idealBanks.map((bank, index) => (
-                                        <option key={index} value={bank}>
-                                            {bank}
-                                        </option>
+                        <Form.Check 
+                            inline 
+                            label="Mastercard" 
+                            type="radio" 
+                            name="paymentMethod" 
+                            checked={paymentMethod === "Mastercard"} 
+                            onChange={() => setPaymentMethod("Mastercard")} 
+                        />
+                        <Form.Check 
+                            inline 
+                            label="Apple Pay" 
+                            type="radio" 
+                            name="paymentMethod" 
+                            checked={paymentMethod === "Apple Pay"} 
+                            onChange={() => setPaymentMethod("Apple Pay")} 
+                        />
+                    </div>
+                    
+                    {paymentMethod === "iDeal" && (
+                            <Dropdown onSelect={(value) => setSelectedBank(value || null)} className="mt-3 w-25">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                    {selectedBank || "Selecteer uw bank"}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {banks.map((bank, index) => (
+                                        <Dropdown.Item key={index} eventKey={bank}>{bank}</Dropdown.Item>
                                     ))}
-                                </Form.Control>
-                            </Form.Group>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         )}
 
-                        <Form.Check
-                            type="radio"
-                            label="Mastercard"
-                            name="paymentMethod"
-                            id="mastercard"
-                            checked={paymentMethod === 'Mastercard'}
-                            onChange={() => setPaymentMethod('Mastercard')}
-                        />
-                        <Form.Check
-                            type="radio"
-                            label="Apple Pay"
-                            name="paymentMethod"
-                            id="applePay"
-                            checked={paymentMethod === 'Apple Pay'}
-                            onChange={() => setPaymentMethod('Apple Pay')}
-                        />
-                    </Form>
-                    <Button onClick={() => navigate('/payment-success')} variant="primary" className="mt-3">
-                        Bestelling Plaatsen
+                    <Button onClick={() => navigte('/payment-success')} variant="success" className="w-100 payment-button mt-3">
+                        <i className="fas fa-credit-card me-2"></i>
+                        Doorgaan naar Betaling
                     </Button>
                 </Card.Body>
             </Card>
         </div>
     );
 };
+
 
 export default ShoppingCart;

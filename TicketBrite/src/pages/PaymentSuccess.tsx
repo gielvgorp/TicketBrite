@@ -27,7 +27,7 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
         <div className="container mt-5">
             <Card className="text-center">
                 <Card.Header className="bg-success text-white">
-                    <h2>Betaling Geslaagd!</h2>
+                    <h2 className='text-white'>Betaling Geslaagd!</h2>
                 </Card.Header>
                 <Card.Body>
                     <h4>Bedankt voor uw aankoop!</h4>
