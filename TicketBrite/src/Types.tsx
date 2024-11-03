@@ -17,6 +17,6 @@ export interface Ticket{
     ticketName: string;
     ticketPrice: string;
     ticketMaxAvailable: number;
+    ticketsRemaining: number;
     ticketStatus: boolean;
-
 }

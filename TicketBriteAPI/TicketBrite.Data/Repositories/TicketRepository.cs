@@ -32,5 +32,23 @@ namespace TicketBrite.Data.Repositories
         {
             return _dbContext.Tickets.FirstOrDefault(t => t.ticketID == ticketID);
         }
+
+        public List<SoldTicket> GetSoldTickets(Guid ticketID)
+        {
+            return _dbContext.SoldTickets.Where(t => t.ticketID == ticketID).ToList();
+        }
+
+        public List<ReservedTicket> GetReservedTicketsOfUser(Guid userID)
+        {
+            DateTime deadlineTime = DateTime.UtcNow.AddMinutes(-10);
+
+            return _dbContext.ReservedTickets.Where(t => t.userID == userID && t.reservedAt >= deadlineTime).ToList();
+        }
+
+        public List<ReservedTicket> GetReservedTicketsByTicket(Guid ticketID)
+        {
+            DateTime deadlineTime = DateTime.UtcNow.AddMinutes(-10);
+            return _dbContext.ReservedTickets.Where(t => t.ticketID == ticketID && t.reservedAt >= deadlineTime).ToList();
+        }
     }
 }

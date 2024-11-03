@@ -26,5 +26,6 @@ namespace TicketBrite.Data.ApplicationDbContext
         public DbSet<UserPurchase> UserPurchases { get; set; }
         public DbSet<Guest> Guests { get; set; }
         public DbSet<SoldTicket> SoldTickets { get; set; }
+        public DbSet<ReservedTicket> ReservedTickets { get; set; }
     }
 }

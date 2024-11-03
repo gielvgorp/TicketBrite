@@ -47,9 +47,28 @@ namespace TicketBriteAPI.Controllers
         public JsonResult GetEvent(Guid eventID)
         {
             EventInfoViewModel result = new EventInfoViewModel();
+            List<TicketModel> ticketModel = new List<TicketModel>();
+            var tickets = ticketService.GetTicketsOfEvent(eventID);
+
+            foreach (var item in tickets)
+            {
+                TicketModel ticket = new TicketModel
+                {
+                    ticketID = item.ticketID,
+                    eventID = item.eventID,
+                    ticketMaxAvailbale = item.ticketMaxAvailable,
+                    ticketName = item.ticketName,
+                    ticketPrice = item.ticketPrice,
+                    ticketStatus = item.ticketStatus,
+                    ticketsRemaining = ticketService.CalculateRemainingTickets(item.ticketID)
+                };
+
+                ticketModel.Add(ticket);
+            }
 
             result.Event = eventService.GetEvent(eventID);
-            result.Tickets = ticketService.GetTicketsOfEvent(eventID);
+            result.Tickets = ticketModel;
+            
 
             if (result == null) 
             {
@@ -57,15 +76,6 @@ namespace TicketBriteAPI.Controllers
             }
 
             return new JsonResult(Ok(result));
-        }
-
-        [HttpPost("/ticket/new")]
-        public JsonResult AddTIcket(EventTicket model)
-        {
-            ticketService.CreateTicket(model);
-
-
-            return new JsonResult(Ok());
         }
     }
 }
