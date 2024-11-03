@@ -5,6 +5,7 @@ import { Ticket, Event } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TiketStatistics';
 import { getEventDetails, updateEventDetails } from '../hooks/useEvent';
+import '../Dashboard.css'
 //import { getEventDetails, updateEventDetails, getTicketStats } from '../api/eventsAPI'; // Stel voor dat je functies voor API-aanroepen hebt
 
 const DashboardPage: React.FC = () => {

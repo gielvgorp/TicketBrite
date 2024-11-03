@@ -45,5 +45,28 @@ namespace TicketBriteAPI.Controllers
 
             return new JsonResult(Ok(result));
         }
+
+        [HttpGet("/event/{eventID}/get-tickets")]
+        public JsonResult GetTicketsOfEvent(Guid eventID)
+        {
+            List<EventTicket> tickets = ticketService.GetTicketsOfEvent(eventID);
+            List<TicketModel> result = new List<TicketModel>();
+
+            foreach (EventTicket ticket in tickets)
+            {
+                result.Add(new TicketModel
+                {
+                    ticketID = ticket.ticketID,
+                    eventID = ticket.eventID,
+                    ticketName = ticket.ticketName,
+                    ticketMaxAvailbale = ticket.ticketMaxAvailable,
+                    ticketPrice = ticket.ticketPrice,
+                    ticketStatus = ticket.ticketStatus,
+                    ticketsRemaining = ticketService.CalculateRemainingTickets(ticket.ticketID)
+                });
+            }
+
+            return new JsonResult(Ok(result));
+        }
     }
 }

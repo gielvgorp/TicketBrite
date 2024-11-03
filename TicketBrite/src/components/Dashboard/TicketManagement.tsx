@@ -18,7 +18,8 @@ const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eve
             ticketName: '',
             ticketPrice: '',
             ticketMaxAvailable: 0,
-            ticketStatus: true
+            ticketStatus: true,
+            ticketsRemaining: 0
         };
         setTickets([...tickets, newTicket]);
     };

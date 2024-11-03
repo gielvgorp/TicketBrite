@@ -1,39 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { getTicketStats } from '../../hooks/useTIcket';
-
-interface TicketStats {
-    name: string;
-    sold: number;
-    reserved: number;
-}
+import { getTicketOfEvent } from '../../hooks/useTIcket';
+import { Ticket } from '../../Types';
+import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 
 interface TicketStatisticsProps {
     eventId: string;
 }
 
 const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
-    const [stats, setStats] = useState<TicketStats[]>([]);
+    const [stats, setStats] = useState<Ticket[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchStats = async () => {
-            const data = await getTicketStats(eventId);
-            setStats(data);
+            const data = await getTicketOfEvent(eventId);
+            setStats(data.value);
+            setLoading(false);
         };
         fetchStats();
-        console.log(stats);
     }, [eventId]);
 
     return (
-        <div className="card p-4">
-            <h5>Ticketstatistieken</h5>
-            {stats && stats.map((ticket, index) => (
-                <div key={index} className="d-flex justify-content-between mb-2">
-                    <span>{ticket.name}</span>
-                    <span>Verkocht: {ticket.sold}</span>
-                    <span>Gereserveerd: {ticket.reserved}</span>
-                </div>
-            ))}
-        </div>
+        <Card className="p-4">
+            <Card.Header as="h5">Ticketstatistieken</Card.Header>
+            <Card.Body>
+                {loading && <Spinner animation="border" />}
+                {error && <Alert variant="danger">{error}</Alert>}
+                {stats.length > 0 ? (
+                    <ListGroup variant="flush">
+                        {stats.map((ticket) => (
+                            <ListGroup.Item key={ticket.ticketID} className="d-flex justify-content-between">
+                                <div className='col-8'>
+                                    <strong>{ticket.ticketName}</strong>
+                                </div>
+                                <div className='d-flex col-4'>
+                                    <div className="col-6 text-end"> <span className="text-success">Verkocht: {ticket.ticketsRemaining}</span></div>
+                                    <div className="col-6 text-end"> <span className="mx-3 text-warning">Gereserveerd: {ticket.ticketsRemaining}</span></div>
+                                   
+                                   
+                                </div>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                ) : (
+                    <Alert variant="info">Geen ticketstatistieken beschikbaar.</Alert>
+                )}
+            </Card.Body>
+        </Card>
     );
 };
 
