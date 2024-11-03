@@ -9,6 +9,7 @@ import { useState } from 'react'
 import Profile from './pages/Profile'
 import ProtectedRoute from './pages/ProtectedRoute'
 import { AuthProvider } from './AuthContext'
+import DashboardPage from './pages/Dashboard'
 
 function App() {
   const [showNav, setShowNav] = useState(true);
@@ -22,6 +23,7 @@ function App() {
       <Route path="/Event/:id" element={<EventInfo />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/Organisatie/Dashboard/:eventId" element={<DashboardPage />} />
       </Route>
       
         {/* Route zonder :id parameter */}

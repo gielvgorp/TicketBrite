@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Definieer interfaces voor evenement- en ticketdetails
 interface Ticket {
@@ -11,6 +12,7 @@ interface Ticket {
 }
 
 interface EventDetails {
+    eventID: string;
     eventName: string;
     eventDateTime: string;
     eventLocation: string;
@@ -27,9 +29,11 @@ interface NewEventRequest {
 }
 
 const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }) => {
+    const navigate = useNavigate();
     const [events, setEvents] = useState<EventDetails[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [eventDetails, setEventDetails] = useState<EventDetails>({
+        eventID: '',
         eventName: '',
         eventDateTime: '',
         eventLocation: '',
@@ -95,6 +99,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
     const handleAddEvent = async () => {
         const model: NewEventRequest = {
             event: {
+                eventID: eventDetails.eventID,
                 eventName: eventDetails.eventName,
                 eventDateTime: eventDetails.eventDateTime,
                 eventLocation: eventDetails.eventLocation,
@@ -246,7 +251,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                             <p>Datum: {event.eventDateTime}</p>
                             <p>Locatie: {event.eventLocation}</p>
                         </div>
-                        <Button className='align-self-end' variant="primary" style={{ padding: '10px 20px' }}>
+                        <Button onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)} className='align-self-end' variant="primary" style={{ padding: '10px 20px' }}>
                             Open dashboard
                         </Button>
                     </div>
