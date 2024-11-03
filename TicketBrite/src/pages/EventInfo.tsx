@@ -4,6 +4,7 @@ import TicketSelector from '../components/Event/TicketsSelector/TicketSelector';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Event, Ticket } from '../Types'
 import LoginModal from '../components/Event/LoginModal/LoginModal';
+import {useAuth} from '../AuthContext';
 
 function EventInfo(){
     const { id } = useParams();
@@ -14,6 +15,7 @@ function EventInfo(){
     const [showTickets, setShowTickets] = useState(false);
     const [ticketAmount, setTicketAmount] = useState(0);
     const [showLoginWarning, setShowLoginWarning] = useState(false);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         // Check if the parsed ID is NaN and navigate if necessary
@@ -42,9 +44,7 @@ function EventInfo(){
     }
 
     const handlePayTickets = () => {
-        const jwt = localStorage.getItem('jwtToken');
-
-        if(jwt === null){
+        if(!isAuthenticated){
             setShowLoginWarning(true);
             console.log("not logged in!");
             return;
@@ -111,7 +111,7 @@ function EventInfo(){
                         <p><i className="fa-solid fa-ticket"></i> <span className='ps-2'>{ticketAmount}</span></p>
                     </div>
                 </div>
-                { showLoginWarning && <LoginModal /> }
+                { showLoginWarning && <LoginModal showModal={showLoginWarning} /> }
             </div>
             ) : (
                 <h3>Loading...</h3>

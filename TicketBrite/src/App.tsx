@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import ProtectedRoute from './pages/ProtectedRoute'
 import { AuthProvider } from './AuthContext'
 import DashboardPage from './pages/Dashboard'
+import PaymentSuccess from './pages/PaymentSuccess'
 
 function App() {
   const [showNav, setShowNav] = useState(true);
@@ -23,6 +24,7 @@ function App() {
       <Route path="/Events/:id" element={<Events />} />
       <Route path="/Event/:id" element={<EventInfo />} />
       <Route path="/Shopping-cart" element={<ShoppingCart />} />
+      <Route path="/Payment-success" element={<PaymentSuccess tickets={[]} purchaseId=''  />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Organisatie/Dashboard/:eventId" element={<DashboardPage />} />

@@ -1,24 +1,54 @@
-import LoginForm from '../../Authentication/LoginForm'
-import './LoginModal.css'
+import React, { useEffect, useState } from 'react';
+import NotLoggedInModal from './NotLoggedInModal';
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-function LoginModal(){
-    return (
-        <>
-            <div className="main-modal-bg">
-                <div className="position-absolute main-modal shadow">
-                    <div className="modal-bottom bg-secondary d-flex align-items-center p-3">
-                        <h3 className='font text-white'>Je bent nog niet ingelogd!</h3>
-                    </div>
-                    <div className="modal-content p-5">
-                        <LoginForm />
-                    </div>
-                    <div className="modal-bottom bg-secondary d-flex justify-content-end align-items-center px-4 gap-3">
-                        <button className="btn btn-danger py-2 px-3">Doorgaan zonder account</button>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+type Props = {
+    showModal: boolean;
 }
 
-export default LoginModal
+function TicketPurchaseComponent(props: Props){
+    const [showModal, setShowModal] = useState(false);
+    const isLoggedIn = false; // Replace with your authentication logic
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setShowModal(props.showModal);
+    }, [props.showModal]);
+
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+    const handleLogin = () => {
+        // Redirect to login or open login form
+        navigate("/authenticatie");
+        handleCloseModal();
+    };
+    const handleContinueWithoutAccount = () => {
+        // Logic to continue without an account
+        console.log('Continuing without account...');
+        handleCloseModal();
+    };
+
+    const handlePurchaseTicket = () => {
+        if (!isLoggedIn) {
+            handleShowModal();
+        } else {
+            // Proceed with ticket purchase logic
+            console.log('Proceeding with ticket purchase...');
+        }
+    };
+
+    return (
+        <div>
+            {/* <Button onClick={handlePurchaseTicket}>Koop Ticket</Button> */}
+            <NotLoggedInModal
+                show={showModal}
+                handleClose={handleCloseModal}
+                handleLogin={handleLogin}
+                handleContinue={handleContinueWithoutAccount}
+            />
+        </div>
+    );
+}
+
+export default TicketPurchaseComponent;
