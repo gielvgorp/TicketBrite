@@ -96,7 +96,7 @@ function EventInfo(){
                     <div className={`${styles.ticketSelectorContainer}`}>
                         {
                             tickets.length > 0 ? (
-                                tickets.map((ticket: Ticket) => <TicketSelector onTicketSelect={(value) => setTicketAmount(value + ticketAmount)} maxAmount={10} ticketPrice={ticket.ticketPrice} name={ticket.ticketName} />)
+                                tickets.map((ticket: Ticket) => <TicketSelector ticket={ticket} onTicketSelect={(value) => setTicketAmount(value + ticketAmount)} maxAmount={10} ticketPrice={ticket.ticketPrice} name={ticket.ticketName} />)
                             ) : (
                                 <h5 className='pt-3'>Er zijn (nog) geen tickets beschikbaar</h5>
                             )
