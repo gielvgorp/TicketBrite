@@ -12,8 +12,8 @@ using TicketBrite.Data.ApplicationDbContext;
 namespace TicketBrite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext.ApplicationDbContext))]
-    [Migration("20241101154435_ReservedTickets")]
-    partial class ReservedTickets
+    [Migration("20241106100450_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace TicketBrite.Data.Migrations
 
                     b.HasKey("eventID");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("TicketBrite.Core.Entities.EventTicket", b =>
@@ -140,7 +140,7 @@ namespace TicketBrite.Data.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("TicketBrite.Core.Entities.ReservedTickets", b =>
+            modelBuilder.Entity("TicketBrite.Core.Entities.ReservedTicket", b =>
                 {
                     b.Property<DateTime>("reservedAt")
                         .HasColumnType("datetime2");

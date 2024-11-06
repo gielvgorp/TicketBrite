@@ -22,6 +22,11 @@ namespace TicketBrite.Core.Services
             _eventRepository.AddEvent(_event);
         }
 
+        public void UpdateEvent(Event _event)
+        {
+            _eventRepository.UpdateEvent(_event);
+        }
+
         public List<Event> GetEvents()
         {
             return _eventRepository.GetEvents();

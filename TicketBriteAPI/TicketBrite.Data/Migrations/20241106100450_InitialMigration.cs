@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TicketBrite.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,13 +18,16 @@ namespace TicketBrite.Data.Migrations
                     eventID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     organizationID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     eventName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    eventDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     eventDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     eventLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    eventAge = table.Column<int>(type: "int", nullable: false)
+                    eventAge = table.Column<int>(type: "int", nullable: false),
+                    eventCategory = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    eventImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Event", x => x.eventID);
+                    table.PrimaryKey("PK_Events", x => x.eventID);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,6 +57,18 @@ namespace TicketBrite.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organizations", x => x.organizationID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReservedTickets",
+                columns: table => new
+                {
+                    ticketID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    userID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    reservedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
                 });
 
             migrationBuilder.CreateTable(
@@ -129,13 +144,16 @@ namespace TicketBrite.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Event");
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Guests");
 
             migrationBuilder.DropTable(
                 name: "Organizations");
+
+            migrationBuilder.DropTable(
+                name: "ReservedTickets");
 
             migrationBuilder.DropTable(
                 name: "Roles");
