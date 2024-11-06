@@ -14,7 +14,7 @@ namespace TicketBrite.Test
     public class EventServiceTest
     {
         private EventService eventService;
-        ApplicationDbContext _context;
+        private ApplicationDbContext _context;
 
         [TestInitialize]
         public void Setup()
