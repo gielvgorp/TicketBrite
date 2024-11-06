@@ -8,13 +8,14 @@ export interface Event {
     eventCategory: string;
     eventImage: string;
     eventDescription: string;
+    tickets: Ticket[];
 }
 
 export interface Ticket{
-    eventID: String;
-    ticketID: String;
-    ticketName: String;
-    ticketPrice: String;
+    eventID: string;
+    ticketID: string;
+    ticketName: string;
+    ticketPrice: string;
     ticketMaxAvailable: number;
     ticketsRemaining: number;
     ticketStatus: boolean;

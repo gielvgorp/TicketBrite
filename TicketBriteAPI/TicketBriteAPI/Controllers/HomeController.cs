@@ -15,8 +15,9 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly EventService eventService;
         private readonly TicketService ticketService;
+        private readonly UserService userService;
 
-        public HomeController(ApplicationDbContext context) 
+        public HomeController(ApplicationDbContext context)
         {
             eventService = new EventService(new EventRepository(context));
             ticketService = new TicketService(new TicketRepository(context));

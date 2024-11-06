@@ -24,4 +24,8 @@
     <ProjectReference Include="..\TicketBrite.Core\TicketBrite.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
