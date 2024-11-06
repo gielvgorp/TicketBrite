@@ -12,8 +12,8 @@ using TicketBrite.Data.ApplicationDbContext;
 namespace TicketBrite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext.ApplicationDbContext))]
-    [Migration("20241015115341_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241106102353_updated_event")]
+    partial class updated_event
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,8 +34,20 @@ namespace TicketBrite.Data.Migrations
                     b.Property<int>("eventAge")
                         .HasColumnType("int");
 
+                    b.Property<string>("eventCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("eventDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("eventDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("eventImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("eventLocation")
                         .IsRequired()
@@ -50,7 +62,7 @@ namespace TicketBrite.Data.Migrations
 
                     b.HasKey("eventID");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("TicketBrite.Core.Entities.EventTicket", b =>
@@ -126,6 +138,20 @@ namespace TicketBrite.Data.Migrations
                     b.HasKey("organizationID");
 
                     b.ToTable("Organizations");
+                });
+
+            modelBuilder.Entity("TicketBrite.Core.Entities.ReservedTicket", b =>
+                {
+                    b.Property<DateTime>("reservedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ticketID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("userID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.ToTable("ReservedTickets");
                 });
 
             modelBuilder.Entity("TicketBrite.Core.Entities.Role", b =>

@@ -19,7 +19,6 @@ namespace TicketBrite.Data.ApplicationDbContext
 
         public DbSet<EventTicket> Tickets { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Event> EventTickets { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

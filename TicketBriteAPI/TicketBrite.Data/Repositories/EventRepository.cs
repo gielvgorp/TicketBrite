@@ -25,6 +25,25 @@ namespace TicketBrite.Data.Repositories
             _dbContext.SaveChanges();
         }
 
+        public void UpdateEvent(Event updatedEvent)
+        {
+            Event existingEvent = _dbContext.Events.Find(updatedEvent.eventID);
+
+            if (existingEvent == null)
+                throw new Exception("Event not found!");
+
+            existingEvent.organizationID = updatedEvent.organizationID;
+            existingEvent.eventDescription = updatedEvent.eventDescription;
+            existingEvent.eventCategory = updatedEvent.eventCategory;
+            existingEvent.eventName = updatedEvent.eventName;
+            existingEvent.eventDateTime = updatedEvent.eventDateTime;
+            existingEvent.eventLocation = updatedEvent.eventLocation;
+            existingEvent.eventAge = updatedEvent.eventAge;
+
+            _dbContext.SaveChanges();
+        }
+
+
         public List<Event> GetEvents()
         {
             return _dbContext.Events.ToList();

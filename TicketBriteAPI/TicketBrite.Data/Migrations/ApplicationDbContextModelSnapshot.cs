@@ -59,7 +59,7 @@ namespace TicketBrite.Data.Migrations
 
                     b.HasKey("eventID");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("TicketBrite.Core.Entities.EventTicket", b =>
@@ -137,7 +137,7 @@ namespace TicketBrite.Data.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("TicketBrite.Core.Entities.ReservedTickets", b =>
+            modelBuilder.Entity("TicketBrite.Core.Entities.ReservedTicket", b =>
                 {
                     b.Property<DateTime>("reservedAt")
                         .HasColumnType("datetime2");
