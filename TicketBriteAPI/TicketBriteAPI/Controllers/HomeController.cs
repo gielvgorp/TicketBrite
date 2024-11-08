@@ -39,7 +39,6 @@ namespace TicketBriteAPI.Controllers
         {
             eventService.AddEvent(model);
 
-
             return new JsonResult(Ok());
         }
 

@@ -14,10 +14,12 @@ namespace TicketBriteAPI.Controllers
     public class UserController : ControllerBase
     {
         private UserService _userService;
+        private JwtTokenService _jwtTokenService;
 
-        public UserController(ApplicationDbContext context) 
+        public UserController(ApplicationDbContext context, IConfiguration iConig) 
         {
             _userService = new UserService(new UserRepository(context));
+            _jwtTokenService = new JwtTokenService(iConig, _userService);
         }
 
         [HttpGet("get-user")]
@@ -53,7 +55,8 @@ namespace TicketBriteAPI.Controllers
 
                 _userService.AddGuest(model);
 
-                return new JsonResult(Ok());
+                var token = _jwtTokenService.GenerateJwtToken(model); // Token genereren
+                return new JsonResult(Ok(new { Token = token }));
             }
             catch (Exception ex)
             {
