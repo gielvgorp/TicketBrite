@@ -55,5 +55,10 @@ namespace TicketBrite.Core.Services
         {
             return _ticketRepository.GetSoldTickets(ticketID);
         }
+
+        public void SetReservedTicket(Guid ticketID, Guid userID, Guid reservationID)
+        {
+            _ticketRepository.SetReserveTicket(ticketID, userID, reservationID);
+        }
     }
 }

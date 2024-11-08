@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
+import { Ticket } from '../Types';
 
-interface Ticket {
-    id: string;
-    name: string;
-    price: number;
-    quantity: number;
+interface ReservedTicket {
+    ticket: Ticket;
+    reservation: Reservation;
+}
+
+interface Reservation {
+    reservationID: string;
+    ticketID: string;
+    userID: string;
+    reservedAt: Date;
 }
 
 const banks = [
@@ -16,12 +22,39 @@ const banks = [
 
 function ShoppingCart(){
     const navigte = useNavigate();
-    const [tickets, setTickets] = React.useState<Ticket[]>([
-        { id: "1", name: "Concert Ticket", price: 45.00, quantity: 2 },
-        { id: "2", name: "VIP Pass", price: 75.00, quantity: 1 }
-    ]);
+    const [tickets, setTickets] = React.useState<ReservedTicket[]>([]);
     const [paymentMethod, setPaymentMethod] = React.useState<string>("iDeal");
     const [selectedBank, setSelectedBank] = React.useState<string | null>(null);
+
+    useEffect(() => {
+        handleFetchTickets();
+    }, []);
+
+    const handleFetchTickets = async () => {
+        try {
+            const token = localStorage.getItem("jwtToken");
+
+            const response = await fetch('https://localhost:7150/ticket/reserve-ticket/get-tickets', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }
+
+            const data = await response.json();
+            console.log(data.value);
+            setTickets(data.value);
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        } finally {
+            //setLoading(false);
+        }
+    }
 
     // Calculating total cost
     const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toFixed(2);

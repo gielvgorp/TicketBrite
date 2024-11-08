@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
@@ -68,5 +71,51 @@ namespace TicketBriteAPI.Controllers
 
             return new JsonResult(Ok(result));
         }
+
+        [HttpPost("/ticket/set-reserve")]
+        [Authorize]
+        public JsonResult AddReservedTickets(List<ReservedTicketModel> model)
+        {
+            var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userID == null) return new JsonResult(Unauthorized());
+            Guid reservationID = Guid.NewGuid();
+
+            foreach (ReservedTicketModel ticket in model)
+            {
+                int remaining = ticketService.CalculateRemainingTickets(ticket.ticketID);
+
+                if (remaining < ticket.quantity) throw new Exception("Er zijn niet genoeg tickets meer over!");
+
+                for (int i = 0; i < ticket.quantity; i++)
+                {
+                    ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), reservationID);
+                }
+            }
+
+            return new JsonResult(Ok());
+        }
+
+        [HttpGet("/ticket/reserve-ticket/get-tickets")]
+        [Authorize]
+        public JsonResult GetReservedTicketsOfUser()
+        {
+            var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userID == null) return new JsonResult(Unauthorized());
+
+            List<UserReservedTicketViewModel> result = new List<UserReservedTicketViewModel>();
+            List<ReservedTicket> reservedTickets = ticketService.GetReservedTicketsOfUser(Guid.Parse(userID));
+
+            foreach (ReservedTicket ticket in reservedTickets) 
+            {
+                result.Add(new UserReservedTicketViewModel
+                {
+                    reservation = ticket,
+                    ticket = ticketService.GetTicket(ticket.ticketID)
+                });
+            }
+
+            return new JsonResult(Ok(result));
+        }
+
     }
 }

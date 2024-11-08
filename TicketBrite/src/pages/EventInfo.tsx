@@ -13,7 +13,7 @@ function EventInfo(){
     const [tickets, setTickets] = useState<Ticket[]>([]);  // State to store the fetched events
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
     const [showTickets, setShowTickets] = useState(false);
-    const [selectedTickets, setSelectedTickets] = useState<{ [key: string]: number }>({});  // State to store selected ticket counts
+    const [selectedTickets, setSelectedTickets] = useState<{ ticketID: string, quantity: number }[]>([]);  // Array to store ticketID and quantity
     const [showLoginWarning, setShowLoginWarning] = useState(false);
     const { isAuthenticated } = useAuth();
 
@@ -43,12 +43,21 @@ function EventInfo(){
         return <p>Loading...</p>;
     }
 
-    const handleTicketSelect = (ticketId: string, amount: number) => {
-        setSelectedTickets((prev) => ({
-            ...prev,
-            [ticketId]: amount,
-        }));
+    const handleTicketSelect = (ticketID: string, quantity: number) => {
+        setSelectedTickets((prevSelected) => {
+            // Check if ticket already exists in the array
+            const existingTicket = prevSelected.find(ticket => ticket.ticketID === ticketID);
 
+            if (existingTicket) {
+                // Update quantity if the ticket exists
+                return prevSelected.map(ticket =>
+                    ticket.ticketID === ticketID ? { ...ticket, quantity } : ticket
+                );
+            } else {
+                // Add new ticket with quantity if it doesn't exist
+                return [...prevSelected, { ticketID, quantity }];
+            }
+        });
         console.log(selectedTickets);
     };
 
@@ -62,8 +71,30 @@ function EventInfo(){
         handleReserveTickets();
     };
 
-    const handleReserveTickets = () => {
-        
+    const handleReserveTickets = async () => {
+        const token = localStorage.getItem('jwtToken');
+
+        try {
+            const response = await fetch('https://localhost:7150/ticket/set-reserve', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedTickets) // Zet de formData om naar JSON
+            });
+
+            if (!response.ok) {
+                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }
+
+            const data = await response.json();
+            //setUser(data);
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const handleShowTickets = () => {

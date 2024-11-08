@@ -41,7 +41,6 @@ namespace TicketBrite.Data.Repositories
         public List<ReservedTicket> GetReservedTicketsOfUser(Guid userID)
         {
             DateTime deadlineTime = DateTime.UtcNow.AddMinutes(-10);
-
             return _dbContext.ReservedTickets.Where(t => t.userID == userID && t.reservedAt >= deadlineTime).ToList();
         }
 
@@ -49,6 +48,19 @@ namespace TicketBrite.Data.Repositories
         {
             DateTime deadlineTime = DateTime.UtcNow.AddMinutes(-10);
             return _dbContext.ReservedTickets.Where(t => t.ticketID == ticketID && t.reservedAt >= deadlineTime).ToList();
+        }
+
+        public void SetReserveTicket(Guid ticketid, Guid userID, Guid reservationID)
+        {
+            _dbContext.ReservedTickets.Add(new ReservedTicket
+            {
+                reservedID = Guid.NewGuid(),
+                ticketID = ticketid,
+                userID = userID,
+                reservedAt = DateTime.Now
+            });
+
+            _dbContext.SaveChanges();
         }
     }
 }
