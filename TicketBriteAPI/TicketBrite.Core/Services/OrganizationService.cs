@@ -21,5 +21,15 @@ namespace TicketBrite.Core.Services
         {
             return organizationRepository.GetEventsByOrganization(organizationID);
         }
+
+        public void UpdateOrganization(Organization organization)
+        {
+            organizationRepository.UpdateOrganization(organization);
+        }
+
+        public Organization GetOrganizationByID(Guid organizationID)
+        {
+            return organizationRepository.GetOrganizationByID(organizationID);
+        }
     }
 }
