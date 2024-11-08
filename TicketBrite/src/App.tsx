@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import ProtectedRoute from './pages/ProtectedRoute'
 import { AuthProvider } from './AuthContext'
 import DashboardPage from './pages/Dashboard'
+import GuestAuthentication from './pages/GuestAuthentication'
 
 function App() {
   const [showNav, setShowNav] = useState(true);
@@ -25,12 +26,12 @@ function App() {
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Organisatie/Dashboard/:eventId" element={<DashboardPage />} />
       </Route>
-      
         {/* Route zonder :id parameter */}
       <Route path="/Authenticatie" element={<Authentication setShowNav={(value) => setShowNav(value)} />} />
 
     {/* Route met :id parameter */}
     <Route path="/Authenticatie/:id" element={<Authentication setShowNav={(value) => setShowNav(value)} />} />
+      <Route path="/Auth/Guest/:guestID/:verificationCode" element={<GuestAuthentication />} />
     </Routes>
     </AuthProvider>
   )

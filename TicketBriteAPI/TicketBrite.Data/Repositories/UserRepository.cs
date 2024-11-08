@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,17 @@ namespace TicketBrite.Data.Repositories
             }
 
             return null;
+        }
+
+        public void AddGuest(Guest guest)
+        {
+            _dbContext.Guests.Add(guest);
+            _dbContext.SaveChanges();
+        }
+
+        public bool VerifyEmail(string email)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.userEmail == email) == null && _dbContext.Guests.FirstOrDefault(g => g.guestEmail == email) == null;
         }
     }
 }

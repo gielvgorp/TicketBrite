@@ -13,5 +13,6 @@ namespace TicketBrite.Core.Entities
         public Guid guestID { get; set; }
         public string guestName { get; set; }
         public string guestEmail { get; set; }
+        public Guid verificationCode { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace TicketBrite.Core.Services
 
         public void AddUser(User user)
         {
+            VerifyEmail(user.userEmail);
             _userRepository.AddUser(user);
         }
 
@@ -27,9 +28,20 @@ namespace TicketBrite.Core.Services
             return _userRepository.GetUser(uid);
         }
 
+        public void VerifyEmail(string email)
+        {
+            if (!_userRepository.VerifyEmail(email)) throw new Exception("Email adres bestaat al!");
+        }
+
         public Role GetUserRole(Guid userID)
         {
             return _userRepository.GetUserRole(userID);
+        }
+
+        public void AddGuest(Guest guest)
+        {
+            VerifyEmail(guest.guestEmail);
+            _userRepository.AddGuest(guest);
         }
     }
 }

@@ -39,8 +39,8 @@ function RegisterForm({msg}: Props){
             const data = await res.json(); // Ontvang de JSON-response
 
             // validation error
-            if(res.status === 400){
-                setErrorMsg("Een of meerdere velden zijn leeg!");
+            if(data.statusCode === 404){
+                setErrorMsg(data.value);
             }
 
             // successful registered
