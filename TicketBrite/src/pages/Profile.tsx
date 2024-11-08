@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ProfileContent from '../components/Profile/ProfileContent/ProfileContent';
 import EventsOverview from '../components/Profile/Organization/EventsOverview';
 import { useAuth } from '../AuthContext';
+import TicketContent from '../components/Profile/Tickets/TicketsContent';
 
 const Profile = () => {
     // State voor het bijhouden van de huidige content die moet worden weergegeven
@@ -25,6 +26,11 @@ const Profile = () => {
                             <li className="nav-item">
                                 <a href="#" onClick={() => handleContentChange('profile')} className="nav-link align-middle px-0">
                                     <i className="fs-4 bi-house"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-user px-2"></i> Profiel</span>
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a href="#" onClick={() => handleContentChange('tickets')} className="nav-link align-middle px-0">
+                                    <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-ticket px-2"></i> Tickets</span>
                                 </a>
                             </li>
                             {
@@ -54,6 +60,7 @@ const Profile = () => {
                 <div className="col py-3">
                     {/* Hier wordt de actieve content weergegeven op basis van de state */}
                     {activeContent === 'profile' && <ProfileContent /> }
+                    {activeContent === 'tickets' && <TicketContent /> }
                     {activeContent === 'events' && <EventsOverview organizationID='4D117EC0-7294-4AE6-ADFF-951969A5F852' /> }
                     {activeContent === 'logout' && <div>Uitloggen Content</div>}
                 </div>
