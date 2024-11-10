@@ -15,7 +15,6 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly EventService eventService;
         private readonly TicketService ticketService;
-        private readonly UserService userService;
 
         public HomeController(ApplicationDbContext context)
         {

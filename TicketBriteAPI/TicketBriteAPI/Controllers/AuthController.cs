@@ -14,13 +14,11 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly JwtTokenService _jwtTokenService;
         private readonly UserService _userService;
-        private readonly ApplicationDbContext _applicationDbContext;
 
         public AuthController(IConfiguration iConfig, ApplicationDbContext context)
         {
             _userService = new UserService(new UserRepository(context));
             _jwtTokenService = new JwtTokenService(iConfig, _userService);
-            _applicationDbContext = context;
         }
 
 
