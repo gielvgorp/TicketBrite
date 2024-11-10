@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link, useParams } from "react-router-dom";
 import '../Authentication.css'
