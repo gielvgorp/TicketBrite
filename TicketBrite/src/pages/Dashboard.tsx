@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
-import { Ticket, Event } from '../Types';
+import { Event } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TiketStatistics';
 import { getEventDetails, updateEventDetails } from '../hooks/useEvent';

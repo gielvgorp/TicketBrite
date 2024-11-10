@@ -11,6 +11,7 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
     const [stats, setStats] = useState<Ticket[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    setError("");
 
     useEffect(() => {
         const fetchStats = async () => {

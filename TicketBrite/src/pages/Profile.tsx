@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ProfileContent from '../components/Profile/ProfileContent/ProfileContent';
 import EventsOverview from '../components/Profile/Organization/EventsOverview';
 import { useAuth } from '../AuthContext';

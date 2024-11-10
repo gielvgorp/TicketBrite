@@ -1,22 +1,17 @@
 import { useState } from "react";
 import { Link, replace, useNavigate } from "react-router-dom";
 
-type Props = {
-    msg: string;
-}
-
-function RegisterForm({msg}: Props){
+function RegisterForm(){
 
     const navigate = useNavigate();
 
-    const [errorMsg, setErrorMsg] = useState(msg);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
         password: ''
     });
-    const [response, setResponse] = useState(null);
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;

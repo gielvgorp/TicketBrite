@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import styles from './navigationBar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useState } from 'react'
 import useUser from '../../hooks/useUser';
 import { useAuth } from '../../AuthContext';
 function NavigationBar(){

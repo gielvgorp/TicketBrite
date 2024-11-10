@@ -11,9 +11,7 @@ type Props = {
 
 function Authentication({setShowNav}: Props){
     const { id } = useParams();
-
-    const [errorMsg, setErrorMsg] = useState("");
-
+    
     useEffect(() => {
         setShowNav(false);
     
@@ -34,7 +32,7 @@ function Authentication({setShowNav}: Props){
                 <div className="col-8 p-5">
                 {
                     // If id is "register", show RegisterForm, otherwise show LoginForm
-                    id === "register" ? <RegisterForm msg={errorMsg} /> : <LoginForm msg={errorMsg} />
+                    id === "register" ? <RegisterForm /> : <LoginForm />
                 }
                 </div>
             </div>

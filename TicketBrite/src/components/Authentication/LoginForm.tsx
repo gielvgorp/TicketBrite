@@ -2,23 +2,18 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
-type Props = {
-    msg: string;
-}
-
-function LoginForm({msg}: Props){
+function LoginForm(){
     const {login} = useAuth();
 
     const navigate = useNavigate();
 
-    const [errorMsg, setErrorMsg] = useState(msg);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const [formData, setFormData] = useState({
         UserEmail: '',
         Password: ''
     });
-    const [response, setResponse] = useState(null);
-
+    
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });

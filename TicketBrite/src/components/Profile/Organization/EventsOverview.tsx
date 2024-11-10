@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 // Definieer interfaces voor evenement- en ticketdetails
@@ -55,14 +54,10 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
             .then(data => {
                 console.log(data.value);
                 setEvents(data.value);
-                //setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);  
-                //setLoading(false);
             });
-            // console.log(response);
-            // setEvents(response.data);
         } catch (error) {
             console.error("Er is een fout opgetreden bij het ophalen van evenementen:", error);
         }

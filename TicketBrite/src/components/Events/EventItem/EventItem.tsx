@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './EventItem.module.css'
-import events from '../../../mockdata';
 import { useEffect, useState } from 'react';
 import { Event } from '../../../Types'
 type Props = {
@@ -11,8 +10,6 @@ type Props = {
 
 function EventItem({id}: Props){
     const navigate = useNavigate();
-    //const event = events().filter(event => event.id === id)[0];
-
     const [event, setEvent] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
