@@ -22,6 +22,28 @@ namespace TicketBrite.Core.Services
             _userRepository.AddUser(user);
         }
 
+        public string HashPassword(string plainPassword)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(plainPassword);
+        }
+
+        public bool VerifyUser(string email, string enteredPassword)
+        {
+            User user = _userRepository.GetUserByEmail(email);
+
+            if (user != null)
+            {
+                return BCrypt.Net.BCrypt.Verify(enteredPassword, user.userPasswordHash);
+            }
+
+            return false;
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetUserByEmail(email);
+        }
+
         public User GetUser(Guid uid)
         {
             return _userRepository.GetUser(uid);

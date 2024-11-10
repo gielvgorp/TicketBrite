@@ -39,5 +39,10 @@ namespace TicketBrite.Data.Repositories
 
             return null;
         }
+
+        public User GetUserByEmail(string email)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.userEmail == email);
+        }
     }
 }

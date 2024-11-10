@@ -13,5 +13,6 @@ namespace TicketBrite.Core.Interfaces
         public void AddUser(User user);
         public User GetUser(Guid uid);
         public Role GetUserRole(Guid userID);
+        public User GetUserByEmail(string email);
     }
 }

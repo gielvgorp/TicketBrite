@@ -27,11 +27,11 @@ namespace TicketBriteAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginViewModel model)
         {
-            User user = _applicationDbContext.Users.FirstOrDefault(u => u.userEmail == model.UserEmail && u.userPasswordHash == model.Password);
+            bool verified = _userService.VerifyUser(model.UserEmail, model.Password);
 
-            if (user == null) return NotFound("Gebruiker niet gevonden");
+            if (!verified) return NotFound("Gebruiker niet gevonden");
 
-            var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
+            var token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail)); // Token genereren
             return Ok(new { Token = token });
         }
 
@@ -48,8 +48,8 @@ namespace TicketBriteAPI.Controllers
             {
                 userName = model.FullName,
                 userEmail = model.Email,
-                userPasswordHash = model.Password,
-                roleID = Guid.Empty,
+                userPasswordHash = _userService.HashPassword(model.Password),
+                roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
                 organizationID = Guid.Empty
             };
 

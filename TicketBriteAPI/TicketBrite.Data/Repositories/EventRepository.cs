@@ -43,7 +43,6 @@ namespace TicketBrite.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-
         public List<Event> GetEvents()
         {
             return _dbContext.Events.ToList();
