@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: ./TicketBriteAPI
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    networks:
+      - app-network
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TicketBrite;User=sa;Password=YourStrong!Passw0rd;
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./TicketBrite
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
