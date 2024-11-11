@@ -3,7 +3,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 function AuthenticationForm(){
-    const [showLogin, setShowLogin] = useState(true);
+    const [showLogin] = useState(true);
     return (
        <>
         {

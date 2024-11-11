@@ -26,13 +26,13 @@ function ShoppingCart(){
     // Calculating total cost
     const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toFixed(2);
 
-    const handleQuantityChange = (id: string, delta: number) => {
-        setTickets(prevTickets =>
-            prevTickets.map(ticket =>
-                ticket.id === id ? { ...ticket, quantity: Math.max(1, ticket.quantity + delta) } : ticket
-            )
-        );
-    };
+    // const handleQuantityChange = (id: string, delta: number) => {
+    //     setTickets(prevTickets =>
+    //         prevTickets.map(ticket =>
+    //             ticket.id === id ? { ...ticket, quantity: Math.max(1, ticket.quantity + delta) } : ticket
+    //         )
+    //     );
+    // };
 
     const handleRemoveTicket = (id: string) => {
         setTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== id));

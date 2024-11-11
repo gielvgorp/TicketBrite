@@ -15,8 +15,8 @@ interface PaymentSuccessProps {
 
 const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
     const {isAuthenticated} = useAuth();
-    const [purchaseId, setPurchaseID] = useState('00000000-0000-0000-0000-000000000000');
-    const [tickets, setTickets] = useState<Ticket[]>([
+    const [purchaseId] = useState('00000000-0000-0000-0000-000000000000');
+    const [tickets] = useState<Ticket[]>([
         { name: 'Concert A', quantity: 2, price: 50 },
         { name: 'Concert B', quantity: 1, price: 75 },
     ]);

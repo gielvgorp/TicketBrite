@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotLoggedInModal from './NotLoggedInModal';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ function TicketPurchaseComponent(props: Props){
 
     return (
         <div>
-            {/* <Button onClick={handlePurchaseTicket}>Koop Ticket</Button> */}
+            <Button onClick={handlePurchaseTicket}>Koop Ticket</Button>
             <NotLoggedInModal
                 show={showModal}
                 handleClose={handleCloseModal}
