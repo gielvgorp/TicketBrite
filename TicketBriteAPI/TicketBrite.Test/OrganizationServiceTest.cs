@@ -24,11 +24,9 @@ namespace TicketBrite.Test
         [TestInitialize]
         public void Setup()
         {
-            var testConnectionString = "Server=DESKTOP-SML637F;Database=TicketBrite_Test;Trusted_Connection=True;TrustServerCertificate=True;";
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseSqlServer(testConnectionString) // Gebruik je echte SQL Server voor de testdatabase
-                .Options;
+              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+              .Options;
 
             _context = new ApplicationDbContext(options);
 
@@ -43,11 +41,9 @@ namespace TicketBrite.Test
         #region SeedDatabase
         private void ResetDatabase()
         {
-            // Remove all data from the relevant tables (cascade delete if necessary)
-            _context.Database.ExecuteSqlRaw("DELETE FROM Organization");
-            _context.Database.ExecuteSqlRaw("DELETE FROM Users");
-            _context.Database.ExecuteSqlRaw("DELETE FROM Events");
-            // Add other tables here if necessary
+            _context.Events.RemoveRange(_context.Events);
+            _context.Users.RemoveRange(_context.Users);
+            _context.Organizations.RemoveRange(_context.Organizations);
 
             _context.SaveChanges();
         }
