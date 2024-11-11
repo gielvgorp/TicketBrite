@@ -47,3 +47,11 @@ jobs:
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
+          
+          
+      # Tagging the database image
+      - name: Tag and Push Docker DB Image as latest (Backend)
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:latest
+          
