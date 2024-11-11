@@ -19,7 +19,8 @@ const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eve
             ticketPrice: '',
             ticketMaxAvailable: 0,
             ticketStatus: true,
-            ticketsRemaining: 0
+            ticketsRemaining: 0,
+            eventDateTime: ''
         };
         setTickets([...tickets, newTicket]);
     };
