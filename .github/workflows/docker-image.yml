@@ -21,19 +21,29 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       # Build the Docker image for TicketBrite frontend
-      - name: Build Docker Image
+      - name: Build Docker Image (Frontend)
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ./TicketBrite
 
       # Build the Docker image for TicketBriteAPI backend
-      - name: Build Docker API Image
+      - name: Build Docker API Image (Backend)
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ./TicketBriteAPI
 
-      # Push the Docker image to Docker Hub
-      - name: Push Docker Image
+      # Push the Docker frontend image to Docker Hub
+      - name: Push Docker Image (Frontend)
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }}
 
-      # Optionally, tag and push the latest version
-      - name: Tag Docker Image as latest
+      # Push the Docker backend image to Docker Hub
+      - name: Push Docker API Image (Backend)
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }}
+
+      # Optionally, tag and push the latest version for frontend
+      - name: Tag and Push Docker Image as latest (Frontend)
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:latest
+
+      # Optionally, tag and push the latest version for backend
+      - name: Tag and Push Docker API Image as latest (Backend)
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
