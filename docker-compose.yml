@@ -5,7 +5,8 @@ services:
       context: ./TicketBriteAPI
       dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "7150:80"   # HTTP
+      - "7150:443"  # HTTPS (of gebruik een andere poort als 443 al in gebruik is)
     networks:
       - app-network
     environment:

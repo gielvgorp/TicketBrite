@@ -27,6 +27,9 @@ jobs:
       # Build the Docker image for TicketBriteAPI backend
       - name: Build Docker API Image (Backend)
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ./TicketBriteAPI
+        
+      - name: Build Docker DB Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }} ./db
 
       # Push the Docker frontend image to Docker Hub
       - name: Push Docker Image (Frontend)
@@ -35,6 +38,9 @@ jobs:
       # Push the Docker backend image to Docker Hub
       - name: Push Docker API Image (Backend)
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }}
+        
+      - name: Push Docker DB Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }}
 
       # Optionally, tag and push the latest version for frontend
       - name: Tag and Push Docker Image as latest (Frontend)
