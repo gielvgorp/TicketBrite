@@ -5,7 +5,7 @@ services:
       context: ./TicketBriteAPI
       dockerfile: Dockerfile
     ports:
-      - "7150:80"   # HTTP
+    - "7150:80"   # HTTP
       - "7150:443"  # HTTPS (of gebruik een andere poort als 443 al in gebruik is)
     networks:
       - app-network
@@ -30,6 +30,8 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrong!Passw0rd
+       volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
     ports:
       - "1433:1433"
     networks:
