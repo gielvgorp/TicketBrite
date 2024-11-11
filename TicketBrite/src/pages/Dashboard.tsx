@@ -13,21 +13,22 @@ const DashboardPage: React.FC = () => {
     const [eventDetails, setEventDetails] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const fetchData = async () => {
+        if (eventId) {  // Check of eventId een waarde heeft
+            try {
+                const details = await getEventDetails(eventId);
+                setEventDetails(details);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching event details:", error);
+            }
+        }
+    };
+
     useEffect(() => {
         console.log(eventId);
-        const fetchData = async () => {
-            if (eventId) {  // Check of eventId een waarde heeft
-                try {
-                    const details = await getEventDetails(eventId);
-                    setEventDetails(details);
-                    setLoading(false);
-                } catch (error) {
-                    console.error("Error fetching event details:", error);
-                }
-            }
-        };
         fetchData();
-    }, [eventId]);
+    }, []);
 
     const handleUpdateEvent = async (updatedDetails: Event) => {
         if (!eventId) {

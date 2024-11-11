@@ -61,7 +61,7 @@ const Profile = () => {
                     {/* Hier wordt de actieve content weergegeven op basis van de state */}
                     {activeContent === 'profile' && <ProfileContent /> }
                     {activeContent === 'tickets' && <TicketContent /> }
-                    {activeContent === 'events' && <EventsOverview organizationID='4D117EC0-7294-4AE6-ADFF-951969A5F852' /> }
+                    {activeContent === 'events' && <EventsOverview organizationID='77726785-FA72-4244-A572-AFFEAF20D5F1' /> }
                     {activeContent === 'logout' && <div>Uitloggen Content</div>}
                 </div>
             </div>
