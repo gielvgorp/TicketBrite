@@ -1,0 +1,44 @@
+/* ShoppingCart.css */
+
+.shopping-cart-card {
+    border: none;
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.shopping-cart-card:hover {
+    transform: scale(1.01);
+}
+
+.ticket-icon {
+    height: 35px;
+}
+
+.quantity-control .btn-outline-secondary {
+    color: #333;
+}
+
+.payment-button {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.price {
+    font-weight: 500;
+}
+
+h2 {
+    color: #333;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-toggle::after {
+    margin-left: auto;
+    color: #555;
+}
