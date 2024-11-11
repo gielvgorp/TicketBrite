@@ -28,13 +28,21 @@ jobs:
       - name: Build Docker API Image (Backend)
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ./TicketBriteAPI
         
+      # Build Docker image for the custom database
+      - name: Build Docker DB Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }} ./db
+
       # Push the Docker frontend image to Docker Hub
       - name: Push Docker Image (Frontend)
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite:${{ github.sha }}
 
-      # Push the Docker backend image to Docker Hub
+      # Push the Docker API image to Docker Hub
       - name: Push Docker API Image (Backend)
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }}
+
+      # Push the Docker DB image to Docker Hub
+      - name: Push Docker DB Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }}
 
       # Optionally, tag and push the latest version for frontend
       - name: Tag and Push Docker Image as latest (Frontend)
@@ -47,3 +55,9 @@ jobs:
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbriteapi:latest
+
+      # Optionally, tag and push the latest version for DB
+      - name: Tag and Push Docker DB Image as latest (Backend)
+        run: |
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db:latest
