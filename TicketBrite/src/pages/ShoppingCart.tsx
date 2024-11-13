@@ -57,7 +57,7 @@ function ShoppingCart(){
     }
 
     // Calculating total cost
-    const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toFixed(2);
+    const totalCost = tickets.reduce((total, ticket) => total + parseInt(ticket.ticket.ticketPrice), 0).toFixed(2);
 
     // const handleQuantityChange = (id: string, delta: number) => {
     //     setTickets(prevTickets =>
@@ -68,7 +68,7 @@ function ShoppingCart(){
     // };
 
     const handleRemoveTicket = (id: string) => {
-        setTickets(prevTickets => prevTickets.filter(ticket => ticket.id !== id));
+        setTickets(prevTickets => prevTickets.filter(ticket => ticket.ticket.ticketID !== id));
     };
 
     return (
@@ -81,19 +81,19 @@ function ShoppingCart(){
 
                     <ListGroup variant="flush" className="mb-4">
                         {tickets.map(ticket => (
-                            <ListGroup.Item key={ticket.id} className="d-flex justify-content-between align-items-center">
-                                <div className="d-flex align-items-center col-5">
+                            <ListGroup.Item key={ticket.ticket.ticketID} className="d-flex justify-content-between align-items-center">
+                                <div className="d-flex align-items-center col-9">
                                     <Image src="https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg" alt="Ticket Icon" rounded className="ticket-icon me-2" />
-                                    <span className="ticket-name">{ticket.name} - <strong>Festival name 123 Live in concert</strong></span>
+                                    <span className="ticket-name">{ticket.ticket.ticketName} - <strong>Set event name here</strong></span>
                                 </div>
-                                <div className='col-3 text-center'>
+                                <div className='col-1 text-center'>
                                 <span className="price"><strong>00:00</strong></span>
                                 </div>
-                                <div className='col-2 text-end'>
-                                    <span className="price">€{(ticket.price * ticket.quantity).toFixed(2)}</span>
+                                <div className='col-1 text-end'>
+                                    <span className="price">€{(ticket.ticket.ticketPrice)}</span>
                                 </div>
                                 <div className='col-1 text-end'>
-                                    <Button variant="outline-danger" size="sm" onClick={() => handleRemoveTicket(ticket.id)}>
+                                    <Button variant="outline-danger" size="sm" onClick={() => handleRemoveTicket(ticket.ticket.ticketID)}>
                                         <i className="fas fa-trash"></i>
                                     </Button>
                                 </div>

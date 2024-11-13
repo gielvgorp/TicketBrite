@@ -1,34 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
 import { Event } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TiketStatistics';
 import { getEventDetails, updateEventDetails } from '../hooks/useEvent';
-import '../Dashboard.css'
-//import { getEventDetails, updateEventDetails, getTicketStats } from '../api/eventsAPI'; // Stel voor dat je functies voor API-aanroepen hebt
+import '../Dashboard.css';
 
 const DashboardPage: React.FC = () => {
     const { eventId } = useParams<{ eventId: string | undefined }>();
     const [eventDetails, setEventDetails] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchData = async () => {
-        if (eventId) {  // Check of eventId een waarde heeft
-            try {
-                const details = await getEventDetails(eventId);
-                setEventDetails(details);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching event details:", error);
-            }
+    const fetchData = useCallback(async () => {
+        if (!eventId) return;
+        setLoading(true);
+
+        try {
+            fetch(`https://localhost:7150/get-event/${eventId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.value);
+                setEventDetails(data.value);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);  
+            });
+        } catch (error) {
+            console.error("Error fetching event details:", error);
+        } finally {
+            setLoading(false); 
         }
-    };
+    }, [eventId]);
 
     useEffect(() => {
-        console.log(eventId);
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     const handleUpdateEvent = async (updatedDetails: Event) => {
         if (!eventId) {

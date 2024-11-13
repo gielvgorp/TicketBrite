@@ -7,6 +7,13 @@
     height: 60px;
     margin: auto;
     overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.ticketSelector * {
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .ticketSelector .selectTicket {
@@ -30,7 +37,7 @@
     border: none;
 }
 
-.ticketPrice{
+.ticketPrice {
     color: gray;
     font-size: .8rem;
     font-weight: 300;

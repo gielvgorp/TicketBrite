@@ -2,45 +2,28 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-
-// Definieer interfaces voor evenement- en ticketdetails
-interface Ticket {
-    ticketName: string;
-    ticketPrice: string;
-    ticketMaxAvailable: string;
-}
-
-interface EventDetails {
-    eventID: string;
-    eventName: string;
-    eventDateTime: string;
-    eventLocation: string;
-    eventAge: string;
-    eventCategory: string;
-    eventDescription: string;
-    eventImage: string;
-    tickets: Ticket[];
-}
+import { Ticket, Event } from '../../../Types';
 
 interface NewEventRequest {
-    event: EventDetails;
+    event: Event;
     tickets: Ticket[];
 }
 
 const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }) => {
     const navigate = useNavigate();
-    const [events, setEvents] = useState<EventDetails[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [eventDetails, setEventDetails] = useState<EventDetails>({
-        eventID: '',
+    const [eventDetails, setEventDetails] = useState<Event>({
+        eventID: '00000000-0000-0000-0000-000000000000',
         eventName: '',
         eventDateTime: '',
         eventLocation: '',
-        eventAge: '',
         eventCategory: '',
         eventDescription: '',
         eventImage: '',
-        tickets: [],
+        organizationID: organizationID,
+        eventAge: 0,
+        tickets: []
     });
 
     useEffect(() => {
@@ -76,35 +59,35 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
     };
 
     // Functie om een nieuw ticket toe te voegen
-    const addTicket = () => {
-        setEventDetails((prevDetails) => ({
-            ...prevDetails,
-            tickets: [...prevDetails.tickets, { ticketName: '', ticketPrice: '', ticketMaxAvailable: '' }],
-        }));
-    };
+    // const addTicket = () => {
+    //     setEventDetails((prevDetails) => ({
+    //         ...prevDetails,
+    //         tickets: [...prevDetails.tickets, { ticketName: '', ticketPrice: '', ticketMaxAvailable: 0, ticketID: '', eventID: '', eventDateTime: '', ticketsRemaining: 0, ticketStatus: true }],
+    //     }));
+    // };
 
     // Functie om ticketgegevens te wijzigen
-    const handleTicketChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-        const updatedTickets = [...eventDetails.tickets];
-        updatedTickets[index][e.target.name as keyof Ticket] = e.target.value;
-        setEventDetails((prevDetails) => ({ ...prevDetails, tickets: updatedTickets }));
-    };
+    // const handleTicketChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const updatedTickets = [...eventDetails.tickets];
+    //     const fieldName = e.target.name as keyof Ticket;
+    
+    //     //updatedTickets[index][fieldName] = e.target.value as any;
+    //     setEventDetails((prevDetails) => ({ ...prevDetails, tickets: updatedTickets }));
+    // };
 
     // Functie om evenement en tickets toe te voegen aan de API
     const handleAddEvent = async () => {
-        const model: NewEventRequest = {
-            event: {
-                eventID: eventDetails.eventID,
-                eventName: eventDetails.eventName,
-                eventDateTime: eventDetails.eventDateTime,
-                eventLocation: eventDetails.eventLocation,
-                eventAge: eventDetails.eventAge,
-                eventCategory: eventDetails.eventCategory,
-                eventDescription: eventDetails.eventDescription,
-                eventImage: eventDetails.eventImage,
-                tickets: eventDetails.tickets,
-            },
+        const model: Event = {
+            eventID: eventDetails.eventID,
+            eventName: eventDetails.eventName,
+            eventDateTime: eventDetails.eventDateTime,
+            eventLocation: eventDetails.eventLocation,
+            eventAge: eventDetails.eventAge,
+            eventCategory: eventDetails.eventCategory,
+            eventDescription: eventDetails.eventDescription,
+            eventImage: eventDetails.eventImage,
             tickets: eventDetails.tickets,
+            organizationID: eventDetails.organizationID
         };
 
         try {
@@ -123,6 +106,8 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
             if(res.status === 400){
                 //setErrorMsg("Een of meerdere velden zijn leeg!");
             }
+
+            console.log(eventDetails);
 
             // successful registered
             if(res.status === 200){
@@ -185,7 +170,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                         </div>
 
                         {/* Tickets Section */}
-                        <h5>Tickets</h5>
+                        {/* <h5>Tickets</h5>
                         {eventDetails.tickets.map((ticket, index) => (
                             <div key={index} className="border rounded p-3 mb-3">
                                 <div className="row">
@@ -224,7 +209,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                         ))}
                         <Button variant="secondary" onClick={addTicket} className="w-100 mb-3">
                             Ticket toevoegen
-                        </Button>
+                        </Button> */}
                     </form>
                 </Modal.Body>
                 <Modal.Footer>

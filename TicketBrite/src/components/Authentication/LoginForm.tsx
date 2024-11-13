@@ -42,7 +42,7 @@ function LoginForm(){
 
             // successful registered
             if(data.statusCode === 200){
-                login(data.token);
+                login(data.value.token);
                 console.log("Token:", localStorage.getItem('jwtToken'));
                 navigate("/", {replace: true});
             }           

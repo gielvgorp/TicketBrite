@@ -29,17 +29,13 @@ namespace TicketBriteAPI.Controllers
         [HttpPost("login")]
         public JsonResult Login(LoginViewModel model)
         {
-            try
-            {
-                User user = _authService.VerifyUser(model.UserEmail, model.Password);
+            bool verified = _userService.VerifyUser(model.UserEmail, model.Password);
 
-                var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
-                return new JsonResult(Ok(new { Token = token }));
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(NotFound(ex.Message));    
-            }
+            if (!verified) return new JsonResult(NotFound("Gebruiker niet gevonden"));
+
+            var token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail));
+
+            return new JsonResult(Ok(new { Token = token }));
         }
 
         [HttpPost("/auth/guest/{guestID}/{verificationID}")]
@@ -72,8 +68,8 @@ namespace TicketBriteAPI.Controllers
                 {
                     userName = model.FullName,
                     userEmail = model.Email,
-                    userPasswordHash = model.Password,
-                    roleID = Guid.Empty,
+                    userPasswordHash = _userService.HashPassword(model.Password),
+                    roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
                     organizationID = Guid.Empty
                 };
 

@@ -31,14 +31,14 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpPost("event/new")]
-        public JsonResult AddNewEvent(NewOrganizaionEvent model)
+        public JsonResult AddNewEvent(Event model)
         {
-            eventService.AddEvent(model.Event);
+            eventService.AddEvent(model);
 
-            foreach (EventTicket ticket in model.Tickets)
+/*            foreach (EventTicket ticket in model.Tickets)
             {
                 ticketService.CreateTicket(ticket);
-            }
+            }*/
 
             return new JsonResult(Ok("Evenement aangemaakt!"));
         }
