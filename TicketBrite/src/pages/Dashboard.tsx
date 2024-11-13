@@ -12,30 +12,22 @@ const DashboardPage: React.FC = () => {
     const [eventDetails, setEventDetails] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchData = useCallback(async () => {
-        if (!eventId) return;
-        setLoading(true);
-
-        try {
-            fetch(`https://localhost:7150/get-event/${eventId}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.value);
-                setEventDetails(data.value);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);  
-            });
-        } catch (error) {
-            console.error("Error fetching event details:", error);
-        } finally {
-            setLoading(false); 
-        }
-    }, [eventId]);
-
     useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+        fetchData()
+    });
+
+    const fetchData = () => {
+        fetch(`https://localhost:7150/get-events/${eventId}`)
+        .then(response => response.json())
+        .then(data => {
+            setEventDetails(data.value);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);  
+            setLoading(false);
+        });
+    }
 
     const handleUpdateEvent = async (updatedDetails: Event) => {
         if (!eventId) {

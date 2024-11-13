@@ -105,12 +105,6 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Get all events of organization")]
-        public void Get_All_Events_Of_Organization()
-        {
-           // Organization organization = organizationService.get
-        }
-
-        [TestMethod("Get all events of organization")]
         [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
         public void Get_All_Events_Of_Organization(Guid organizationID)
         {
