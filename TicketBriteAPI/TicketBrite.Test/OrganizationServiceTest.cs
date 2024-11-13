@@ -50,6 +50,7 @@ namespace TicketBrite.Test
 
         private void SeedDatabase()
         {
+            // Static events
             if (!_context.Events.Any())
             {
                 _context.Events.AddRange(
@@ -101,6 +102,12 @@ namespace TicketBrite.Test
                 _context.SaveChanges();
             }
             #endregion
+        }
+
+        [TestMethod("Get all events of organization")]
+        public void Get_All_Events_Of_Organization()
+        {
+            // Organization organization = organizationService.get
         }
 
         [TestMethod("Get all events of organization")]

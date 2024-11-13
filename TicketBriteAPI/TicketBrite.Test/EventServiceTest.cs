@@ -142,7 +142,7 @@ namespace TicketBrite.Test
 
             Assert.IsNotNull(result);
 
-            if (result != null) 
+            if (result != null)
             {
                 result.eventName = "Updated event name";
                 eventService.UpdateEvent(result);
