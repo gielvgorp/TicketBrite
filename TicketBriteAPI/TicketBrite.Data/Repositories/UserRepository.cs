@@ -28,13 +28,37 @@ namespace TicketBrite.Data.Repositories
             return _dbContext.Users.FirstOrDefault(u => u.userID == uid);
         }
 
+        public void SetOrganization(Guid userID, Guid organizationID)
+        {
+            User user = _dbContext.Users.Find(userID);
+
+            if (user == null)
+                throw new Exception("User not found!");
+
+            user.organizationID = organizationID;
+
+            _dbContext.SaveChanges();
+        }
+
+        public void SetRole(Guid userID, Guid roleID)
+        {
+            User user = _dbContext.Users.Find(userID);
+
+            if (user == null)
+                throw new Exception("User not found!");
+
+            user.roleID = roleID;
+
+            _dbContext.SaveChanges();
+        }
+
         public Role GetUserRole(Guid userID)
         {
             User user = GetUser(userID);
 
             if (user != null)
             {
-                return _dbContext.Roles.FirstOrDefault(r => r.roleID == user.roleID);
+                return GetRole(user.roleID);
             }
 
             return null;
@@ -43,6 +67,11 @@ namespace TicketBrite.Data.Repositories
         public User GetUserByEmail(string email)
         {
             return _dbContext.Users.FirstOrDefault(u => u.userEmail == email);
+        }
+        
+        public Role GetRole(Guid roleID)
+        {
+            return _dbContext.Roles.FirstOrDefault(r => r.roleID == roleID);
         }
     }
 }
