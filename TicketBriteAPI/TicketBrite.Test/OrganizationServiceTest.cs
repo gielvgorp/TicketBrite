@@ -50,7 +50,6 @@ namespace TicketBrite.Test
 
         private void SeedDatabase()
         {
-            // Static events
             if (!_context.Events.Any())
             {
                 _context.Events.AddRange(
