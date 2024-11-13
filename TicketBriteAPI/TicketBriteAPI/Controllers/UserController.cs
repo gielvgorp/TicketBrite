@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TicketBrite.Core.Entities;
+using TicketBrite.Core.Services;
+using TicketBrite.Data.ApplicationDbContext;
+using TicketBrite.Data.Repositories;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -9,6 +13,15 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private UserService _userService;
+        private JwtTokenService _jwtTokenService;
+
+        public UserController(ApplicationDbContext context, IConfiguration iConig) 
+        {
+            _userService = new UserService(new UserRepository(context));
+            _jwtTokenService = new JwtTokenService(iConig, _userService);
+        }
+
         [HttpGet("get-user")]
         [Authorize] // Beveilig het eindpunt met JWT-authenticatie
         public IActionResult GetUserData()
@@ -30,6 +43,25 @@ namespace TicketBriteAPI.Controllers
             };
 
             return Ok(userModel); // Retourneer de gebruikersgegevens
+        }
+
+        [HttpPost("/guest/create")]
+        public JsonResult CreateGuest(Guest model)
+        {
+            try
+            {
+                model.guestID = Guid.NewGuid();
+                model.verificationCode = Guid.NewGuid();
+
+                _userService.AddGuest(model);
+
+                var token = _jwtTokenService.GenerateJwtToken(model); // Token genereren
+                return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
         }
     }
 }

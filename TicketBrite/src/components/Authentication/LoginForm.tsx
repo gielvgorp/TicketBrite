@@ -31,16 +31,17 @@ function LoginForm(){
                 },
                 body: JSON.stringify(formData) // Zet de formData om naar JSON
             });
-
+            
             const data = await res.json(); // Ontvang de JSON-response
-
+            console.log(data);
             // validation error
-            if(res.status === 400){
-                setErrorMsg("Email adres en wachtwoord komen niet overeen!");
+            if(data.statusCode === 400){
+                console.log(data);
+                setErrorMsg(data.value);
             }
 
             // successful registered
-            if(res.status === 200){
+            if(data.statusCode === 200){
                 login(data.token);
                 console.log("Token:", localStorage.getItem('jwtToken'));
                 navigate("/", {replace: true});

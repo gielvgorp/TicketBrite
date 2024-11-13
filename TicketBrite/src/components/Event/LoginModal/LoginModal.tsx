@@ -5,49 +5,33 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {
     showModal: boolean;
+    setShowModal: (value: boolean) => void;
 }
 
-function TicketPurchaseComponent(props: Props){
-    const [showModal, setShowModal] = useState(false);
-    const isLoggedIn = false; // Replace with your authentication logic
-    const navigate = useNavigate();
+function TicketPurchaseComponent({setShowModal}: Props){
+    const [showNotLoggedInModal, setShowNotLoggedInModal] = useState(true);
 
-    useEffect(() => {
-        setShowModal(props.showModal);
-    }, [props.showModal]);
-
-    const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
     const handleLogin = () => {
-        // Redirect to login or open login form
-        navigate("/authenticatie");
-        handleCloseModal();
+      // Hier implementeer je de logica voor inloggen, bijvoorbeeld een redirect naar een loginpagina
+      console.log("Doorverwijzen naar login...");
+      setShowNotLoggedInModal(false); // Sluit de modal na doorverwijzing
     };
-    const handleContinueWithoutAccount = () => {
-        // Logic to continue without an account
-        console.log('Continuing without account...');
-        handleCloseModal();
+  
+    const handleGuestContinue = (email: string, fullName: string) => {
+      // Sla gastgegevens op of stel de sessie in
+      console.log("Gastgegevens:", email, fullName);
+      setShowNotLoggedInModal(false); // Sluit de modal na voortzetten als gast
+      // Mogelijke verdere logica om gast te herkennen in de app
     };
-
-    const handlePurchaseTicket = () => {
-        if (!isLoggedIn) {
-            handleShowModal();
-        } else {
-            // Proceed with ticket purchase logic
-            console.log('Proceeding with ticket purchase...');
-        }
-    };
-
+  
     return (
-        <div>
-            <Button onClick={handlePurchaseTicket}>Koop Ticket</Button>
-            <NotLoggedInModal
-                show={showModal}
-                handleClose={handleCloseModal}
-                handleLogin={handleLogin}
-                handleContinue={handleContinueWithoutAccount}
-            />
-        </div>
+      <div>        
+        <NotLoggedInModal
+          onHide={() => setShowModal(false)}
+          onGuestContinue={handleGuestContinue}
+          onLogin={handleLogin}
+        />
+      </div>
     );
 }
 

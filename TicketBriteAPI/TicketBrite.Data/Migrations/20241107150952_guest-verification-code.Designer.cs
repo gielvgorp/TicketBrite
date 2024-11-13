@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketBrite.Data.ApplicationDbContext;
 
@@ -11,9 +12,11 @@ using TicketBrite.Data.ApplicationDbContext;
 namespace TicketBrite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext.ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107150952_guest-verification-code")]
+    partial class guestverificationcode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,9 +147,6 @@ namespace TicketBrite.Data.Migrations
                 {
                     b.Property<DateTime>("reservedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("reservedID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ticketID")
                         .HasColumnType("uniqueidentifier");

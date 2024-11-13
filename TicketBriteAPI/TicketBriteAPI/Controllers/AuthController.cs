@@ -14,47 +14,79 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly JwtTokenService _jwtTokenService;
         private readonly UserService _userService;
+        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly AuthService _authService;
 
         public AuthController(IConfiguration iConfig, ApplicationDbContext context)
         {
             _userService = new UserService(new UserRepository(context));
             _jwtTokenService = new JwtTokenService(iConfig, _userService);
+            _applicationDbContext = context;
+            _authService = new AuthService(new AuthRepository(context));
         }
 
 
         [HttpPost("login")]
-        public IActionResult Login(LoginViewModel model)
+        public JsonResult Login(LoginViewModel model)
         {
-            bool verified = _userService.VerifyUser(model.UserEmail, model.Password);
+            try
+            {
+                User user = _authService.VerifyUser(model.UserEmail, model.Password);
 
-            if (!verified) return NotFound("Gebruiker niet gevonden");
+                var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
+                return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(NotFound(ex.Message));    
+            }
+        }
 
-            var token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail)); // Token genereren
-            return Ok(new { Token = token });
+        [HttpPost("/auth/guest/{guestID}/{verificationID}")]
+        public JsonResult GuestLogin(Guid guestID, Guid verificationID)
+        {
+            try
+            {
+                Guest guest = _authService.VerifyGuest(guestID, verificationID);
+
+                var token = _jwtTokenService.GenerateJwtToken(guest); // Token genereren
+                return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(NotFound(ex.Message));
+            }
         }
 
         [HttpPost("Register")]
-        public IActionResult RegisterUser(RegisterViewModel model)
+        public JsonResult RegisterUser(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Een of meerdere velden zijn leeg!");
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Een of meerdere velden zijn leeg!");
+                }
+
+                User user = new User
+                {
+                    userName = model.FullName,
+                    userEmail = model.Email,
+                    userPasswordHash = model.Password,
+                    roleID = Guid.Empty,
+                    organizationID = Guid.Empty
+                };
+
+                _userService.AddUser(user);
+
+                var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
+                return new JsonResult(Ok(new { Token = token }));
             }
-
-
-            User user = new User
+            catch (Exception ex)
             {
-                userName = model.FullName,
-                userEmail = model.Email,
-                userPasswordHash = _userService.HashPassword(model.Password),
-                roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
-                organizationID = Guid.Empty
-            };
-
-            _userService.AddUser(user);
-
-            var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
-            return Ok(new { Token = token });
+                return new JsonResult(BadRequest(ex.Message));
+            }
+          
         }
     }
 }
