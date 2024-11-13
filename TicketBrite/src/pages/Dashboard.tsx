@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
-import { Event } from '../Types';
+import { Event, Ticket } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TiketStatistics';
 import { getEventDetails, updateEventDetails } from '../hooks/useEvent';
@@ -10,17 +10,20 @@ import '../Dashboard.css';
 const DashboardPage: React.FC = () => {
     const { eventId } = useParams<{ eventId: string | undefined }>();
     const [eventDetails, setEventDetails] = useState<Event | null>(null);
+    const [eventTickets, setEventTickets] = useState<Ticket[] | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData()
-    });
+    }, []);
 
     const fetchData = () => {
-        fetch(`https://localhost:7150/get-events/${eventId}`)
+        fetch(`https://localhost:7150/get-event/${eventId}`)
         .then(response => response.json())
         .then(data => {
-            setEventDetails(data.value);
+            console.log(data.value);
+            setEventDetails(data.value.event);
+            setEventTickets(data.value.tickets)
             setLoading(false);
         })
         .catch(error => {
@@ -50,7 +53,7 @@ const DashboardPage: React.FC = () => {
                     <EventDetailsForm eventDetails={eventDetails!} onSave={handleUpdateEvent} />
                 </div>
                 <div className="col-md-6">
-                    {eventId ? <TicketManagement initialTickets={eventDetails?.tickets || []} eventId={eventId} onSaveTickets={() => null} />: <div>Error: Event ID is missing.</div>}
+                    {eventId ? <TicketManagement initialTickets={eventTickets || []} eventId={eventId} onSaveTickets={() => null} />: <div>Error: Event ID is missing.</div>}
                 </div>
             </div>
             <div className="mt-4">

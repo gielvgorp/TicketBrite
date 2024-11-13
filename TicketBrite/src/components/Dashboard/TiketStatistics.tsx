@@ -10,8 +10,7 @@ interface TicketStatisticsProps {
 const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
     const [stats, setStats] = useState<Ticket[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    setError("");
+    const [error] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchStats = async () => {

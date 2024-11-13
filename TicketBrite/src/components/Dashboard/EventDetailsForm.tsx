@@ -6,7 +6,8 @@ interface EventDetailsFormProps {
     onSave: (updatedDetails: Event) => void;
 }
 
-const EventDetailsForm: React.FC<EventDetailsFormProps> = ({ eventDetails, onSave }) => {
+function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
+    console.log("Event details", eventDetails);
     const [formValues, setFormValues] = useState(eventDetails);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -48,6 +49,5 @@ const EventDetailsForm: React.FC<EventDetailsFormProps> = ({ eventDetails, onSav
             <button onClick={handleSave} className="btn btn-primary mt-2">Opslaan</button>
         </div>
     );
-};
-
+}
 export default EventDetailsForm;
