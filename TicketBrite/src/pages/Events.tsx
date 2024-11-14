@@ -55,7 +55,7 @@ function Events() {
                     <option value="">Alle evenementen</option>
                     <option value="muziek">Muziek</option>
                     <option value="sport">Sport</option>
-                    <option value="fesitval">Festival</option>
+                    <option value="festival">Festival</option>
                 </select>
             </div>
             <div className={`${styles.eventList} p-5`}>

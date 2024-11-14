@@ -37,9 +37,7 @@ namespace TicketBriteAPI.Controllers
             // Hier kun je andere gebruikersgegevens ophalen, bijvoorbeeld uit een database
             var userModel = new 
             {
-                Username = username,
-                // Vul hier andere gegevens in
-                Email = "user@example.com" // Dit moet normaal uit je database komen
+                Username = username
             };
 
             return Ok(userModel); // Retourneer de gebruikersgegevens
