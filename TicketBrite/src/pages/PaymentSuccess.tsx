@@ -1,27 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useAuth } from '../AuthContext';
-
-interface Ticket {
-    name: string;
-    quantity: number;
-    price: number; // prijs per ticket
-}
+import { useParams } from 'react-router-dom';
+import { Ticket } from '../Types';
 
 interface PaymentSuccessProps {
     tickets: Ticket[];
     purchaseId: string;
 }
 
-const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
+function PaymentSuccess(){
     const {isAuthenticated} = useAuth();
-    const [purchaseId] = useState('00000000-0000-0000-0000-000000000000');
-    const [tickets] = useState<Ticket[]>([
-        { name: 'Concert A', quantity: 2, price: 50 },
-        { name: 'Concert B', quantity: 1, price: 75 },
-    ]);
+    const { id } = useParams();
+    const [tickets, setTickets] = useState<Ticket[]>([]);
     // Bereken de totale prijs
-    const totalCost = tickets.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0);
+    const totalCost = tickets.reduce((total, ticket) => total + parseInt(ticket.ticketPrice) * 1, 0);
+
+    useEffect(() => {
+        handleFetchTickets();
+    }, []);
+
+    const handleFetchTickets = async ()=> {
+        try {
+            const token = localStorage.getItem("jwtToken");
+
+            const response = await fetch(`https://localhost:7150/get-purchase/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }
+
+            const data = await response.json();
+            console.log(data);
+            setTickets(data.value);
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        } finally {
+            //setLoading(false);
+        }
+    }
 
     return (
         <div className="container mt-5">
@@ -36,7 +59,7 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
                         isAuthenticated ? <p>U kunt uw bestelling terug vinden in de bestelling overzicht bij uw profiel</p> : <p>U krijgt binnen 1-2 minuten een e-mail met uw tickets!</p>
                     }
                     
-                    <h5>Aankoopnummer: <strong>{purchaseId}</strong></h5>
+                    <h5>Aankoopnummer: <strong>{id}</strong></h5>
 
                     <Card className="mt-3">
                         <Card.Header>Gekozen Tickets</Card.Header>
@@ -44,8 +67,8 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
                             <ul className="list-group">
                                 {tickets.map((ticket, index) => (
                                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>{ticket.name} (x{ticket.quantity})</span>
-                                        <span>€{(ticket.price * ticket.quantity).toFixed(2)}</span>
+                                        <span>{ticket.ticketName} (x{1})</span>
+                                        <span>€{(parseInt(ticket.ticketPrice) * 1).toFixed(2)}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -60,6 +83,6 @@ const PaymentSuccess: React.FC<PaymentSuccessProps> = () => {
             </Card>
         </div>
     );
-};
+}
 
 export default PaymentSuccess;

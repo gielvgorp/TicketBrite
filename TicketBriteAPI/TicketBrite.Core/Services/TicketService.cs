@@ -60,5 +60,33 @@ namespace TicketBrite.Core.Services
         {
             _ticketRepository.SetReserveTicket(ticketID, userID, reservationID);
         }
+
+        public void SetPurscheTicket(Guid ticketID, Guid userID, Guid purchaseID)
+        {
+            if (CalculateRemainingTickets(ticketID) <= 0) throw new Exception("Ticket niet meer op voorraad!");
+
+            _ticketRepository.SetPurscheTicket(ticketID, userID, purchaseID);
+        }
+
+        public void RemoveReservedTicket(Guid reservedID)
+        {
+            _ticketRepository.RemoveReserveTicket(reservedID);
+        }
+
+        public void UpdateReservedTicketsToPursche(Guid userID, Guid purchaseID)
+        {
+            List<ReservedTicket> reservedTickets = GetReservedTicketsOfUser(userID);
+
+            foreach (ReservedTicket reserveTicket in reservedTickets)
+            {
+                SetPurscheTicket(reserveTicket.ticketID, userID, purchaseID);
+                RemoveReservedTicket(reserveTicket.reservedID);
+            }
+        }
+
+        public List<EventTicket> GetPurchaseByID(Guid purchaseID)
+        {
+            return _ticketRepository.GetPurchaseByID(purchaseID);
+        }
     }
 }

@@ -2,18 +2,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { useEffect } from "react";
 
-function GuestAuthentication(){
+type Props = {
+    setShowNav: (value: boolean) => void;
+}
+
+function GuestAuthentication({setShowNav}: Props){
     const {login} = useAuth();
     const { guestID } = useParams();
     const { verificationCode } = useParams();
     const navigate = useNavigate();
 
-    console.log(guestID);
-    console.log(verificationCode);
-
     if(guestID === null || verificationCode === null) return <h1 className="text-danger p-5">De verificatie link is ongeldig!</h1>
 
     useEffect(() => {
+        setShowNav(false);
         verifyGuest();
     }, []);
 
@@ -33,18 +35,20 @@ function GuestAuthentication(){
 
             const data = await res.json(); // Ontvang de JSON-response
 
-            console.log(data);
-
-            // validation error
-            if(res.status === 404){
-                return <h1 className="text-danger p-5">De verificatie link is ongeldig! {data.value}</h1>
+            console.log("Guest auth reponse: ",data);  
+            
+            if(data.statusCode !== 200){
+                console.log("error while loggin in as guest:", data);
             }
 
             // successful registered
-            if(res.status === 200){
+            if(data.statusCode === 200){
+                console.log("Guest is correct!")
                 login(data.value.token);
-                navigate("/");
+                navigate("/", { replace: true});
+                setShowNav(true);
             }           
+
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         }

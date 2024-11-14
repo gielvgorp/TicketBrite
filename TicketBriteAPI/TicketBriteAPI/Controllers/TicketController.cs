@@ -117,5 +117,42 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(result));
         }
 
+        [HttpPost("/tickets/buy")]
+        [Authorize]
+        public JsonResult BuyTickets()
+        {
+            try
+            {
+                Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                Guid purchaseID = Guid.NewGuid();
+
+                if (userID == null || userID == Guid.Empty) return new JsonResult(Unauthorized("Gebruiker niet ingelogd!"));
+
+                ticketService.UpdateReservedTicketsToPursche(userID, purchaseID);
+
+                return new JsonResult(Ok(purchaseID));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
+        }
+
+        [HttpGet("/get-purchase/{id}")]
+        [Authorize]
+        public JsonResult GetPurchaseByID(Guid id)
+        {
+            try
+            {
+                List<EventTicket> result = ticketService.GetPurchaseByID(id);
+
+                return new JsonResult(Ok(result));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
+            
+        }
     }
 }

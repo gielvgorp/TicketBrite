@@ -10,7 +10,7 @@ interface NotLoggedInModalProps {
 }
 
 const NotLoggedInModal: React.FC<NotLoggedInModalProps> = ({ onHide, onGuestContinue, onLogin }) => {
-    const {login} = useAuth();
+  const {login} = useAuth();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const NotLoggedInModal: React.FC<NotLoggedInModalProps> = ({ onHide, onGuestCont
 
         // successful registered
         if(data.statusCode === 200){
-            console.log(data);
+            console.log("Response at guest creation: ", data);
             login(data.value.token);
             navigate("/", {replace: true});
         }           

@@ -28,11 +28,11 @@ function App() {
         <Route path="/Shopping-cart" element={<ShoppingCart />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Organisatie/Dashboard/:eventId" element={<DashboardPage />} />
-        <Route path="/Payment-success" element={<PaymentSuccess tickets={[]} purchaseId=''  />} />
+        <Route path="/Payment-success/:id" element={<PaymentSuccess />} />
       </Route>
       <Route path="/Authenticatie" element={<Authentication setShowNav={(value) => setShowNav(value)} />} />
       <Route path="/Authenticatie/:id" element={<Authentication setShowNav={(value) => setShowNav(value)} />} />
-      <Route path="/Auth/Guest/:guestID/:verificationCode" element={<GuestAuthentication />} />
+      <Route path="/Auth/Guest/:guestID/:verificationCode" element={<GuestAuthentication setShowNav={(value) => setShowNav(value)} />} />
     </Routes>
     </AuthProvider>
   )

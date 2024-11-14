@@ -16,8 +16,11 @@ namespace TicketBrite.Core.Interfaces
         public EventTicket GetTicketByID(Guid ticketID);
         public List<SoldTicket> GetSoldTickets(Guid ticketID);
         public List<ReservedTicket> GetReservedTicketsOfUser(Guid userID);
-
         public List<ReservedTicket> GetReservedTicketsByTicket(Guid ticketID);
         public void SetReserveTicket(Guid ticketid, Guid userID, Guid reservationID);
+        public void SetPurscheTicket(Guid ticketID, Guid userID, Guid purchaseID);
+        public void RemoveReserveTicket(Guid reserveID);
+        public void CreatePursche(Guid purchaseID, Guid userID);
+        public List<EventTicket> GetPurchaseByID(Guid purchaseID);
     }
 }

@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import useUser from './hooks/useUser';
 
 // AuthContext.tsx
 interface AuthContextType {
@@ -19,7 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.setItem('jwtToken', token);
         setIsAuthenticated(true);
         const decodedToken: any = jwtDecode(token); // Decode de token
-        console.log(decodedToken.role);
+        console.log("User role:", decodedToken.role);
         setRole(decodedToken.role); // Rol instellen
     };
 

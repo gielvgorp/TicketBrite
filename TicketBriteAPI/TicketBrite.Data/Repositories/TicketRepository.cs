@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,53 @@ namespace TicketBrite.Data.Repositories
             existingTicket.ticketMaxAvailable = ticket.ticketMaxAvailable;
 
             _dbContext.SaveChanges();
+        }
+
+        public void CreatePursche(Guid purchaseID, Guid userID)
+        {
+            _dbContext.UserPurchases.Add(new UserPurchase
+            {
+                userID = userID,
+                purchaseID = purchaseID
+            });
+
+            _dbContext.SaveChanges();
+        }
+
+        public void SetPurscheTicket(Guid ticketID, Guid userID, Guid purchaseID)
+        {
+            _dbContext.SoldTickets.Add(new SoldTicket
+            {
+                purchaseID = purchaseID,
+                ticketID = ticketID
+            });
+
+            _dbContext.SaveChanges();
+        }
+
+        public void RemoveReserveTicket(Guid reserveID)
+        {
+            var tickets = _dbContext.ReservedTickets.Where(ticket => ticket.reservedID == reserveID).ToList();
+
+            if (tickets.Any())
+            {
+                // Verwijder alle gevonden tickets
+                _dbContext.ReservedTickets.RemoveRange(tickets);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public List<EventTicket> GetPurchaseByID(Guid purchaseID)
+        {
+            List<EventTicket> result = new List<EventTicket>();
+            List<SoldTicket> soldTickets = _dbContext.SoldTickets.Where(t => t.purchaseID == purchaseID).ToList();
+
+            foreach (SoldTicket ticket in soldTickets)
+            {
+                result.Add(GetTicketByID(ticket.ticketID));
+            }
+
+            return result;
         }
     }
 }

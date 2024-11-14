@@ -24,14 +24,14 @@ namespace TicketBriteAPI.Controllers
 
         [HttpGet("get-user")]
         [Authorize] // Beveilig het eindpunt met JWT-authenticatie
-        public IActionResult GetUserData()
+        public JsonResult GetUserData()
         {
             // Haal de gebruikersnaam van de claims
             var username = User.FindFirst("name")?.Value;
 
             if (string.IsNullOrEmpty(username))
             {
-                return NotFound("Gebruiker niet gevonden.");
+                return new JsonResult(NotFound("Gebruiker niet gevonden."));
             }
 
             // Hier kun je andere gebruikersgegevens ophalen, bijvoorbeeld uit een database
@@ -40,7 +40,7 @@ namespace TicketBriteAPI.Controllers
                 Username = username
             };
 
-            return Ok(userModel); // Retourneer de gebruikersgegevens
+            return new JsonResult(Ok(userModel)); // Retourneer de gebruikersgegevens
         }
 
         [HttpPost("/guest/create")]

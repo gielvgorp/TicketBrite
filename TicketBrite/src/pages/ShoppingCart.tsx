@@ -21,7 +21,7 @@ const banks = [
 ];
 
 function ShoppingCart(){
-    const navigte = useNavigate();
+    const navigate = useNavigate();
     const [tickets, setTickets] = React.useState<ReservedTicket[]>([]);
     const [paymentMethod, setPaymentMethod] = React.useState<string>("iDeal");
     const [selectedBank, setSelectedBank] = React.useState<string | null>(null);
@@ -71,6 +71,32 @@ function ShoppingCart(){
         setTickets(prevTickets => prevTickets.filter(ticket => ticket.ticket.ticketID !== id));
     };
 
+    const handlePurscheTickets = async () => {
+        try {
+            const token = localStorage.getItem("jwtToken");
+
+            const response = await fetch('https://localhost:7150/tickets/buy', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }
+
+            const data = await response.json();
+            console.log(data);
+            navigate(`/Payment-success/${data.value}`, {replace: true});
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        } finally {
+            //setLoading(false);
+        }
+    }
+
     return (
         <div className="container mt-5">
             <Card className="p-4 shadow-lg shopping-cart-card mx-auto" style={{ maxWidth: '850px' }}>
@@ -81,7 +107,7 @@ function ShoppingCart(){
 
                     <ListGroup variant="flush" className="mb-4">
                         {tickets.map(ticket => (
-                            <ListGroup.Item key={ticket.ticket.ticketID} className="d-flex justify-content-between align-items-center">
+                            <ListGroup.Item key={ticket.reservation.reservationID} className="d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center col-9">
                                     <Image src="https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg" alt="Ticket Icon" rounded className="ticket-icon me-2" />
                                     <span className="ticket-name">{ticket.ticket.ticketName} - <strong>Set event name here</strong></span>
@@ -153,7 +179,7 @@ function ShoppingCart(){
                             </Dropdown>
                         )}
 
-                    <Button onClick={() => navigte('/payment-success')} variant="success" className="w-100 payment-button mt-3">
+                    <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
                         <i className="fas fa-credit-card me-2"></i>
                         Doorgaan naar Betaling
                     </Button>

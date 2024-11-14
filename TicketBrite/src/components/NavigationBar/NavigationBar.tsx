@@ -7,7 +7,8 @@ function NavigationBar(){
     const { user, loading } = useUser();
     const { isAuthenticated } = useAuth();
 
-    //console.log(user);
+    console.log(user);
+    console.log("Is auth:", isAuthenticated);
 
     if (loading) return <p>Loading...</p>;
 

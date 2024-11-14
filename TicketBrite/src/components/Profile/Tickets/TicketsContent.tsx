@@ -19,15 +19,15 @@ const TicketContent: React.FC = () => {
         purchaseId: '12345',
         purchaseDate: '2024-11-01',
         tickets: [
-          { ticketID: "T1", eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Concert Ticket', ticketPrice: "50", eventDateTime: '2024-12-01 19:00' },
-          { ticketID: 'T2', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'VIP Pass', ticketPrice: "100", eventDateTime: '2024-12-01 19:00' },
+          { ticketID: "T1", eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Concert Ticket', ticketPrice: "50"},
+          { ticketID: 'T2', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'VIP Pass', ticketPrice: "100"},
         ],
       },
       {
         purchaseId: '67890',
         purchaseDate: '2024-10-15',
         tickets: [
-          { ticketID: 'T3', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Festival Ticket', ticketPrice: "80", eventDateTime: '2024-11-15 15:00' },
+          { ticketID: 'T3', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Festival Ticket', ticketPrice: "80" },
         ],
       },
     ]);
