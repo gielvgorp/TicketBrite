@@ -1,85 +1,76 @@
 import React, { useState } from 'react';
 import { Ticket } from '../../Types';
+import TicketManagementItem from './TicketManagementComponent';
 
 
 interface TicketManagementProps {
     initialTickets: Ticket[];
     eventId: string;
-    onSaveTickets: (tickets: Ticket[]) => void;
 }
 
-const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eventId, onSaveTickets }) => {
+const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eventId }) => {
     const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
+
+    function handleSave(ticket: Ticket, index: number){
+        console.log("Ticket", ticket);
+        const updatedTickets = [...tickets];
+        updatedTickets[index] = ticket;
+        setTickets(updatedTickets);
+    }
+
+    const storeTickets = async () => {
+        try {
+            // Verzend het formulier naar het endpoint
+            const res = await fetch('https://localhost:7150/dashboard/tickets/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    tickets
+                ) // Zet de formData om naar JSON
+            });
+            
+            const data = await res.json(); // Ontvang de JSON-response
+            console.log(data);
+            // validation error
+            if(data.statusCode === 400){
+                console.log(data);
+                //setErrorMsg(data.value);
+            }
+
+            // successful registered
+            // if(data.statusCode === 200){
+            //     login(data.value.token);
+            //     console.log("Token:", localStorage.getItem('jwtToken'));
+            //     navigate("/", {replace: true});
+            // }           
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        }
+    }
 
     const handleAddTicket = () => {
         const newTicket: Ticket = {
             eventID: eventId,
-            ticketID: `${Date.now()}`, // Tijdelijk ID
+            ticketID: '00000000-0000-0000-0000-000000000000', // Tijdelijk ID
             ticketName: '',
             ticketPrice: '',
             ticketMaxAvailable: 0,
             ticketStatus: true,
-            ticketsRemaining: 0,
-            eventDateTime: ''
+            ticketsRemaining: 0
         };
         setTickets([...tickets, newTicket]);
-    };
-
-    const handleInputChange = (index: number, field: keyof Ticket, value: string | number | boolean) => {
-        const updatedTickets = [...tickets];
-        updatedTickets[index] = { ...updatedTickets[index], [field]: value };
-        setTickets(updatedTickets);
-    };
-
-    const handleSave = () => {
-        onSaveTickets(tickets);
     };
 
     return (
         <div className="card p-4 mb-3">
             <h5>Ticketbeheer</h5>
             {tickets.map((ticket, index) => (
-                <div key={ticket.ticketID} className="mb-3">
-                    <div className="form-group mb-2">
-                        <label>Ticket Naam</label>
-                        <input
-                            type="text"
-                            value={ticket.ticketName}
-                            onChange={(e) => handleInputChange(index, 'ticketName', e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group mb-2">
-                        <label>Ticket Prijs</label>
-                        <input
-                            type="text"
-                            value={ticket.ticketPrice}
-                            onChange={(e) => handleInputChange(index, 'ticketPrice', e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group mb-2">
-                        <label>Maximaal Beschikbaar</label>
-                        <input
-                            type="number"
-                            value={ticket.ticketMaxAvailable}
-                            onChange={(e) => handleInputChange(index, 'ticketMaxAvailable', parseInt(e.target.value))}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group form-check mb-2">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            checked={ticket.ticketStatus}
-                            onChange={(e) => handleInputChange(index, 'ticketStatus', e.target.checked)}
-                        />
-                        <label className="form-check-label">Ticket Actief</label>
-                    </div>
-                </div>
+                 <TicketManagementItem key={index} index={index} _ticket={ticket} saveTicket={handleSave} />
             ))}
             <button onClick={handleAddTicket} className="btn btn-secondary mt-2">Ticket Toevoegen</button>
-            <button onClick={handleSave} className="btn btn-primary mt-2 ml-2">Opslaan</button>
+            <button onClick={storeTickets} className="btn btn-primary mt-2 ml-2">Opslaan</button>
         </div>
     );
 };

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.Data.Migrations;
 
 namespace TicketBrite.Data.Repositories
 {
@@ -59,6 +60,22 @@ namespace TicketBrite.Data.Repositories
                 userID = userID,
                 reservedAt = DateTime.Now
             });
+
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateTicket(EventTicket ticket)
+        {
+
+            EventTicket existingTicket = _dbContext.Tickets.Find(ticket.ticketID);
+
+            if (existingTicket == null)
+                throw new Exception("Ticket not found!");
+
+            existingTicket.ticketName = ticket.ticketName;
+            existingTicket.ticketPrice = ticket.ticketPrice;
+            existingTicket.ticketStatus = ticket.ticketStatus;
+            existingTicket.ticketMaxAvailable = ticket.ticketMaxAvailable;
 
             _dbContext.SaveChanges();
         }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getTicketOfEvent } from '../../hooks/useTIcket';
-import { Ticket } from '../../Types';
+import { TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 
 interface TicketStatisticsProps {
@@ -8,15 +8,41 @@ interface TicketStatisticsProps {
 }
 
 const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
-    const [stats, setStats] = useState<Ticket[]>([]);
+    const [stats, setStats] = useState<TicketStatistic[]>([]);
     const [loading, setLoading] = useState(true);
     const [error] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchStats = async () => {
-            const data = await getTicketOfEvent(eventId);
-            setStats(data.value);
-            setLoading(false);
+            // const data = await getTicketOfEvent(eventId);
+            // setStats(data.value);
+            // setLoading(false);
+
+            try {
+                // Verzend het formulier naar het endpoint
+                const res = await fetch(`https://localhost:7150/dashboard/tickets-statistics/${eventId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await res.json(); // Ontvang de JSON-response
+                console.log(data);
+                // validation error
+                if(data.statusCode === 400){
+                    console.log(data);
+                    //setErrorMsg(data.value);
+                }
+    
+                // successful registered
+                if(data.statusCode === 200){
+                    setLoading(false);
+                    setStats(data.value);
+                }           
+            } catch (error) {
+                console.error('Er is een fout opgetreden:', error);
+            }
         };
         fetchStats();
     }, [eventId]);
@@ -30,13 +56,13 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
                 {stats.length > 0 ? (
                     <ListGroup variant="flush">
                         {stats.map((ticket) => (
-                            <ListGroup.Item key={ticket.ticketID} className="d-flex justify-content-between">
+                            <ListGroup.Item key={ticket.ticket.ticketID} className="d-flex justify-content-between">
                                 <div className='col-8'>
-                                    <strong>{ticket.ticketName}</strong>
+                                    <strong>{ticket.ticket.ticketName}</strong>
                                 </div>
                                 <div className='d-flex col-4'>
-                                    <div className="col-6 text-end"> <span className="text-success">Verkocht: {ticket.ticketsRemaining}</span></div>
-                                    <div className="col-6 text-end"> <span className="mx-3 text-warning">Gereserveerd: {ticket.ticketsRemaining}</span></div>
+                                    <div className="col-6 text-end"> <span className="text-success">Verkocht: {ticket.ticketSold}/{ticket.ticket.ticketMaxAvailable}</span></div>
+                                    <div className="col-6 text-end"> <span className="mx-3 text-warning">Gereserveerd: {ticket.ticketReserve}</span></div>
                                    
                                    
                                 </div>

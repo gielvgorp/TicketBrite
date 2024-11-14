@@ -19,5 +19,10 @@ export interface Ticket{
     ticketMaxAvailable: number;
     ticketsRemaining: number;
     ticketStatus: boolean;
-    eventDateTime: string;
+}
+
+export interface TicketStatistic{
+    ticket: Ticket;
+    ticketReserve: number;
+    ticketSold: number;
 }
