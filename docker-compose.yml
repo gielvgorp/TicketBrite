@@ -30,12 +30,17 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrong!Passw0rd
-       volumes:
-      - ./init-db:/docker-entrypoint-initdb.d
+    volumes:
+      - ./init-db:/init-db
     ports:
       - "1433:1433"
     networks:
       - app-network
+    command: >
+      /bin/bash -c "
+      /opt/mssql/bin/sqlservr & 
+      sleep 30s && 
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d master -i /init-db/script.sql"
 
 networks:
   app-network:
