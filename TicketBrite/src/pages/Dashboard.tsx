@@ -53,7 +53,7 @@ const DashboardPage: React.FC = () => {
                     <EventDetailsForm eventDetails={eventDetails!} onSave={handleUpdateEvent} />
                 </div>
                 <div className="col-md-6">
-                    {eventId ? <TicketManagement initialTickets={eventTickets || []} eventId={eventId} onSaveTickets={() => null} />: <div>Error: Event ID is missing.</div>}
+                    {eventId ? <TicketManagement initialTickets={eventTickets || []} eventId={eventId} />: <div>Error: Event ID is missing.</div>}
                 </div>
             </div>
             <div className="mt-4">

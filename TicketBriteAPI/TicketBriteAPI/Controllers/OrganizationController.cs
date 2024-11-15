@@ -15,12 +15,14 @@ namespace TicketBriteAPI.Controllers
         private readonly EventService eventService;
         private readonly TicketService ticketService;
         private readonly OrganizationService organizationService;
+        private readonly AdminService adminService;
 
         public OrganizationController(ApplicationDbContext context) 
         {
             eventService = new EventService(new EventRepository(context));
             ticketService = new TicketService(new TicketRepository(context));
             organizationService = new OrganizationService(new OrganizationRepository(context));
+            adminService = new AdminService(new AdminRepository(context));
         }
 
         [HttpGet("get-events/{organizationID}")]
