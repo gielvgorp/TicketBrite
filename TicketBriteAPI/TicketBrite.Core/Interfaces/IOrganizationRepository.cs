@@ -9,7 +9,9 @@ namespace TicketBrite.Core.Interfaces
 {
     public interface IOrganizationRepository
     {
-        public List<Event> GetEventsByOrganization(Guid organizationID);
+        public List<Event> GetAllEventsByOrganization(Guid organizationID);
+        public List<Event> GetUnVerifiedEventsByOrganization(Guid organizationID);
+        public List<Event> GetVerifiedEventsByOrganization(Guid organizationID);
         public Organization GetOrganizationByID(Guid organizationID);
         public void UpdateOrganization(Organization organization);
     }

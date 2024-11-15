@@ -18,9 +18,19 @@ namespace TicketBrite.Data.Repositories
             _dbContext = context;
         }
 
-        public List<Event> GetEventsByOrganization(Guid organizationID)
+        public List<Event> GetAllEventsByOrganization(Guid organizationID)
         {
             return _dbContext.Events.Where(e => e.organizationID == organizationID).ToList();
+        }
+
+        public List<Event> GetVerifiedEventsByOrganization(Guid organizationID)
+        {
+            return _dbContext.Events.Where(e => e.organizationID == organizationID && e.isVerified).ToList();
+        }
+
+        public List<Event> GetUnVerifiedEventsByOrganization(Guid organizationID)
+        {
+            return _dbContext.Events.Where(e => e.organizationID == organizationID && !e.isVerified).ToList();
         }
 
         public void UpdateOrganization(Organization organization)

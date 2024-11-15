@@ -17,9 +17,19 @@ namespace TicketBrite.Core.Services
             organizationRepository = c_organizationRepository;
         }
 
-        public List<Event> GetEventsByOrganization(Guid organizationID)
+        public List<Event> GetAllEventsByOrganization(Guid organizationID)
         {
-            return organizationRepository.GetEventsByOrganization(organizationID);
+            return organizationRepository.GetAllEventsByOrganization(organizationID);
+        }
+
+        public List<Event> GetVerifiedEventsByOrganization(Guid organizationID)
+        {
+            return organizationRepository.GetVerifiedEventsByOrganization(organizationID);
+        }
+
+        public List<Event> GetUnVerifiedEventsByOrganization(Guid organizationID)
+        {
+            return organizationRepository.GetUnVerifiedEventsByOrganization(organizationID);
         }
 
         public void UpdateOrganization(Organization organization)

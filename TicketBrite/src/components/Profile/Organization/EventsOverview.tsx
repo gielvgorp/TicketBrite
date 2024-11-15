@@ -9,9 +9,18 @@ interface NewEventRequest {
     tickets: Ticket[];
 }
 
+interface Events {
+    verifiedEvents: Event[];
+    unverifiedEvents: Event[];
+}
+
 const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }) => {
     const navigate = useNavigate();
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<Events>({
+        verifiedEvents: [],
+        unverifiedEvents: []
+    });
+
     const [showModal, setShowModal] = useState<boolean>(false);
     const [eventDetails, setEventDetails] = useState<Event>({
         eventID: '00000000-0000-0000-0000-000000000000',
@@ -32,7 +41,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
 
     const fetchEvents = async () => {
         try {
-            fetch(`https://localhost:7150/api/Organization/get-events/${organizationID}`)
+            fetch(`https://localhost:7150/organization/get-events/overview/${organizationID}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data.value);
@@ -57,24 +66,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
             [e.target.name]: e.target.value,
         });
     };
-
-    // Functie om een nieuw ticket toe te voegen
-    // const addTicket = () => {
-    //     setEventDetails((prevDetails) => ({
-    //         ...prevDetails,
-    //         tickets: [...prevDetails.tickets, { ticketName: '', ticketPrice: '', ticketMaxAvailable: 0, ticketID: '', eventID: '', eventDateTime: '', ticketsRemaining: 0, ticketStatus: true }],
-    //     }));
-    // };
-
-    // Functie om ticketgegevens te wijzigen
-    // const handleTicketChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const updatedTickets = [...eventDetails.tickets];
-    //     const fieldName = e.target.name as keyof Ticket;
     
-    //     //updatedTickets[index][fieldName] = e.target.value as any;
-    //     setEventDetails((prevDetails) => ({ ...prevDetails, tickets: updatedTickets }));
-    // };
-
     // Functie om evenement en tickets toe te voegen aan de API
     const handleAddEvent = async () => {
         const model: Event = {
@@ -222,21 +214,72 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                 </Modal.Footer>
             </Modal>
 
-            {/* Events List */}
-            <div className="list-group" style={{ marginTop: '20px' }}>
-                {events.map((event, index) => (
-                    <div key={index} className="list-group-item d-flex justify-content-between align-items-center" style={{ padding: '20px', marginBottom: '15px' }}>
-                        <div>
-                            <h5>{event.eventName}</h5>
-                            <p>Datum: {event.eventDateTime}</p>
-                            <p>Locatie: {event.eventLocation}</p>
-                        </div>
-                        <Button onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)} className='align-self-end' variant="primary" style={{ padding: '10px 20px' }}>
-                            Open dashboard
-                        </Button>
-                    </div>
-                ))}
-            </div>
+            <div className="container mt-4">
+  {/* Geverifieerde evenementen */}
+  <h4 className="text-success mb-3">
+    <i className="fa-solid fa-check-circle me-2"></i> Geverifieerde Evenementen
+  </h4>
+  <div className="list-group">
+    {events.verifiedEvents.map((event, index) => (
+      <div
+        key={index}
+        className="list-group-item d-flex justify-content-between align-items-center border border-success shadow-sm"
+        style={{ padding: '20px', marginBottom: '15px' }}
+      >
+        <div>
+          <h5>{event.eventName}</h5>
+          <p>
+            <i className="fa-solid fa-calendar text-secondary me-2"></i>Datum: {event.eventDateTime}
+          </p>
+          <p>
+            <i className="fa-solid fa-location-dot text-secondary me-2"></i>Locatie: {event.eventLocation}
+          </p>
+        </div>
+        <Button
+          onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)}
+          className="align-self-end"
+          variant="outline-success"
+          style={{ padding: '10px 20px' }}
+        >
+          Open dashboard
+        </Button>
+      </div>
+    ))}
+  </div>
+
+  {/* Niet-geverifieerde evenementen */}
+  <h4 className="text-danger mt-5 mb-3">
+    <i className="fa-solid fa-times-circle me-2"></i> Niet-Geverifieerde Evenementen
+  </h4>
+  <div className="list-group">
+    {events.unverifiedEvents.map((event, index) => (
+      <div
+        key={index}
+        className="list-group-item d-flex justify-content-between align-items-center border border-danger shadow-sm bg-light"
+        style={{ padding: '20px', marginBottom: '15px' }}
+      >
+        <div>
+          <h5>{event.eventName}</h5>
+          <p>
+            <i className="fa-solid fa-calendar text-secondary me-2"></i>Datum: {event.eventDateTime}
+          </p>
+          <p>
+            <i className="fa-solid fa-location-dot text-secondary me-2"></i>Locatie: {event.eventLocation}
+          </p>
+        </div>
+        <Button
+          onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)}
+          className="align-self-end"
+          variant="outline-danger"
+          style={{ padding: '10px 20px' }}
+        >
+          Open dashboard
+        </Button>
+      </div>
+    ))}
+  </div>
+</div>
+
         </div>
     );
 };

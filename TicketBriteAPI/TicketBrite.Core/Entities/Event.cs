@@ -17,5 +17,6 @@ namespace TicketBrite.Core.Entities
         public int eventAge { get; set; }
         public string eventCategory { get; set; }
         public string eventImage { get; set; }
+        public bool isVerified { get; set; }
     }
 }

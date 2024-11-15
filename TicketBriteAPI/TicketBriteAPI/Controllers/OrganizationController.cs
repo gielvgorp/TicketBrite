@@ -26,8 +26,18 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("get-events/{organizationID}")]
         public JsonResult GetAllEventsOfOrganization(Guid organizationID)
         {
-            var events = organizationService.GetEventsByOrganization(organizationID);
+            List<Event> events = organizationService.GetAllEventsByOrganization(organizationID);
+
             return new JsonResult(Ok(events));
+        }
+
+        [HttpGet("/organization/get-events/overview/{organizationID}")]
+        public JsonResult GetEventsOfOrganizationOverview(Guid organizationID)
+        {
+            List<Event> verifiedEvents = organizationService.GetVerifiedEventsByOrganization(organizationID);
+            List<Event> UnverifiedEvents = organizationService.GetUnVerifiedEventsByOrganization(organizationID);
+
+            return new JsonResult(Ok(new { verifiedEvents, UnverifiedEvents }));
         }
 
         [HttpPost("event/new")]
