@@ -26,3 +26,9 @@ export interface TicketStatistic{
     ticketReserve: number;
     ticketSold: number;
 }
+
+export interface Purchase {
+    purchaseID: string;
+    userID: string;
+    guestID: string;
+}

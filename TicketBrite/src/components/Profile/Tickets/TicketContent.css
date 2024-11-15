@@ -1,0 +1,6 @@
+.blur-background {
+    filter: blur(4px);
+    /* Pas dit aan voor meer of minder vervaging */
+    transition: filter 0.3s ease;
+    /* Soepel overgangseffect */
+}

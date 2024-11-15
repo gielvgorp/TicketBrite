@@ -86,6 +86,7 @@ namespace TicketBrite.Data.Repositories
             _dbContext.UserPurchases.Add(new UserPurchase
             {
                 userID = userID,
+                guestID = Guid.Empty,
                 purchaseID = purchaseID
             });
 
@@ -123,6 +124,29 @@ namespace TicketBrite.Data.Repositories
             foreach (SoldTicket ticket in soldTickets)
             {
                 result.Add(GetTicketByID(ticket.ticketID));
+            }
+
+            return result;
+        }
+
+        public List<UserPurchase> GetUserPurchasesOfUser(Guid userID)
+        {
+            return _dbContext.UserPurchases.Where(u => u.userID == userID).ToList();
+        }
+
+        public List<UserPurchaseModel> GetPurchasesOfUser(Guid userID)
+        {
+            List<UserPurchaseModel> result = new List<UserPurchaseModel>();
+
+            List<UserPurchase> purchases = GetUserPurchasesOfUser(userID);
+
+            foreach (UserPurchase purchase in purchases)
+            {
+                result.Add(new UserPurchaseModel
+                {
+                    userPurchase = purchase,
+                    eventTickets = GetPurchaseByID(purchase.purchaseID)
+                });
             }
 
             return result;

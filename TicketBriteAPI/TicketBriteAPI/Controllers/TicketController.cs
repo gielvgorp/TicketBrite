@@ -152,7 +152,26 @@ namespace TicketBriteAPI.Controllers
             {
                 return new JsonResult(BadRequest(ex.Message));
             }
-            
+        }
+
+        [HttpGet("/user/get-purchase")]
+        [Authorize]
+        public JsonResult GetPurchaseOfUser()
+        {
+            try
+            {
+                Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                if (userID == null || userID == Guid.Empty) return new JsonResult(Unauthorized("Gebruiker niet ingelogd!"));
+
+                List<UserPurchaseModel> result = ticketService.GetPurchasesOfUser(userID);
+
+                return new JsonResult(Ok(result));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
         }
     }
 }

@@ -1,39 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, ListGroup, Modal, Badge } from 'react-bootstrap';
-import { Ticket } from '../../../Types';
+import { Ticket, Purchase } from '../../../Types';
+import './TicketContent.css';
 
-interface Purchase {
-  purchaseId: string;
-  purchaseDate: string;
-  tickets: Ticket[];
+interface PurchaseViewModel {
+  userPurchase: Purchase;
+  eventTickets: Ticket[];
 }
 
 const TicketContent: React.FC = () => {
-  const [purchases, setPurchases] = useState<Purchase[]>([]);
-  const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null);
+  const [purchases, setPurchases] = useState<PurchaseViewModel[]>([]);
+  const [selectedPurchase, setSelectedPurchase] = useState<PurchaseViewModel | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+
 
   useEffect(() => {
-    setPurchases([
-      {
-        purchaseId: '12345',
-        purchaseDate: '2024-11-01',
-        tickets: [
-          { ticketID: "T1", eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Concert Ticket', ticketPrice: "50"},
-          { ticketID: 'T2', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'VIP Pass', ticketPrice: "100"},
-        ],
-      },
-      {
-        purchaseId: '67890',
-        purchaseDate: '2024-10-15',
-        tickets: [
-          { ticketID: 'T3', eventID: "", ticketsRemaining: 200, ticketMaxAvailable: 200, ticketStatus: true, ticketName: 'Festival Ticket', ticketPrice: "80" },
-        ],
-      },
-    ]);
-  }, []);
+    fetchEvents();
+}, []);
 
-  const handlePurchaseClick = (purchase: Purchase) => {
+const fetchEvents = async () => {
+    const token = localStorage.getItem("jwtToken");
+
+    try {
+      // Verzend het formulier naar het endpoint
+      const res = await fetch(`https://localhost:7150/user/get-purchase`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await res.json(); // Ontvang de JSON-response
+
+      console.log("Guest auth reponse: ",data);  
+      
+      if(data.statusCode !== 200){
+          console.log("error while loggin in as guest:", data);
+      }
+
+      // successful registered
+      if(data.statusCode === 200){
+          console.log(data.value);
+          setPurchases(data.value);
+          // login(data.value.token);
+          // navigate("/", { replace: true});
+          // setShowNav(true);
+      }           
+
+  } catch (error) {
+      console.error('Er is een fout opgetreden:', error);
+  }
+};
+
+  const handlePurchaseClick = (purchase: PurchaseViewModel) => {
     setSelectedPurchase(purchase);
     setShowModal(true);
   };
@@ -43,20 +65,33 @@ const TicketContent: React.FC = () => {
     setSelectedPurchase(null);
   };
 
+  const handleOpenQRModal = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setShowQRModal(true);
+  };
+  
+  const handleCloseQRModal = () => {
+    setSelectedTicket(null);
+    setShowQRModal(false);
+  };
+
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">Mijn Aankopen</h2>
-      <Card className="shadow-sm">
+      {
+        purchases.length > 0 ? 
+        <>
+        <Card className={showQRModal ? 'shadow-sm blur-background' : 'shadow-sm'}>
         <Card.Body>
           <ListGroup variant="flush">
             {purchases.map((purchase) => (
-              <ListGroup.Item key={purchase.purchaseId} className="d-flex justify-content-between align-items-center">
+              <ListGroup.Item key={purchase.userPurchase.purchaseID} className="d-flex justify-content-between align-items-center">
                 <div>
                   <h5>
-                    <i className="fa-solid fa-ticket text-primary"></i> Aankoop ID: {purchase.purchaseId}
+                    <i className="fa-solid fa-ticket text-primary"></i> Aankoop ID: {purchase.userPurchase.purchaseID}
                   </h5>
                   <p>
-                    <i className="fa-solid fa-calendar text-secondary"></i> Aankoopdatum: {purchase.purchaseDate}
+                    <i className="fa-solid fa-calendar text-secondary"></i> Aankoopdatum: {"01-01-2024"}
                   </p>
                 </div>
                 <Button variant="outline-primary" onClick={() => handlePurchaseClick(purchase)}>
@@ -69,7 +104,7 @@ const TicketContent: React.FC = () => {
       </Card>
 
       {/* Modal voor aankoopdetails */}
-      <Modal show={showModal} onHide={handleCloseModal} size="lg">
+      <Modal className={showQRModal ? 'blur-background' : ''} show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Aankoop Details</Modal.Title>
         </Modal.Header>
@@ -77,24 +112,32 @@ const TicketContent: React.FC = () => {
           {selectedPurchase && (
             <>
               <div className="d-flex justify-content-between mb-3 d-flex align-items-center">
-                <h5>Aankoop ID: {selectedPurchase.purchaseId}</h5>
+                <h5>Aankoop ID: {selectedPurchase.userPurchase.purchaseID}</h5>
                 <Badge bg="danger">Verlopen</Badge>
               </div>
-              <p>Aankoopdatum: {selectedPurchase.purchaseDate}</p>
+              <p>Aankoopdatum: {"01-01-2024"}</p>
               <ListGroup variant="flush">
-                {selectedPurchase.tickets.map((ticket) => (
+                {selectedPurchase.eventTickets.map((ticket: Ticket) => (
                   <ListGroup.Item key={ticket.ticketID} className="d-flex justify-content-between align-items-center">
                     <div>
                       <h6>
                          <i className="fa-solid fa-ticket text-primary"></i> {ticket.ticketName}
                       </h6>
                       <p>
-                        <i className="fa-solid fa-calendar text-secondary"></i> Datum & Tijd: {/*ticket.eventDateTime*/}
+                        <i className="fa-solid fa-calendar text-secondary"></i> Datum & Tijd: {"01-01-2024"}
                       </p>
                     </div>
+                    <Button
+      variant="outline-primary"
+      size="sm"
+      onClick={() => handleOpenQRModal(ticket)}
+      className="me-2"
+    >
+      Open Ticket
+    </Button>
                     <div className="text-muted d-flex align-items-center">
                         <i className="fa-solid fa-euro-sign text-warning me-1"></i>
-                      <strong>{/*ticket.ticketPrice.toFixed(2)*/}</strong>
+                      <strong>{ticket.ticketPrice}</strong>
                     </div>
                   </ListGroup.Item>
                 ))}
@@ -108,6 +151,34 @@ const TicketContent: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={showQRModal} onHide={handleCloseQRModal} size="sm" centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Ticket QR-code</Modal.Title>
+  </Modal.Header>
+  <Modal.Body className="text-center">
+    {selectedTicket && (
+      <div className='d-flex flex-column'>
+        <h5 className='fw-bold'>{selectedTicket.ticketName}</h5>
+        <div className="d-flex justify-content-center">
+          <img
+            src={`/src/assets/QRlogo.png`}
+            alt={`QR Code for ticket ${selectedTicket.ticketID}`}
+            className="img-fluid"
+          />
+        </div>
+        <i>Scan je ticket hier!</i>
+      </div>
+    )}
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleCloseQRModal}>
+      Sluiten
+    </Button>
+  </Modal.Footer>
+</Modal>
+        </> : <h3 className='text-center pt-3'>Je hebt nog geen aankopen!</h3>
+      }
+     
     </div>
   );
 };

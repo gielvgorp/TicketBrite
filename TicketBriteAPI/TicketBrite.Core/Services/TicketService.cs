@@ -76,6 +76,7 @@ namespace TicketBrite.Core.Services
         public void UpdateReservedTicketsToPursche(Guid userID, Guid purchaseID)
         {
             List<ReservedTicket> reservedTickets = GetReservedTicketsOfUser(userID);
+            _ticketRepository.CreatePursche(purchaseID, userID);
 
             foreach (ReservedTicket reserveTicket in reservedTickets)
             {
@@ -87,6 +88,11 @@ namespace TicketBrite.Core.Services
         public List<EventTicket> GetPurchaseByID(Guid purchaseID)
         {
             return _ticketRepository.GetPurchaseByID(purchaseID);
+        }
+
+        public List<UserPurchaseModel> GetPurchasesOfUser(Guid userID)
+        {
+            return _ticketRepository.GetPurchasesOfUser(userID);
         }
     }
 }

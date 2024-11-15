@@ -22,5 +22,6 @@ namespace TicketBrite.Core.Interfaces
         public void RemoveReserveTicket(Guid reserveID);
         public void CreatePursche(Guid purchaseID, Guid userID);
         public List<EventTicket> GetPurchaseByID(Guid purchaseID);
+        public List<UserPurchaseModel> GetPurchasesOfUser(Guid userID);
     }
 }
