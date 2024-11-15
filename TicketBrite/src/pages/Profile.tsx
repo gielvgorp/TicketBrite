@@ -47,18 +47,22 @@ const Profile = () => {
                                     </li>
                                 )
                             }
-                            <li>
-                                <a href="#submenu2" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
-                                    <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-building-circle-check px-2"></i> Beheerder</span> 
-                                </a>
-                                <ul className="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                                    <li className="w-100">
-                                        <a href="#" onClick={() => handleContentChange('events-verification')} className="nav-link px-0"> 
-                                            <span className="d-none d-sm-inline">Evenementen verfieeren</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            {
+                                role === 'Beheerder' && 
+                                <li>
+                                    <a href="#submenu2" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
+                                        <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-building-circle-check px-2"></i> Beheerder</span> 
+                                    </a>
+                                    <ul className="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                                        <li className="w-100">
+                                            <a href="#" onClick={() => handleContentChange('events-verification')} className="nav-link px-0"> 
+                                                <span className="d-none d-sm-inline">Evenementen verfieeren</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                           
                             <li className="nav-item justify-self-end">
                                 <a href="#" onClick={logout} className="nav-link align-middle px-0">
                                     <i className="fs-4 bi-house"></i> <span className="text-danger ms-1 d-none d-sm-inline"><i className="fa-solid fa-right-from-bracket px-2"></i> Uitloggen</span>
