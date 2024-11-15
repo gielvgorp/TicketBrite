@@ -14,5 +14,6 @@ namespace TicketBrite.Core.Interfaces
         public List<Event> GetEvents();
         public List<Event> GetEvents(string category);
         public Event GetEvent(Guid eventID);
+        public List<Event> GetAllVerifiedEvents(string category);
     }
 }

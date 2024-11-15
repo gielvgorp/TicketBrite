@@ -7,16 +7,16 @@ function Index(){
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
     useEffect(() => {       
-        fetch('https://localhost:7150/get-events')
-            .then(response => response.json())
-            .then(data => {
-                setEvents(data.value);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);  
-                setLoading(false);
-            });
+        fetch(`https://localhost:7150/event/get-all-verified/`)
+        .then(response => response.json())
+        .then(data => {
+            setEvents(data.value);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);  
+            setLoading(false);
+        });
     }, []);
 
     if (loading) {

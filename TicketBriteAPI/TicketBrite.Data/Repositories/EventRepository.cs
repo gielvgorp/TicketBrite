@@ -57,5 +57,11 @@ namespace TicketBrite.Data.Repositories
         {
             return _dbContext.Events.FirstOrDefault(e => e.eventID == eventID);
         }
+
+        public List<Event> GetAllVerifiedEvents(string category)
+        {
+            if(string.IsNullOrEmpty(category)) return _dbContext.Events.Where(e => e.isVerified).ToList();
+            else return _dbContext.Events.Where(e => e.isVerified && e.eventCategory == category).ToList();
+        }
     }
 }

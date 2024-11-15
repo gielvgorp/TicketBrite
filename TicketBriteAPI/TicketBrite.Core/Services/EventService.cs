@@ -41,5 +41,10 @@ namespace TicketBrite.Core.Services
         {
             return _eventRepository.GetEvent(eventID);
         }
+
+        public List<Event> GetAllVerifiedEvents(string category)
+        {
+            return _eventRepository.GetAllVerifiedEvents(category);
+        }
     }
 }

@@ -1,30 +1,38 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TicketBriteAPI.Models;
 using TicketBrite.Core.Entities;
-using TicketBrite.Data;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class EventController : ControllerBase
     {
         private readonly EventService eventService;
         private readonly TicketService ticketService;
 
-        public HomeController(ApplicationDbContext context)
+        public EventController(ApplicationDbContext context)
         {
             eventService = new EventService(new EventRepository(context));
             ticketService = new TicketService(new TicketRepository(context));
         }
 
         [HttpGet("/get-events")]
-        public JsonResult GetEvents(){
+        public JsonResult GetEvents()
+        {
             return new JsonResult(Ok(eventService.GetEvents()));
+        }
+
+        [HttpGet("/event/get-all-verified/{category?}")]
+        public JsonResult GetAllVerifiedEvents(string category = "")
+        {
+            List<Event> events = eventService.GetAllVerifiedEvents(category);
+
+            return new JsonResult(Ok(events));
         }
 
         [HttpGet("/get-events/{category}")]
@@ -66,9 +74,9 @@ namespace TicketBriteAPI.Controllers
 
             result.Event = eventService.GetEvent(eventID);
             result.Tickets = ticketModel;
-            
 
-            if (result == null) 
+
+            if (result == null)
             {
                 return new JsonResult(NotFound());
             }
