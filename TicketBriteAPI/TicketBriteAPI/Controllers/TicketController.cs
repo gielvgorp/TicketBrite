@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Sockets;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
@@ -16,10 +17,12 @@ namespace TicketBriteAPI.Controllers
     public class TicketController : ControllerBase
     {
         private readonly TicketService ticketService;
+        private readonly ITicketStatisticsNotifier _ticketStatisticsNotifier;
 
-        public TicketController(ApplicationDbContext context)
+        public TicketController(ApplicationDbContext context, ITicketStatisticsNotifier ticketNotifier)
         {
             ticketService = new TicketService(new TicketRepository(context));
+            _ticketStatisticsNotifier = ticketNotifier;
         }
 
         [HttpPost("/ticket/new")]
@@ -74,7 +77,7 @@ namespace TicketBriteAPI.Controllers
 
         [HttpPost("/ticket/set-reserve")]
         [Authorize]
-        public JsonResult AddReservedTickets(List<ReservedTicketModel> model)
+        public async Task<JsonResult> AddReservedTickets(List<ReservedTicketModel> model)
         {
             var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userID == null) return new JsonResult(Unauthorized());
@@ -90,6 +93,8 @@ namespace TicketBriteAPI.Controllers
                 {
                     ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), reservationID);
                 }
+
+                await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
             }
 
             return new JsonResult(Ok());
@@ -119,7 +124,7 @@ namespace TicketBriteAPI.Controllers
 
         [HttpPost("/tickets/buy")]
         [Authorize]
-        public JsonResult BuyTickets()
+        public async Task<JsonResult> BuyTickets()
         {
             try
             {
@@ -129,6 +134,11 @@ namespace TicketBriteAPI.Controllers
                 if (userID == null || userID == Guid.Empty) return new JsonResult(Unauthorized("Gebruiker niet ingelogd!"));
 
                 ticketService.UpdateReservedTicketsToPursche(userID, purchaseID);
+
+                foreach (EventTicket ticket in ticketService.GetPurchaseByID(purchaseID))
+                {
+                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
+                }
 
                 return new JsonResult(Ok(purchaseID));
             }

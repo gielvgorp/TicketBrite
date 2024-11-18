@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getTicketOfEvent } from '../../hooks/useTIcket';
 import { TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
+import signalR, { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 
 interface TicketStatisticsProps {
     eventId: string;
@@ -11,6 +12,7 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
     const [stats, setStats] = useState<TicketStatistic[]>([]);
     const [loading, setLoading] = useState(true);
     const [error] = useState<string | null>(null);
+    const [connection, setConnection] = useState<HubConnection | null>(null);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -47,6 +49,48 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
         fetchStats();
     }, [eventId]);
 
+    useEffect(() => {
+        const newConnection = new HubConnectionBuilder()
+            .withUrl("https://localhost:7150/hubs/ticketStatistics")
+            .withAutomaticReconnect()
+            .build();
+    
+        setConnection(newConnection);
+    }, []); // Initialiseert alleen bij eerste render
+
+    useEffect(() => {
+        if (!connection) return;
+    
+        connection.start()
+            .then(() => {
+                console.log("Verbonden met SignalR hub");
+    
+                connection.on("UpdateTicketStats", (updatedStats) => {
+                    console.log("Ontvangen update:", updatedStats);
+                    setStats((prevStats) =>
+                        prevStats.map((ticket) =>
+                            ticket.ticket.ticketID === updatedStats.ticketID
+                                ? {
+                                    ...ticket,
+                                    ticketSold: updatedStats.soldTickets,
+                                    ticketReserve: updatedStats.reservedTickets
+                                }
+                                : ticket
+                        )
+                    );
+                });
+            })
+            .catch((error) => console.error("SignalR connectiefout:", error));
+    
+        return () => {
+            connection.stop();
+        };
+    }, [connection]); // Alleen reageren als `connection` verandert
+
+    useEffect(() => {
+        console.log("Updated tickets: ", stats);
+    }, [stats]);
+
     return (
         <Card className="p-4">
             <Card.Header as="h5">Ticketstatistieken</Card.Header>
@@ -63,8 +107,6 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
                                 <div className='d-flex col-4'>
                                     <div className="col-6 text-end"> <span className="text-success">Verkocht: {ticket.ticketSold}/{ticket.ticket.ticketMaxAvailable}</span></div>
                                     <div className="col-6 text-end"> <span className="mx-3 text-warning">Gereserveerd: {ticket.ticketReserve}</span></div>
-                                   
-                                   
                                 </div>
                             </ListGroup.Item>
                         ))}

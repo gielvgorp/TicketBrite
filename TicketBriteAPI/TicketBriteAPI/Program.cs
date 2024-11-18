@@ -4,10 +4,14 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TicketBriteAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSignalR();
+builder.Services.AddScoped<ITicketStatisticsNotifier, TicketStatisticsNotifier>();
+
 
 builder.Services.AddControllers();
 
@@ -63,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowLocalhost");
+
+app.MapHub<TicketStatisticsHub>("/hubs/ticketStatistics").RequireCors();
 
 app.UseHttpsRedirection();
 
