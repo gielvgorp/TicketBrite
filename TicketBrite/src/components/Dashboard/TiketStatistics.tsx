@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getTicketOfEvent } from '../../hooks/useTIcket';
 import { TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
-import signalR, { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
+import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
 
 interface TicketStatisticsProps {
     eventId: string;
@@ -30,7 +29,6 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
                 });
                 
                 const data = await res.json(); // Ontvang de JSON-response
-                console.log(data);
                 // validation error
                 if(data.statusCode === 400){
                     console.log(data);
@@ -56,7 +54,7 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
             .build();
     
         setConnection(newConnection);
-    }, []); // Initialiseert alleen bij eerste render
+    }, []);
 
     useEffect(() => {
         if (!connection) return;
@@ -85,7 +83,7 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
         return () => {
             connection.stop();
         };
-    }, [connection]); // Alleen reageren als `connection` verandert
+    }, [connection]);
 
     useEffect(() => {
         console.log("Updated tickets: ", stats);
