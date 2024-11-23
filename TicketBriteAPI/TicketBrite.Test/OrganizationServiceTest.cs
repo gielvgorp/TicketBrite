@@ -105,16 +105,17 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Get all events of organization")]
-        public void Get_All_Events_Of_Organization()
+        [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
+        public void Get_All_Events_Of_Organization(string organizationID)
         {
-            // Organization organization = organizationService.get
+            List<Event> events = organizationService.GetAllEventsByOrganization(Guid.Parse(organizationID));
         }
 
         [TestMethod("Get all events of organization")]
         [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
         public void Get_All_Events_Of_Organization(Guid organizationID)
         {
-            List<Event> events = organizationService.GetEventsByOrganization(organizationID);
+            List<Event> events = organizationService.GetAllEventsByOrganization(organizationID);
 
             Assert.IsNotNull(events);
         }
