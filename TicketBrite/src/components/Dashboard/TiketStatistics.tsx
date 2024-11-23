@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getTicketOfEvent } from '../../hooks/useTIcket';
 import { TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 
-interface TicketStatisticsProps {
+type Props = {
     eventId: string;
 }
 
-const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
+function TicketStatistics({eventId}: Props){
     const [stats, setStats] = useState<TicketStatistic[]>([]);
     const [loading, setLoading] = useState(true);
     const [error] = useState<string | null>(null);
@@ -75,6 +75,6 @@ const TicketStatistics: React.FC<TicketStatisticsProps> = ({ eventId }) => {
             </Card.Body>
         </Card>
     );
-};
+}
 
 export default TicketStatistics;
