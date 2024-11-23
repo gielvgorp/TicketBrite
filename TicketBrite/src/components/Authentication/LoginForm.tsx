@@ -35,7 +35,7 @@ function LoginForm(){
             const data = await res.json(); // Ontvang de JSON-response
             console.log(data);
             // validation error
-            if(data.statusCode === 400){
+            if(data.statusCode !== 200){
                 console.log(data);
                 setErrorMsg(data.value);
             }

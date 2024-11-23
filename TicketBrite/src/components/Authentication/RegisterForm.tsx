@@ -34,12 +34,13 @@ function RegisterForm(){
             const data = await res.json(); // Ontvang de JSON-response
 
             // validation error
-            if(data.statusCode === 404){
+            if(data.statusCode !== 200){
+                console.log(data);
                 setErrorMsg(data.value);
             }
 
             // successful registered
-            if(res.status === 200){
+            if(data.statusCode === 200){
                 localStorage.setItem('jwtToken', data.token);
                 console.log("Token:", localStorage.getItem('jwtToken'));
                 navigate("/", {replace: true});

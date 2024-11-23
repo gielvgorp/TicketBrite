@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicketBrite.Core.Entities;
+﻿using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace TicketBrite.Core.Services
 {
