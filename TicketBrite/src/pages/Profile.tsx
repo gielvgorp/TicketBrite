@@ -27,7 +27,7 @@ const Profile = () => {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a href="#" onClick={() => handleContentChange('tickets')} className="nav-link align-middle px-0">
+                                <a href="#" id="profile-ticket" onClick={() => handleContentChange('tickets')} className="nav-link align-middle px-0">
                                     <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-ticket px-2"></i> Tickets</span>
                                 </a>
                             </li>
