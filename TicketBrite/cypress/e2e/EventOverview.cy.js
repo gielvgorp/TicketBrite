@@ -35,17 +35,7 @@ describe('Events overview page', () => {
     });
 
     it("Tickets are in shoppingcart when user add when logged in", () => {
-
-        // login
-        cy.visit('http://localhost:5173/authenticatie');
-
-        // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@e2e.com");
-        cy.get("#exampleInputPassword1").type("E2ETesting!");
-
-        cy.get("button").click();
-
-        cy.get("._signInContainer_11k3u_65 a").should("have.text", "Welkom, Cypress!");
+        cy.login("cypress@e2e.com", "E2ETesting!");
 
         cy.get("#nav-item-shopping-cart").click();
 
@@ -64,16 +54,7 @@ describe('Events overview page', () => {
     });
 
     it("Could buy ticket and is visable in purachse overview", () => {
-
-        cy.visit('http://localhost:5173/authenticatie');
-
-        // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@e2e.com");
-        cy.get("#exampleInputPassword1").type("E2ETesting!");
-
-        cy.get("button").click();
-
-        cy.get("._signInContainer_11k3u_65 a").should("have.text", "Welkom, Cypress!");
+        cy.login("cypress@e2e.com", "E2ETesting!");
 
         cy.get("#nav-item-shopping-cart").click();
 

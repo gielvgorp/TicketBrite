@@ -34,7 +34,7 @@ const Profile = () => {
                             {
                                 role === 'Organization' && (
                                     <li>
-                                        <a href="#submenu1" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
+                                        <a href="#submenu1" id="profile-organization" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
                                             <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-sitemap px-2"></i> Organisatie</span> 
                                         </a>
                                         <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
@@ -50,7 +50,7 @@ const Profile = () => {
                             {
                                 role === 'Beheerder' && 
                                 <li>
-                                    <a href="#submenu2" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
+                                    <a href="#submenu2" id="profile-admin" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
                                         <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-building-circle-check px-2"></i> Beheerder</span> 
                                     </a>
                                     <ul className="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">

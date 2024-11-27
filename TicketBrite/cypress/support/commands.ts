@@ -1,37 +1,35 @@
 /// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+
+    cy.visit('/authenticatie');
+    cy.get('#email-input').type(email); // Enter the email
+    cy.get('#password-input').type(password); // Enter the password
+    cy.get('button[type="submit"]').click(); // Click the login button
+
+    cy.get("._signInContainer_11k3u_65 a").should("contain.text", "Welkom, ");
+});
+
+Cypress.Commands.add('register', (email: string, fullname: string, password: string) => {
+
+    cy.visit('/authenticatie/register');
+    cy.get('#email-input').type(email); // Enter the email
+    cy.get('#full-name-input').type(fullname); // Enter the email
+    cy.get('#password-input').type(password); // Enter the password
+    cy.get('button[type="submit"]').click(); // Click the login button
+});
+
+Cypress.Commands.add('navigateToOrganizationPanel', () => {
+    cy.get("._signInContainer_11k3u_65 a").click();
+    cy.get("#profile-organization").should("exist");
+    cy.get("#profile-organization").click();
+    cy.get("#submenu1").click();
+});
+
+Cypress.Commands.add('navigateToAdminPanel', () => {
+    cy.get("._signInContainer_11k3u_65 a").click();
+    cy.get("#profile-admin").should("exist");
+    cy.get("#profile-admin").click();
+    cy.get("#submenu2").click();
+});
+

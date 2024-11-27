@@ -14,7 +14,6 @@ describe('Home Page', () => {
     });
   });
 
-
   // TODO: check if redirection to correct event
   it("Should redirect to event details page when click on event", () => {
     cy.visit('http://localhost:5173/');

@@ -26,8 +26,8 @@ describe('Authentication register and login', () => {
         cy.visit('http://localhost:5173/authenticatie');
 
         // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@test.com");
-        cy.get("#exampleInputPassword1").type("cypressTestPass123");
+        cy.get("#email-input").type("cypress@test.com");
+        cy.get("#password-input").type("cypressTestPass123");
 
         cy.get("button").click();
 
@@ -39,7 +39,7 @@ describe('Authentication register and login', () => {
         cy.visit('http://localhost:5173/authenticatie');
 
         // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@test.com");
+        cy.get("#email-input").type("cypress@test.com");
 
         cy.get("button").click();
 
@@ -51,7 +51,7 @@ describe('Authentication register and login', () => {
         cy.visit('http://localhost:5173/authenticatie');
 
         // Vult inputs
-        cy.get("#exampleInputPassword1").type("cypressTestPass123");
+        cy.get("#password-input").type("cypressTestPass123");
 
         cy.get("button").click();
 
@@ -63,8 +63,8 @@ describe('Authentication register and login', () => {
         cy.visit('http://localhost:5173/authenticatie/register');
 
         // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@test.nl");
-        cy.get("#exampleInputPassword1").type("cypressTestPass123");
+        cy.get("#email-input").type("cypress@test.nl");
+        cy.get("#password-input").type("cypressTestPass123");
 
         cy.get("button").click();
 
@@ -77,7 +77,7 @@ describe('Authentication register and login', () => {
 
         // Vult inputs
         cy.get("#full-name-input").type("Cypress");
-        cy.get("#exampleInputPassword1").type("cypressTestPass123");
+        cy.get("#password-input").type("cypressTestPass123");
 
         cy.get("button").click();
 
@@ -90,7 +90,7 @@ describe('Authentication register and login', () => {
 
         // Vult inputs
         cy.get("#full-name-input").type("Cypress");
-        cy.get("#exampleInputEmail1").type("cypress@test.nl");
+        cy.get("#email-input").type("cypress@test.nl");
 
         cy.get("button").click();
 
@@ -99,12 +99,7 @@ describe('Authentication register and login', () => {
     });
 
     it("Should show error message on email already in use", () => {
-        cy.visit('http://localhost:5173/authenticatie/register');
-
-        // Vult inputs
-        cy.get("#full-name-input").type("Cypress");
-        cy.get("#exampleInputEmail1").type("gielvg1@gmail.com");
-        cy.get("#exampleInputPassword1").type("cypressTestPass123");
+        cy.register("Cypress", "gielvg1@gmail.com", "CypressTestPass123");
 
         cy.get("button").click();
 
@@ -113,13 +108,7 @@ describe('Authentication register and login', () => {
     });
 
     it("Should login successfull", () => {
-        cy.visit('http://localhost:5173/authenticatie');
-
-        // Vult inputs
-        cy.get("#exampleInputEmail1").type("cypress@e2e.com");
-        cy.get("#exampleInputPassword1").type("E2ETesting!");
-
-        cy.get("button").click();
+        cy.login("cypress@e2e.com", "E2ETesting!");
 
         cy.get("._signInContainer_11k3u_65 a").should("have.text", "Welkom, Cypress!");
     });
