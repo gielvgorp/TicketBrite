@@ -64,9 +64,42 @@ namespace TicketBrite.Test
                         eventAge = 18,
                         eventCategory = "Muziek",
                         eventImage = "event_img_URL",
-                        eventDescription = "Rock concert"
+                        eventDescription = "Rock concert",
+                        isVerified = true
                     }
                 );
+
+                _context.Events.AddRange(
+                   new Event
+                   {
+                       eventID = Guid.NewGuid(),
+                       organizationID = Guid.Parse("492b6808-e751-40c3-a1fe-1b0d64ee01c1"),
+                       eventName = "Fontys Festival",
+                       eventDateTime = DateTime.Now.AddMonths(1),
+                       eventLocation = "Fontys Rachelsmolen",
+                       eventAge = 18,
+                       eventCategory = "Muziek",
+                       eventImage = "event_img_URL",
+                       eventDescription = "Fontys Festival",
+                       isVerified = false
+                   }
+               );
+
+                _context.Events.AddRange(
+                   new Event
+                   {
+                       eventID = Guid.NewGuid(),
+                       organizationID = Guid.Parse("492b6808-e751-40c3-a1fe-1b0d64ee01c1"),
+                       eventName = "Test festival",
+                       eventDateTime = DateTime.Now.AddMonths(1),
+                       eventLocation = "Johan Cruijff ArenA, Amsterdam",
+                       eventAge = 18,
+                       eventCategory = "Muziek",
+                       eventImage = "event_img_URL",
+                       eventDescription = "Test festival",
+                       isVerified = false
+                   }
+               );
             }
 
             if (!_context.Organizations.Any())
@@ -108,16 +141,76 @@ namespace TicketBrite.Test
         [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
         public void Get_All_Events_Of_Organization(string organizationID)
         {
-            List<Event> events = organizationService.GetAllEventsByOrganization(Guid.Parse(organizationID));
+            Guid parsedOrganizationID = Guid.Parse(organizationID);
+
+            List<Event> events = organizationService.GetAllEventsByOrganization(parsedOrganizationID);
+
+            Assert.IsNotNull(events, "The returned list is null");
+
+            Assert.IsTrue(events.All(e => e.organizationID == parsedOrganizationID), "Not all events have the correct organization ID");
         }
 
-        [TestMethod("Get all events of organization")]
+        [TestMethod("Should return all verified events")]
         [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
-        public void Get_All_Events_Of_Organization(Guid organizationID)
+        public void GetAllVerifiedEventsByOrganization(string organizationID)
         {
-            List<Event> events = organizationService.GetAllEventsByOrganization(organizationID);
+            Guid parsedOrganizationID = Guid.Parse(organizationID);
+            List<Event> events = organizationService.GetVerifiedEventsByOrganization(parsedOrganizationID);
 
-            Assert.IsNotNull(events);
+            Assert.IsNotNull(events, "The returned list is null");
+
+            Assert.IsTrue(events.All(e => e.organizationID == parsedOrganizationID), "Not all events have the correct organization ID");
+            Assert.IsTrue(events.All(e => e.isVerified), "Not all events that were returned are verified!");
+            Assert.AreEqual(events.Count, 1);
+        }
+
+        [TestMethod("Should return all not verified events")]
+        [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
+        public void GetAllUnVerifiedEventsByOrganization(string organizationID)
+        {
+            Guid parsedOrganizationID = Guid.Parse(organizationID);
+            List<Event> events = organizationService.GetUnVerifiedEventsByOrganization(parsedOrganizationID);
+
+            Assert.IsNotNull(events, "The returned list is null");
+
+            Assert.IsTrue(events.All(e => e.organizationID == parsedOrganizationID), "Not all events have the correct organization ID");
+            Assert.IsTrue(events.All(e => !e.isVerified), "Not all events that were returned are unverified!");
+            Assert.AreEqual(events.Count, 2);
+        }
+
+        [TestMethod("Get organization by ID")]
+        [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
+        public void GetOrganizationByID(string organizationID)
+        {
+            Guid parsedOrganizationID = Guid.Parse(organizationID);
+
+            Organization organization = organizationService.GetOrganizationByID(parsedOrganizationID);
+
+            Assert.IsNotNull(organization, "The organization is not found!");
+            Assert.AreEqual(organization.organizationID, parsedOrganizationID);
+        }
+
+        [TestMethod("Update info of organization")]
+        [DataRow("492b6808-e751-40c3-a1fe-1b0d64ee01c1")]
+        public void UpdateOrganization(string organizationID)
+        {
+            Guid parsedOrganizationID = Guid.Parse(organizationID);
+
+            Organization organization = organizationService.GetOrganizationByID(parsedOrganizationID);
+
+            Assert.IsNotNull(organization, "The organization is not found!");
+            Assert.AreEqual(organization.organizationID, parsedOrganizationID);
+
+            string newOrganizationName = "Intergration Test";
+
+            organization.organizationName = newOrganizationName;
+
+            organizationService.UpdateOrganization(organization);
+
+            Organization updatedOrganization = organizationService.GetOrganizationByID(parsedOrganizationID);
+
+            Assert.IsNotNull(updatedOrganization, "The organization is not found!");
+            Assert.AreEqual(updatedOrganization.organizationName, newOrganizationName);
         }
     }
 }
