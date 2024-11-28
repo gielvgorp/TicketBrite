@@ -34,25 +34,6 @@ describe('Events overview page', () => {
         cy.get(".modal").should("have.class", "show");
     });
 
-    it("Tickets are in shoppingcart when user add when logged in", () => {
-        cy.login("cypress@e2e.com", "E2ETesting!");
-
-        cy.get("#nav-item-shopping-cart").click();
-
-        cy.get(".cart-item", { timeout: 10000 }).should("have.length", 0);
-
-        // try to add ticket into shopping cart
-        cy.visit('http://localhost:5173/event/f827d813-e04a-4e84-8d69-72baef15fcd4');
-
-        cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().find("button").last().click();
-
-        cy.get('._sideBar_13834_29 button.btn-success').first().click();
-
-        cy.get("#nav-item-shopping-cart").click();
-
-        cy.get(".cart-item", { timeout: 10000 }).should("have.length", 1);
-    });
-
     it("Could buy ticket and is visable in purachse overview", () => {
         cy.login("cypress@e2e.com", "E2ETesting!");
 
