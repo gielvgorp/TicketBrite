@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
-import { Ticket } from '../Types';
+import { Event, Ticket } from '../Types';
 
 interface ReservedTicket {
     ticket: Ticket;
@@ -10,10 +10,21 @@ interface ReservedTicket {
 }
 
 interface Reservation {
-    reservationID: string;
+    reservedID: string;
     ticketID: string;
     userID: string;
     reservedAt: Date;
+}
+
+interface ShoppingCart {
+    totalPrice: string;
+    items: shoppingCartItem[];
+}
+
+interface shoppingCartItem{
+    reservedTicket: Reservation;
+    eventTicket: Ticket;
+    event: Event;
 }
 
 const banks = [
@@ -22,7 +33,7 @@ const banks = [
 
 function ShoppingCart(){
     const navigate = useNavigate();
-    const [tickets, setTickets] = useState<ReservedTicket[]>([]);
+    const [shoppingCart, setShoppingCart] = useState<ShoppingCart>();
     const [paymentMethod, setPaymentMethod] = useState<string>("iDeal");
     const [selectedBank, setSelectedBank] = useState<string | null>(null);
 
@@ -34,7 +45,7 @@ function ShoppingCart(){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch('https://localhost:7150/ticket/reserve-ticket/get-tickets', {
+            const response = await fetch('https://localhost:7150/shopping-cart/get-items', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -48,7 +59,7 @@ function ShoppingCart(){
 
             const data = await response.json();
             console.log(data.value);
-            setTickets(data.value);
+            setShoppingCart(data.value);
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {
@@ -56,20 +67,32 @@ function ShoppingCart(){
         }
     }
 
-    // Calculating total cost
-    const totalCost = tickets.reduce((total, ticket) => total + parseInt(ticket.ticket.ticketPrice), 0).toFixed(2);
+    const handleDeleteItem = async (reserveID: string) => {
+        //setTickets(prevTickets => prevTickets.filter(item => item.reservation.reservationID !== reserveID));
+        try {
+            const token = localStorage.getItem("jwtToken");
 
-    // const handleQuantityChange = (id: string, delta: number) => {
-    //     setTickets(prevTickets =>
-    //         prevTickets.map(ticket =>
-    //             ticket.id === id ? { ...ticket, quantity: Math.max(1, ticket.quantity + delta) } : ticket
-    //         )
-    //     );
-    // };
+            const response = await fetch(`https://localhost:7150/shopping-cart/${reserveID}/delete`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
 
-    const handleRemoveTicket = (id: string) => {
-        setTickets(prevTickets => prevTickets.filter(ticket => ticket.ticket.ticketID !== id));
-    };
+            if (!response.ok) {
+                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }
+
+            const data = await response.json();
+            console.log(data.value);
+            setShoppingCart(data.value);
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
+        } finally {
+            //setLoading(false);
+        }
+    }
 
     const handlePurscheTickets = async () => {
         try {
@@ -106,20 +129,20 @@ function ShoppingCart(){
                     </h2>
 
                     <ListGroup variant="flush" className="mb-4">
-                        {tickets.map(ticket => (
-                            <ListGroup.Item key={ticket.reservation.reservationID} className="cart-item d-flex justify-content-between align-items-center">
+                        {shoppingCart?.items.map(ticket => (
+                            <ListGroup.Item key={ticket.reservedTicket.reservedID} className="cart-item d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center col-9">
-                                    <Image src="https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg" alt="Ticket Icon" rounded className="ticket-icon me-2" />
-                                    <span className="ticket-name"><span id='ticket-name'>{ticket.ticket.ticketName}</span> - <strong>Set event name here</strong></span>
+                                    <Image src={ticket.event.eventImage} alt="Ticket Icon" rounded className="ticket-icon me-2" />
+                                    <span className="ticket-name"><span id='ticket-name'>{ticket.eventTicket.ticketName}</span> - <strong>{ticket.event.eventName}</strong></span>
                                 </div>
                                 <div className='col-1 text-center'>
                                 <span className="price"><strong>00:00</strong></span>
                                 </div>
                                 <div className='col-1 text-end'>
-                                    <span className="price">€{(ticket.ticket.ticketPrice)}</span>
+                                    <span className="price">€{(ticket.eventTicket.ticketPrice)}</span>
                                 </div>
                                 <div className='col-1 text-end'>
-                                    <Button variant="outline-danger" size="sm" onClick={() => handleRemoveTicket(ticket.ticket.ticketID)}>
+                                    <Button variant="outline-danger" size="sm" onClick={() => handleDeleteItem(ticket.reservedTicket.reservedID)}>
                                         <i className="fas fa-trash"></i>
                                     </Button>
                                 </div>
@@ -134,7 +157,7 @@ function ShoppingCart(){
                             <h5>Totaal:</h5>
                         </Col>
                         <Col className="text-end">
-                            <h5 className="text-success">€{totalCost}</h5>
+                            <h5 className="text-success">€{shoppingCart?.totalPrice}</h5>
                         </Col>
                     </Row>
 

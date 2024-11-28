@@ -42,9 +42,9 @@ namespace TicketBrite.Core.Services
             return _ticketRepository.GetReservedTicketsByTicket(ticketID);
         }
 
-        public List<ReservedTicket> GetReservedTicketsOfUser(Guid ticketID)
+        public List<ReservedTicket> GetReservedTicketsOfUser(Guid userID)
         {
-            return _ticketRepository.GetReservedTicketsOfUser(ticketID);
+            return _ticketRepository.GetReservedTicketsOfUser(userID);
         }
 
         public List<SoldTicket> GetSoldTickes(Guid ticketID)
