@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -115,12 +115,12 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
     return (
         <div className="container" style={{ marginTop: '20px' }}>
             <h3 className="mb-4">Mijn Evenementen</h3>
-            <Button variant="success" onClick={handleShow} style={{ padding: '10px 20px', marginBottom: '20px' }}>
+            <Button id='btn-new-event' variant="success" onClick={handleShow} style={{ padding: '10px 20px', marginBottom: '20px' }}>
                 Evenement toevoegen
             </Button>
 
             {/* Modal for Adding Event */}
-            <Modal show={showModal} onHide={handleClose} size="lg">
+            <Modal className='add-event-modal' show={showModal} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Nieuw Evenement Toevoegen</Modal.Title>
                 </Modal.Header>
@@ -129,86 +129,44 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Naam evenement</label>
-                                <input type="text" className="form-control" name="eventName" value={eventDetails.eventName} onChange={handleEventChange} />
+                                <input id="event-name" type="text" className="form-control" name="eventName" value={eventDetails.eventName} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Datum van evenement</label>
-                                <input type="date" className="form-control" name="eventDateTime" value={eventDetails.eventDateTime} onChange={handleEventChange} />
+                                <input id="event-dateTime" type="date" className="form-control" name="eventDateTime" value={eventDetails.eventDateTime} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Locatie</label>
-                                <input type="text" className="form-control" name="eventLocation" value={eventDetails.eventLocation} onChange={handleEventChange} />
+                                <input id="event-location" type="text" className="form-control" name="eventLocation" value={eventDetails.eventLocation} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Minimum leeftijd</label>
-                                <input type="number" className="form-control" name="eventAge" value={eventDetails.eventAge} onChange={handleEventChange} />
+                                <input id='event-age' type="number" className="form-control" name="eventAge" value={eventDetails.eventAge} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Categorie</label>
-                                <input type="text" className="form-control" name="eventCategory" value={eventDetails.eventCategory} onChange={handleEventChange} />
+                                <input id="event-category" type="text" className="form-control" name="eventCategory" value={eventDetails.eventCategory} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Afbeelding URL</label>
-                                <input type="text" className="form-control" name="eventImage" value={eventDetails.eventImage} onChange={handleEventChange} />
+                                <input id='event-image' type="text" className="form-control" name="eventImage" value={eventDetails.eventImage} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Beschrijving</label>
-                            <textarea className="form-control" name="eventDescription" rows={3} value={eventDetails.eventDescription} onChange={handleEventChange}></textarea>
+                            <textarea id='event-description' className="form-control" name="eventDescription" rows={3} value={eventDetails.eventDescription} onChange={handleEventChange}></textarea>
                         </div>
-
-                        {/* Tickets Section */}
-                        {/* <h5>Tickets</h5>
-                        {eventDetails.tickets.map((ticket, index) => (
-                            <div key={index} className="border rounded p-3 mb-3">
-                                <div className="row">
-                                    <div className="col-md-4 mb-2">
-                                        <label className="form-label">Ticket naam</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="ticketName"
-                                            value={ticket.ticketName}
-                                            onChange={(e) => handleTicketChange(index, e)}
-                                        />
-                                    </div>
-                                    <div className="col-md-4 mb-2">
-                                        <label className="form-label">Prijs</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            name="ticketPrice"
-                                            value={ticket.ticketPrice}
-                                            onChange={(e) => handleTicketChange(index, e)}
-                                        />
-                                    </div>
-                                    <div className="col-md-4 mb-2">
-                                        <label className="form-label">Maximaal beschikbaar</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            name="ticketMaxAvailable"
-                                            value={ticket.ticketMaxAvailable}
-                                            onChange={(e) => handleTicketChange(index, e)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        <Button variant="secondary" onClick={addTicket} className="w-100 mb-3">
-                            Ticket toevoegen
-                        </Button> */}
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Annuleren
                     </Button>
-                    <Button variant="primary" onClick={handleAddEvent}>
+                    <Button id="btn-submit-new-event" variant="primary" onClick={handleAddEvent}>
                         Evenement opslaan
                     </Button>
                 </Modal.Footer>
@@ -251,7 +209,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
   <h4 className="text-danger mt-5 mb-3">
     <i className="fa-solid fa-times-circle me-2"></i> Niet-Geverifieerde Evenementen
   </h4>
-  <div className="list-group">
+  <div id='list-group-unverified-events' className="list-group">
     {events.unverifiedEvents.map((event, index) => (
       <div
         key={index}
@@ -268,6 +226,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
           </p>
         </div>
         <Button
+          id="btn-open-dashboard"
           onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)}
           className="align-self-end"
           variant="outline-danger"

@@ -1,6 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import useUser from './hooks/useUser';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // AuthContext.tsx
 interface AuthContextType {
@@ -16,18 +15,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [role, setRole] = useState<string | null>(null); // Rol state
 
+    // Gebruik useEffect om bij te werken bij het laden van de applicatie of bij een refresh
+    useEffect(() => {
+        const storedToken = localStorage.getItem('jwtToken');
+        if (storedToken) {
+            const decodedToken: any = jwtDecode(storedToken);
+            setIsAuthenticated(true);
+            setRole(decodedToken.role); // Rol instellen op basis van gedecodeerd token
+        }
+    }, []); // Lege array zorgt ervoor dat de effect alleen bij de eerste render wordt uitgevoerd
+
     const login = (token: string) => {
-        localStorage.setItem('jwtToken', token);
+        localStorage.setItem('jwtToken', token);  // Sla het token op in localStorage
         setIsAuthenticated(true);
         const decodedToken: any = jwtDecode(token); // Decode de token
-        console.log("User role:", decodedToken.role);
-        setRole(decodedToken.role); // Rol instellen
+        setRole(decodedToken.role);  // Stel de rol in
     };
 
     const logout = () => {
-        localStorage.removeItem('jwtToken');
-        setIsAuthenticated(false);
-        setRole(null); // Rol resetten
+        localStorage.removeItem('jwtToken');  // Verwijder het token uit localStorage
+        setIsAuthenticated(false);  // Stel isAuthenticated in op false
+        setRole(null);  // Reset de rol
     };
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Event } from '../../Types';
 
 interface EventDetailsFormProps {
@@ -52,7 +52,7 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
             <h5>Evenement Details</h5>
             <div className="form-group mb-2">
                 <label>Naam Evenement</label>
-                <input type="text" name="eventName" value={formValues.eventName} onChange={(e) => handleInputChange('eventName', e.target.value)} className="form-control" />
+                <input id='event-name-input' type="text" name="eventName" value={formValues.eventName} onChange={(e) => handleInputChange('eventName', e.target.value)} className="form-control" />
             </div>
             <div className="form-group mb-2">
                 <label>Datum en Tijd</label>
@@ -78,7 +78,7 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
                 <label>Beschrijving</label>
                 <textarea name="eventDescription" value={formValues.eventDescription} onChange={(e) => handleInputChange('eventDescription', e.target.value)} className="form-control" />
             </div>
-            <button onClick={handleSave} className="btn btn-primary mt-2">Opslaan</button>
+            <button id="btn-save-event-info" onClick={handleSave} className="btn btn-primary mt-2">Opslaan</button>
         </div>
     );
 }

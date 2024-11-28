@@ -35,7 +35,7 @@ function LoginForm(){
             const data = await res.json(); // Ontvang de JSON-response
             console.log(data);
             // validation error
-            if(data.statusCode === 400){
+            if(data.statusCode !== 200){
                 console.log(data);
                 setErrorMsg(data.value);
             }
@@ -58,12 +58,12 @@ function LoginForm(){
             </p>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input onChange={handleChange} type="email" className="form-control p-2" id="exampleInputEmail1" name="UserEmail" aria-describedby="emailHelp" placeholder="John@doe.com" />
+                    <label htmlFor="email-input">Email address</label>
+                    <input onChange={handleChange} type="email" className="form-control p-2" id="email-input" name="UserEmail" aria-describedby="email-input" placeholder="John@doe.com" />
                 </div>
                 <div className="form-group pt-3">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input onChange={handleChange} type="password" className="form-control p-2" id="exampleInputPassword1" name="Password" placeholder="**********" />
+                    <label htmlFor="password-input">Password</label>
+                    <input onChange={handleChange} type="password" className="form-control p-2" id="password-input" name="Password" placeholder="**********" />
                 </div>
                 <p className="text-danger">{errorMsg}</p>
                 <button type="submit" className="btn btn-primary d-block ms-auto mt-3 w-25 py-2">Inloggen</button>

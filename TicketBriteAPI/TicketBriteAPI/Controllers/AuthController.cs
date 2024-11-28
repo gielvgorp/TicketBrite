@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
@@ -59,7 +60,7 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 {
                     throw new Exception("Een of meerdere velden zijn leeg!");
                 }

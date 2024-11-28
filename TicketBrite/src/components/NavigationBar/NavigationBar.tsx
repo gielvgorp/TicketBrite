@@ -16,9 +16,9 @@ function NavigationBar(){
         <nav className={`${styles.navBar} px-5`}>
             <Link to="/"><h1 className={styles.title}>TicketBrite</h1></Link>
             <ul className={`${styles.navList} d-flex gap-3`}>
-                <li><Link to="/">Home</Link></li>
+                <li id="nav-item-home"><Link to="/">Home</Link></li>
                 <li><Link to="/events">Evenementen</Link></li>
-                <li className='ms-auto me-5'><Link className='position-relative' to="/shopping-cart"><i className="fa-solid fa-cart-shopping"></i></Link></li>
+                <li id="nav-item-shopping-cart" className='ms-auto me-5'><Link className='position-relative' to="/shopping-cart"><i className="fa-solid fa-cart-shopping"></i></Link></li>
             </ul>
             <div className="w-100 h-100 d-flex justify-content-between align-items-center gap-2">
                 <input type="text" className='form-control bg-primary p-2 text-white w-50' placeholder='Zoeken...' />
