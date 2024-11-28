@@ -14,5 +14,10 @@ namespace TicketBrite.Core.Services
         {
             _shoppingCartRepository = shoppingCartRepository;
         }
+
+        public void RemoveItemInCart(Guid reservaionID)
+        {
+            _shoppingCartRepository.RemoveItemInCart(reservaionID);
+        }
     }
 }

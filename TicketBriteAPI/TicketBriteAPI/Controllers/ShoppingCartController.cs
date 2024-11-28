@@ -16,11 +16,13 @@ namespace TicketBriteAPI.Controllers
     {
         TicketService _ticketService;
         EventService _eventService;
+        ShoppingCartService _shoppingCartService;
 
         public ShoppingCartController(ApplicationDbContext context)
         {
             _ticketService = new TicketService(new TicketRepository(context));
             _eventService = new EventService(new EventRepository(context));
+            _shoppingCartService = new ShoppingCartService(new ShoppingCartRepository(context));
         }
 
 
@@ -28,6 +30,7 @@ namespace TicketBriteAPI.Controllers
         [Authorize]
         public JsonResult DeleteItem(Guid reserveID)
         {
+            _shoppingCartService.RemoveItemInCart(reserveID);
 
             return new JsonResult(Ok());
         }

@@ -8,5 +8,6 @@ namespace TicketBrite.Core.Interfaces
 {
     public interface IShoppingCartRepository
     {
+        public void RemoveItemInCart(Guid reservationID);
     }
 }

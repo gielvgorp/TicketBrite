@@ -34,6 +34,7 @@ const banks = [
 function ShoppingCart(){
     const navigate = useNavigate();
     const [shoppingCart, setShoppingCart] = useState<ShoppingCart>();
+    const [cartItems, setCartItems] = useState<shoppingCartItem[]>([]);
     const [paymentMethod, setPaymentMethod] = useState<string>("iDeal");
     const [selectedBank, setSelectedBank] = useState<string | null>(null);
 
@@ -60,6 +61,7 @@ function ShoppingCart(){
             const data = await response.json();
             console.log(data.value);
             setShoppingCart(data.value);
+            setCartItems(data.value.items);
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {
@@ -67,8 +69,16 @@ function ShoppingCart(){
         }
     }
 
+    useEffect(() => {
+        if (shoppingCart?.items) {
+            setCartItems([...shoppingCart.items]);
+        } else {
+            setCartItems([]);
+        }
+    }, [shoppingCart]);
+
     const handleDeleteItem = async (reserveID: string) => {
-        //setTickets(prevTickets => prevTickets.filter(item => item.reservation.reservationID !== reserveID));
+        setCartItems(prevItems => prevItems.filter(item => item.reservedTicket.reservedID !== reserveID));
         try {
             const token = localStorage.getItem("jwtToken");
 
@@ -86,7 +96,6 @@ function ShoppingCart(){
 
             const data = await response.json();
             console.log(data.value);
-            setShoppingCart(data.value);
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {
@@ -127,9 +136,9 @@ function ShoppingCart(){
                     <h2 className="text-center mb-4" style={{ fontWeight: 'bold', fontSize: '2rem' }}>
                         <i className="fas fa-shopping-cart me-3 text-primary"></i>Winkelwagen
                     </h2>
-
-                    <ListGroup variant="flush" className="mb-4">
-                        {shoppingCart?.items.map(ticket => (
+                    {
+                        shoppingCart !== undefined && shoppingCart?.items.length > 0 ? <ListGroup variant="flush" className="mb-4">
+                        {cartItems.map(ticket => (
                             <ListGroup.Item key={ticket.reservedTicket.reservedID} className="cart-item d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center col-9">
                                     <Image src={ticket.event.eventImage} alt="Ticket Icon" rounded className="ticket-icon me-2" />
@@ -148,7 +157,9 @@ function ShoppingCart(){
                                 </div>
                             </ListGroup.Item>
                         ))}
-                    </ListGroup>
+                    </ListGroup> : <h6 className='text-center'>Geen items in de winkelwagen!</h6>
+                    }
+                   
 
                     <hr />
 
