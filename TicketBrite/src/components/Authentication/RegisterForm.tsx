@@ -58,16 +58,16 @@ function RegisterForm(){
             </p>
             <form onSubmit={handleSubmit}>
                 <div className="form-group gap-2 w-100 pt-3">
-                    <label htmlFor="exampleInputEmail1">Volledige naam</label>
-                    <input type="text" className="form-control p-2" id="full-name-input" name="fullName" onChange={handleChange} aria-describedby="FullName" placeholder="John Doe" />
+                    <label htmlFor="full-name-input">Volledige naam</label>
+                    <input type="text" className="form-control p-2" id="full-name-input" name="FullName" onChange={handleChange} aria-describedby="full-name-input" placeholder="John Doe" />
                 </div>
                 <div className="form-group pt-3">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="email" className="form-control p-2" id="exampleInputEmail1" name="email" onChange={handleChange} aria-describedby="emailHelp" placeholder="John@doe.com" />
+                    <label htmlFor="email-input">Email address</label>
+                    <input type="email" className="form-control p-2" id="email-input" name="email" onChange={handleChange} aria-describedby="email-input" placeholder="John@doe.com" />
                 </div>
                 <div className="form-group pt-3">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="password" className="form-control p-2" id="exampleInputPassword1" name="password" onChange={handleChange} placeholder="**********" />
+                    <label htmlFor="password-input">Password</label>
+                    <input type="password" className="form-control p-2" id="password-input" name="password" onChange={handleChange} placeholder="**********" />
                 </div>
                 <p className="text-danger">{errorMsg}</p>
                 <button type="submit" className="btn btn-success d-block ms-auto mt-3 w-25 py-2">Accont aanmaken</button>

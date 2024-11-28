@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
 import { Event, Ticket } from '../Types';

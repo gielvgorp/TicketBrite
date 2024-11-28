@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Modal, Tab, Tabs } from "react-bootstrap";
 import { Event } from "../../../Types";
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
@@ -22,9 +22,9 @@ const banks = [
 
 function ShoppingCart(){
     const navigate = useNavigate();
-    const [tickets, setTickets] = React.useState<ReservedTicket[]>([]);
-    const [paymentMethod, setPaymentMethod] = React.useState<string>("iDeal");
-    const [selectedBank, setSelectedBank] = React.useState<string | null>(null);
+    const [tickets, setTickets] = useState<ReservedTicket[]>([]);
+    const [paymentMethod, setPaymentMethod] = useState<string>("iDeal");
+    const [selectedBank, setSelectedBank] = useState<string | null>(null);
 
     useEffect(() => {
         handleFetchTickets();
@@ -107,10 +107,10 @@ function ShoppingCart(){
 
                     <ListGroup variant="flush" className="mb-4">
                         {tickets.map(ticket => (
-                            <ListGroup.Item key={ticket.reservation.reservationID} className="d-flex justify-content-between align-items-center">
+                            <ListGroup.Item key={ticket.reservation.reservationID} className="cart-item d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-center col-9">
                                     <Image src="https://www.agentsafterall.nl/wp-content/uploads/Naamloos-1-header-1-1600x740.jpg" alt="Ticket Icon" rounded className="ticket-icon me-2" />
-                                    <span className="ticket-name">{ticket.ticket.ticketName} - <strong>Set event name here</strong></span>
+                                    <span className="ticket-name"><span id='ticket-name'>{ticket.ticket.ticketName}</span> - <strong>Set event name here</strong></span>
                                 </div>
                                 <div className='col-1 text-center'>
                                 <span className="price"><strong>00:00</strong></span>
