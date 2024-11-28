@@ -151,7 +151,7 @@ function ShoppingCart(){
                                     <span className="price">€{(ticket.eventTicket.ticketPrice)}</span>
                                 </div>
                                 <div className='col-1 text-end'>
-                                    <Button variant="outline-danger" size="sm" onClick={() => handleDeleteItem(ticket.reservedTicket.reservedID)}>
+                                    <Button id='btn-remove-item' variant="outline-danger" size="sm" onClick={() => handleDeleteItem(ticket.reservedTicket.reservedID)}>
                                         <i className="fas fa-trash"></i>
                                     </Button>
                                 </div>
@@ -212,11 +212,15 @@ function ShoppingCart(){
                                 </Dropdown.Menu>
                             </Dropdown>
                         )}
-
-                    <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
-                        <i className="fas fa-credit-card me-2"></i>
-                        Doorgaan naar Betaling
-                    </Button>
+                    {
+                        shoppingCart?.items !== undefined && 
+                        shoppingCart.items.length > 0 &&  
+                        <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
+                            <i className="fas fa-credit-card me-2"></i>
+                            Doorgaan naar Betaling
+                        </Button>
+                    }
+                   
                 </Card.Body>
             </Card>
         </div>

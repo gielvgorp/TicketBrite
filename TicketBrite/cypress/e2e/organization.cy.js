@@ -7,16 +7,16 @@ describe('Test organization role', () => {
     });
 
     it('Should organization tab show when have permission', () => {
-        cy.login(Cypress.env('testUser'), Cypress.env('testPassword'));
+        cy.login(Cypress.env('testOrganization'), Cypress.env('testPassword'));
 
         cy.get("._signInContainer_11k3u_65 a").click();
         cy.get("#profile-organization").should("exist");
     });
 
     it('Should create new event', () => {
-        cy.login(Cypress.env('testUser'), Cypress.env('testPassword'));
+        cy.login(Cypress.env('testOrganization'), Cypress.env('testPassword'));
 
-        cy.navigateToOrganizationProfile();
+        cy.navigateToOrganizationPanel();
 
         cy.get("#btn-new-event").click();
         cy.get(".add-event-modal").should("have.class", "show");
@@ -41,9 +41,9 @@ describe('Test organization role', () => {
     });
 
     it('Created event should be visable in unverified events list', () => {
-        cy.login("cypress-organization@e2e.com", "E2ETesting!");
+        cy.login(Cypress.env('testOrganization'), Cypress.env('testPassword'));
 
-        cy.navigateToOrganizationProfile();
+        cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");
         cy.get("@listGroup").find(".list-group-item").should("have.length", 1);
@@ -53,9 +53,9 @@ describe('Test organization role', () => {
 
 
     it('Organisator should be able to edit info of event', () => {
-        cy.login("cypress-organization@e2e.com", "E2ETesting!");
+        cy.login(Cypress.env('testOrganization'), Cypress.env('testPassword'));
 
-        cy.navigateToOrganizationProfile();
+        cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");
         cy.get("@listGroup").find(".list-group-item").should("have.length", 1);
@@ -71,7 +71,7 @@ describe('Test organization role', () => {
         cy.get("#btn-save-event-info").click();
 
         // check for saved changes
-        cy.navigateToOrganizationProfile();
+        cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");
         cy.get("@listGroup").find(".list-group-item").should("have.length", 1);

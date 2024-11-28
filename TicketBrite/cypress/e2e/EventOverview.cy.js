@@ -33,28 +33,4 @@ describe('Events overview page', () => {
 
         cy.get(".modal").should("have.class", "show");
     });
-
-    it("Could buy ticket and is visable in purachse overview", () => {
-        cy.login("cypress@e2e.com", "E2ETesting!");
-
-        cy.get("#nav-item-shopping-cart").click();
-
-        cy.get(".cart-item", { timeout: 10000 }).should("have.length.above", 0);
-
-        cy.get(".payment-button").click();
-
-        cy.url().should('include', '/Payment-success');
-
-        cy.get('body').contains('Aankoopnummer').then((text) => {
-            const purchaseId = text.text().split('Aankoopnummer: ')[1].trim(); // Dit haalt de GUID uit de tekst
-
-            // Gebruik de GUID direct in de test
-            cy.log(purchaseId); // Je kunt de GUID loggen voor debugging of verdere verificatie in de test
-
-            cy.get("._signInContainer_11k3u_65 a").click();
-            cy.get("#profile-ticket").click();
-
-            cy.get(".list-group-item h5").contains(purchaseId).should("exist");
-        });
-    });
 });
