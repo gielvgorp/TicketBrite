@@ -25,10 +25,15 @@ function ShoppingCart(){
     const [cartItems, setCartItems] = useState<shoppingCartItem[]>([]);
     const [paymentMethod, setPaymentMethod] = useState<string>("iDeal");
     const [selectedBank, setSelectedBank] = useState<string | null>(null);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
         handleFetchTickets();
     }, []);
+
+    const onTotalPriceChange = (value: number) => {
+        setTotalPrice(totalPrice + value);
+    }
 
     const handleFetchTickets = async () => {
         try {
@@ -50,6 +55,7 @@ function ShoppingCart(){
             console.log(data.value);
             setShoppingCart(data.value);
             setCartItems(data.value.items);
+            setTotalPrice(data.value.totalPrice);
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {
@@ -82,7 +88,6 @@ function ShoppingCart(){
             }
 
             const data = await response.json();
-            console.log(data);
             navigate(`/Payment-success/${data.value}`, {replace: true});
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
@@ -101,72 +106,74 @@ function ShoppingCart(){
                     {
                         shoppingCart !== undefined && shoppingCart?.items.length > 0 ? <ListGroup variant="flush" className="mb-4">
                         {cartItems.map(ticket => (
-                           <ShoppingCartItem ticket={ticket} />
+                           <ShoppingCartItem onRemoveItem={(value: number) => onTotalPriceChange(value)} ticket={ticket} />
                         ))}
                     </ListGroup> : <h6 className='text-center'>Geen items in de winkelwagen!</h6>
                     }
                    
 
-                    <hr />
-
-                    <Row className="align-items-center mb-4">
-                        <Col>
-                            <h5>Totaal:</h5>
-                        </Col>
-                        <Col className="text-end">
-                            <h5 className="text-success">€{shoppingCart?.totalPrice}</h5>
-                        </Col>
-                    </Row>
-
-                    <h5 className="mb-3">Kies uw betaalmethode:</h5>
-                    <div className="d-flex align-items-center mb-4">
-                        <Form.Check 
-                            inline 
-                            label="iDeal" 
-                            type="radio" 
-                            name="paymentMethod" 
-                            checked={paymentMethod === "iDeal"} 
-                            onChange={() => setPaymentMethod("iDeal")} 
-                        />
-                        <Form.Check 
-                            inline 
-                            label="Mastercard" 
-                            type="radio" 
-                            name="paymentMethod" 
-                            checked={paymentMethod === "Mastercard"} 
-                            onChange={() => setPaymentMethod("Mastercard")} 
-                        />
-                        <Form.Check 
-                            inline 
-                            label="Apple Pay" 
-                            type="radio" 
-                            name="paymentMethod" 
-                            checked={paymentMethod === "Apple Pay"} 
-                            onChange={() => setPaymentMethod("Apple Pay")} 
-                        />
-                    </div>
-                    
-                    {paymentMethod === "iDeal" && (
-                            <Dropdown onSelect={(value) => setSelectedBank(value || null)} className="mt-3 w-25">
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                    {selectedBank || "Selecteer uw bank"}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    {banks.map((bank, index) => (
-                                        <Dropdown.Item key={index} eventKey={bank}>{bank}</Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        )}
+                   
                     {
                         shoppingCart?.items !== undefined && 
                         shoppingCart.items.length > 0 &&  
-                        <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
-                            <i className="fas fa-credit-card me-2"></i>
-                            Doorgaan naar Betaling
-                        </Button>
+                        <>
+                         <hr />
+                        <Row className="align-items-center mb-4">
+                            <Col>
+                                <h5>Totaal:</h5>
+                            </Col>
+                            <Col className="text-end">
+                                <h5 className="text-success">€{totalPrice}</h5>
+                            </Col>
+                        </Row>
+
+                        <h5 className="mb-3">Kies uw betaalmethode:</h5>
+                        <div className="d-flex align-items-center mb-4">
+                            <Form.Check 
+                                inline 
+                                label="iDeal" 
+                                type="radio" 
+                                name="paymentMethod" 
+                                checked={paymentMethod === "iDeal"} 
+                                onChange={() => setPaymentMethod("iDeal")} 
+                            />
+                            <Form.Check 
+                                inline 
+                                label="Mastercard" 
+                                type="radio" 
+                                name="paymentMethod" 
+                                checked={paymentMethod === "Mastercard"} 
+                                onChange={() => setPaymentMethod("Mastercard")} 
+                            />
+                            <Form.Check 
+                                inline 
+                                label="Apple Pay" 
+                                type="radio" 
+                                name="paymentMethod" 
+                                checked={paymentMethod === "Apple Pay"} 
+                                onChange={() => setPaymentMethod("Apple Pay")} 
+                            />
+                        </div>
+                        
+                        {paymentMethod === "iDeal" && (
+                                <Dropdown onSelect={(value) => setSelectedBank(value || null)} className="mt-3 w-25">
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                        {selectedBank || "Selecteer uw bank"}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {banks.map((bank, index) => (
+                                            <Dropdown.Item key={index} eventKey={bank}>{bank}</Dropdown.Item>
+                                        ))}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            )}
+                            <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
+                                <i className="fas fa-credit-card me-2"></i>
+                                Doorgaan naar Betaling
+                            </Button>
+                        </>
                     }
-                   
+
                 </Card.Body>
             </Card>
         </div>
