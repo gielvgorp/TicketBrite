@@ -2,29 +2,17 @@ import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
-import { Event, Ticket } from '../Types';
+import { Ticket, Reservation, shoppingCartItem } from '../Types';
+import ShoppingCartItem from '../components/ShoppingCart/ShoppingCartItem';
 
 interface ReservedTicket {
     ticket: Ticket;
     reservation: Reservation;
 }
 
-interface Reservation {
-    reservedID: string;
-    ticketID: string;
-    userID: string;
-    reservedAt: Date;
-}
-
 interface ShoppingCart {
     totalPrice: string;
     items: shoppingCartItem[];
-}
-
-interface shoppingCartItem{
-    reservedTicket: Reservation;
-    eventTicket: Ticket;
-    event: Event;
 }
 
 const banks = [
@@ -77,32 +65,6 @@ function ShoppingCart(){
         }
     }, [shoppingCart]);
 
-    const handleDeleteItem = async (reserveID: string) => {
-        setCartItems(prevItems => prevItems.filter(item => item.reservedTicket.reservedID !== reserveID));
-        try {
-            const token = localStorage.getItem("jwtToken");
-
-            const response = await fetch(`https://localhost:7150/shopping-cart/${reserveID}/delete`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Fout bij het ophalen van gebruikersgegevens');
-            }
-
-            const data = await response.json();
-            console.log(data.value);
-        } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
-        } finally {
-            //setLoading(false);
-        }
-    }
-
     const handlePurscheTickets = async () => {
         try {
             const token = localStorage.getItem("jwtToken");
@@ -139,23 +101,7 @@ function ShoppingCart(){
                     {
                         shoppingCart !== undefined && shoppingCart?.items.length > 0 ? <ListGroup variant="flush" className="mb-4">
                         {cartItems.map(ticket => (
-                            <ListGroup.Item key={ticket.reservedTicket.reservedID} className="cart-item d-flex justify-content-between align-items-center">
-                                <div className="d-flex align-items-center col-9">
-                                    <Image src={ticket.event.eventImage} alt="Ticket Icon" rounded className="ticket-icon me-2" />
-                                    <span className="ticket-name"><span id='ticket-name'>{ticket.eventTicket.ticketName}</span> - <strong>{ticket.event.eventName}</strong></span>
-                                </div>
-                                <div className='col-1 text-center'>
-                                <span className="price"><strong>00:00</strong></span>
-                                </div>
-                                <div className='col-1 text-end'>
-                                    <span className="price">€{(ticket.eventTicket.ticketPrice)}</span>
-                                </div>
-                                <div className='col-1 text-end'>
-                                    <Button id='btn-remove-item' variant="outline-danger" size="sm" onClick={() => handleDeleteItem(ticket.reservedTicket.reservedID)}>
-                                        <i className="fas fa-trash"></i>
-                                    </Button>
-                                </div>
-                            </ListGroup.Item>
+                           <ShoppingCartItem ticket={ticket} />
                         ))}
                     </ListGroup> : <h6 className='text-center'>Geen items in de winkelwagen!</h6>
                     }

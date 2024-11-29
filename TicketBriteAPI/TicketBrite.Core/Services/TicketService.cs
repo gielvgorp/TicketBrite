@@ -58,7 +58,7 @@ namespace TicketBrite.Core.Services
         }
 
         public void SetPurscheTicket(Guid ticketID, Guid userID, Guid purchaseID)
-        {
+        {   
             if (CalculateRemainingTickets(ticketID) <= 0) throw new Exception("Ticket niet meer op voorraad!");
 
             _ticketRepository.SetPurscheTicket(ticketID, userID, purchaseID);

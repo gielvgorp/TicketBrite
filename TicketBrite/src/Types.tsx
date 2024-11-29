@@ -32,3 +32,16 @@ export interface Purchase {
     userID: string;
     guestID: string;
 }
+
+export interface shoppingCartItem{
+    reservedTicket: Reservation;
+    eventTicket: Ticket;
+    event: Event;
+}
+
+export interface Reservation {
+    reservedID: string;
+    ticketID: string;
+    userID: string;
+    reservedAt: Date;
+}
