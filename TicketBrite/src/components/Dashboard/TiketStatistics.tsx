@@ -15,10 +15,6 @@ function TicketStatistics({eventId}: Props){
 
     useEffect(() => {
         const fetchStats = async () => {
-            // const data = await getTicketOfEvent(eventId);
-            // setStats(data.value);
-            // setLoading(false);
-
             try {
                 // Verzend het formulier naar het endpoint
                 const res = await fetch(`https://localhost:7150/dashboard/tickets-statistics/${eventId}`, {

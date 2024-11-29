@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Ticket } from '../../Types';
 import TicketManagementItem from './TicketManagementComponent';
+import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 
 interface TicketManagementProps {
@@ -32,19 +33,16 @@ const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eve
             });
             
             const data = await res.json(); // Ontvang de JSON-response
-            console.log(data);
+            
             // validation error
-            if(data.statusCode === 400){
-                console.log(data);
-                //setErrorMsg(data.value);
+            if(data.statusCode !== 200){
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
             // successful registered
-            // if(data.statusCode === 200){
-            //     login(data.value.token);
-            //     console.log("Token:", localStorage.getItem('jwtToken'));
-            //     navigate("/", {replace: true});
-            // }           
+            if(data.statusCode === 200){
+               SuccessNotification({text: 'Gegevens opgeslagen!'});
+            }       
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         }

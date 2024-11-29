@@ -3,6 +3,7 @@ import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
 import { Event, Ticket } from '../Types';
+import { SuccessNotification } from '../components/Notifications/Notifications';
 
 interface ReservedTicket {
     ticket: Ticket;
@@ -95,7 +96,7 @@ function ShoppingCart(){
             }
 
             const data = await response.json();
-            console.log(data.value);
+            SuccessNotification({text: 'Ticket is verwijderd!'})
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {
