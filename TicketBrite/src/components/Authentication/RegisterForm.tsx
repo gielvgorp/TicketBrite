@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 function RegisterForm(){
-
+    const {login} = useAuth();
     const navigate = useNavigate();
-
     const [errorMsg, setErrorMsg] = useState("");
 
     const [formData, setFormData] = useState({
@@ -41,8 +41,8 @@ function RegisterForm(){
 
             // successful registered
             if(data.statusCode === 200){
-                localStorage.setItem('jwtToken', data.token);
-                console.log("Token:", localStorage.getItem('jwtToken'));
+                console.log("Result: ", data);
+                login(data.value.token);
                 navigate("/", {replace: true});
             }           
         } catch (error) {

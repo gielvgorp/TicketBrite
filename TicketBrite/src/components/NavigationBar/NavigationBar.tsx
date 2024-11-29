@@ -23,7 +23,7 @@ function NavigationBar(){
             <div className="w-100 h-100 d-flex justify-content-between align-items-center gap-2">
                 <input type="text" className='form-control bg-primary p-2 text-white w-50' placeholder='Zoeken...' />
                 <div className={`${styles.signInContainer} h-100 d-flex justify-content-center align-items-center text-align-center px-3`}>
-                    { !isAuthenticated ? <Link className='text-white h-100 w-100 text-align-center' to="/authenticatie">Inloggen / Registreren</Link> : <Link className='text-white h-100 w-100 text-align-center' to="/profile">Welkom, {user.username}!</Link> }
+                    { !isAuthenticated ? <Link className='text-white h-100 w-100 text-align-center' to="/authenticatie">Inloggen / Registreren</Link> : <Link className='text-white h-100 w-100 text-align-center' to="/profile">Welkom, {user.name}!</Link> }
                 </div>
             </div>
         </nav>

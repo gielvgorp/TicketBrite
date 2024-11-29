@@ -76,7 +76,7 @@ namespace TicketBriteAPI.Controllers
 
                 _userService.AddUser(user);
 
-                var token = _jwtTokenService.GenerateJwtToken(user); // Token genereren
+                var token = _jwtTokenService.GenerateJwtToken(user);
                 return new JsonResult(Ok(new { Token = token }));
             }
             catch (Exception ex)

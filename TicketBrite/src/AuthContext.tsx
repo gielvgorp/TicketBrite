@@ -19,9 +19,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         const storedToken = localStorage.getItem('jwtToken');
         if (storedToken) {
-            const decodedToken: any = jwtDecode(storedToken);
-            setIsAuthenticated(true);
-            setRole(decodedToken.role); // Rol instellen op basis van gedecodeerd token
+            login(storedToken);
         }
     }, []); // Lege array zorgt ervoor dat de effect alleen bij de eerste render wordt uitgevoerd
 
