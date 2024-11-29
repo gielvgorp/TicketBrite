@@ -1,0 +1,28 @@
+.results {
+    background-color: white;
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    display: none;
+    flex-direction: column;
+}
+
+.search-bar-item {
+    border-bottom: 1px solid black;
+    height: 50px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.search-bar-item img {
+    height: 100%;
+    border-radius: 5px;
+}
+
+.search-bar-item:hover {
+    background: rgb(224, 224, 224);
+}
+
+.show {
+    display: flex !important;
+}

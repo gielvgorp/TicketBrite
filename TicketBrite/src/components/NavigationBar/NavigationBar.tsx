@@ -3,6 +3,7 @@ import styles from './navigationBar.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import useUser from '../../hooks/useUser';
 import { useAuth } from '../../AuthContext';
+import SearchBar from './searchbar';
 function NavigationBar(){
     const { user, loading } = useUser();
     const { isAuthenticated } = useAuth();
@@ -21,8 +22,8 @@ function NavigationBar(){
                 <li id="nav-item-shopping-cart" className='ms-auto me-5'><Link className='position-relative' to="/shopping-cart"><i className="fa-solid fa-cart-shopping"></i></Link></li>
             </ul>
             <div className="w-100 h-100 d-flex justify-content-between align-items-center gap-2">
-                <input type="text" className='form-control bg-primary p-2 text-white w-50' placeholder='Zoeken...' />
-                <div className={`${styles.signInContainer} h-100 d-flex justify-content-center align-items-center text-align-center px-3`}>
+                <SearchBar />
+                <div className={`${styles.signInContainer} h-100 d-flex justify-content-center align-items-center text-align-center px-3 col-6`}>
                     { !isAuthenticated ? <Link className='text-white h-100 w-100 text-align-center' to="/authenticatie">Inloggen / Registreren</Link> : <Link className='text-white h-100 w-100 text-align-center' to="/profile">Welkom, {user.name}!</Link> }
                 </div>
             </div>
