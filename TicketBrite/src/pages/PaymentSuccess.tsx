@@ -4,11 +4,6 @@ import { useAuth } from '../AuthContext';
 import { useParams } from 'react-router-dom';
 import { Ticket } from '../Types';
 
-interface PaymentSuccessProps {
-    tickets: Ticket[];
-    purchaseId: string;
-}
-
 function PaymentSuccess(){
     const {isAuthenticated} = useAuth();
     const { id } = useParams();
