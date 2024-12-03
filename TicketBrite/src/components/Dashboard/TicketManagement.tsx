@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Ticket } from '../../Types';
 import TicketManagementItem from './TicketManagementComponent';
 
 
-interface TicketManagementProps {
+type Props = {
     initialTickets: Ticket[];
     eventId: string;
 }
 
-const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eventId }) => {
+function TicketManagement({initialTickets, eventId}: Props){
     const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
 
     function handleSave(ticket: Ticket, index: number){
@@ -73,6 +73,6 @@ const TicketManagement: React.FC<TicketManagementProps> = ({ initialTickets, eve
             <button onClick={storeTickets} className="btn btn-primary mt-2 ml-2">Opslaan</button>
         </div>
     );
-};
+}
 
 export default TicketManagement;

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../../AuthContext";
 
-interface NotLoggedInModalProps {
+type Props = {
   onHide: () => void;
   onGuestContinue: (email: string, fullName: string) => void;
   onLogin: () => void;
 }
 
-const NotLoggedInModal: React.FC<NotLoggedInModalProps> = ({ onHide, onGuestContinue, onLogin }) => {
+function NotLoggedInModal({ onHide, onGuestContinue, onLogin }: Props){
   const {login} = useAuth();
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
@@ -101,6 +101,6 @@ const NotLoggedInModal: React.FC<NotLoggedInModalProps> = ({ onHide, onGuestCont
       </Modal.Footer>
     </Modal>
   );
-};
+}
 
 export default NotLoggedInModal;

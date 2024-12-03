@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, ListGroup, Modal, Badge } from 'react-bootstrap';
 import { Ticket, Purchase } from '../../../Types';
 import './TicketContent.css';
@@ -8,7 +8,7 @@ interface PurchaseViewModel {
   eventTickets: Ticket[];
 }
 
-const TicketContent: React.FC = () => {
+function TicketContent() {
   const [purchases, setPurchases] = useState<PurchaseViewModel[]>([]);
   const [selectedPurchase, setSelectedPurchase] = useState<PurchaseViewModel | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -181,6 +181,6 @@ const fetchEvents = async () => {
      
     </div>
   );
-};
+}
 
 export default TicketContent;
