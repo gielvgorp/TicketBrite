@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  ticketbriteapi:
+    image: ${DOCKER_REGISTRY-}ticketbriteapi
+    build:
+      context: .
+      dockerfile: TicketBriteAPI/Dockerfile
+    networks:
+      - app-network
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=TicketBriteDB;User=sa;Password=YourPassword123;TrustServerCertificate=true
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ticketbrite_db
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourPassword123
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sqldata:
