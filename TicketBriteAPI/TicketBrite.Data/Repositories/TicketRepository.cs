@@ -56,13 +56,18 @@ namespace TicketBrite.Data.Repositories
         {
             _dbContext.ReservedTickets.Add(new ReservedTicket
             {
-                reservedID = Guid.NewGuid(),
+                reservedID = reservationID,
                 ticketID = ticketid,
                 userID = userID,
                 reservedAt = DateTime.Now
             });
 
             _dbContext.SaveChanges();
+        }
+
+        public ReservedTicket GetReservedTicket(Guid reservationID)
+        {
+            return _dbContext.ReservedTickets.FirstOrDefault(t => t.reservedID == reservationID);
         }
 
         public void UpdateTicket(EventTicket ticket)

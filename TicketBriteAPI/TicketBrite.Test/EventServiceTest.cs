@@ -50,8 +50,32 @@ namespace TicketBrite.Test
                     {
                         eventID = Guid.Parse("1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97"),
                         organizationID = Guid.NewGuid(),
-                        eventName = "Rock Concert",
+                        eventName = "Snollebollekes: LIVE!",
                         eventDateTime = DateTime.Now.AddMonths(1),
+                        eventLocation = "Johan Cruijff ArenA, Amsterdam",
+                        eventAge = 18,
+                        eventCategory = "Muziek",
+                        eventImage = "event_img_URL",
+                        eventDescription = "Rock concert"
+                    },
+                    new Event
+                    {
+                        eventID = Guid.Parse("ee4819fa-157f-49c5-a2ba-a2541d56e54b"),
+                        organizationID = Guid.NewGuid(),
+                        eventName = "Fontys Festival",
+                        eventDateTime = DateTime.Now.AddDays(7),
+                        eventLocation = "Fontys Rachelsmolen, Eindhoven",
+                        eventAge = 18,
+                        eventCategory = "Muziek",
+                        eventImage = "event_img_URL",
+                        eventDescription = "Rock concert"
+                    },
+                    new Event
+                    {
+                        eventID = Guid.Parse("a21c1e59-4edf-4ca9-a6ee-f74142ed6529"),
+                        organizationID = Guid.NewGuid(),
+                        eventName = "Rock Concert",
+                        eventDateTime = DateTime.Now.AddDays(13),
                         eventLocation = "Johan Cruijff ArenA, Amsterdam",
                         eventAge = 18,
                         eventCategory = "Muziek",
@@ -94,25 +118,26 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Get events by category")]
-        [DataRow("Muziek", true)]               // Category that exists
-        [DataRow("FakeTestCategory", false)]    // Category that doesn't exist
-        public void Get_Events_By_Category(string category, bool categoryExists)
+        [DataRow("Muziek", 3, new [] { "1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97", "ee4819fa-157f-49c5-a2ba-a2541d56e54b", "a21c1e59-4edf-4ca9-a6ee-f74142ed6529" })]               // Category that exists
+        [DataRow("FakeTestCategory", 0, new string[] { })]    // Category that doesn't exist
+        public void Get_Events_By_Category(string category, int expectedAmount, string[] expectedEventIds)
         {
             List<Event> events = eventService.GetEvents(category);
 
-            if (categoryExists)
-            {
-                Assert.IsTrue(events.All(e => e.eventCategory == category), string.Format("Not all events have the category: '{0}'", category));
-            }
-            else
-            {
-                Assert.AreEqual(0, events.Count, $"Expected no events, but found {events.Count} events for category '{category}'");
-            }
+            Assert.AreEqual(expectedAmount, events.Count, $"Expected {expectedAmount} events, but found {events.Count} events for category '{category}'");
+
+            Guid[] actualEventIds = events.Select(e => e.eventID).ToArray();
+            Guid[] expectedGuids = expectedEventIds.Select(id => Guid.Parse(id)).ToArray();
+
+            CollectionAssert.AreEquivalent(expectedGuids, actualEventIds, $"The event IDs for category '{category}' do not match the expected IDs.");
+            Assert.IsTrue(events.All(e => e.eventCategory == category), string.Format("Not all events have the category: '{0}'", category));
         }
 
         [TestMethod("Create event and add to repository")]
         public void Create_New_Event_Add_To_Repository()
         {
+            int initialCount = eventService.GetEvents().Count;
+
             Guid id = Guid.NewGuid();
 
             Event newEvent = new Event
@@ -133,25 +158,36 @@ namespace TicketBrite.Test
             Event result = eventService.GetEvent(id);
 
             Assert.AreEqual(newEvent, result);
+            Assert.AreEqual(eventService.GetEvents().Count, initialCount + 1);
         }
 
         [TestMethod("Update event and save to repository")]
-        public void Update_Event_Save_To_Repository()
+        [DataRow("1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97", true)]  // Event exists
+        [DataRow("6510d601-b1dc-4049-8f76-c63450fad82c", false)] // Event does not exist
+        public void Update_Event_Save_To_Repository(string eventID, bool eventExists)
         {
-            Event result = eventService.GetEvent(Guid.Parse("1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97"));
+            Guid parsedEventID = Guid.Parse(eventID);
+            Event result = eventService.GetEvent(parsedEventID);
 
-            Assert.IsNotNull(result);
-
-            if (result != null)
+            if (!eventExists)
             {
-                result.eventName = "Updated event name";
-                eventService.UpdateEvent(result);
-
-                Event updated_result = eventService.GetEvent(result.eventID);
-
-                Assert.AreEqual(updated_result, result);
+                Assert.IsNull(result, "Expected no event to be found, but an event was returned.");
+                return;
             }
+
+            Assert.IsNotNull(result, "Expected an event, but none was found.");
+
+            string newEventName = "Updated event name";
+            result.eventName = newEventName;
+            eventService.UpdateEvent(result);
+
+            Event updatedResult = eventService.GetEvent(parsedEventID);
+
+            Assert.IsNotNull(updatedResult, "Updated event was not found.");
+            Assert.AreEqual(newEventName, updatedResult.eventName, "Event name was not updated correctly.");
+            Assert.AreEqual(result.eventCategory, updatedResult.eventCategory, "Event category should remain unchanged.");
         }
+
 
         [TestMethod("Get all events")]
         public void Get_All_Events()

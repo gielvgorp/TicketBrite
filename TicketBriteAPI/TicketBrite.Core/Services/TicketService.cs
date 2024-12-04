@@ -54,6 +54,12 @@ namespace TicketBrite.Core.Services
 
         public void SetReservedTicket(Guid ticketID, Guid userID, Guid reservationID)
         {
+            EventTicket ticket = GetTicket(ticketID);
+
+            if(ticket == null) throw new Exception("Ticket niet gevonden!");
+            if (!ticket.ticketStatus) throw new Exception("Er kunnen geen reserveringen plaats vinden voor deze ticket!");
+            if(CalculateRemainingTickets(ticketID) == 0) throw new Exception("Er zijn geen tickets meer beschikbaar!");
+
             _ticketRepository.SetReserveTicket(ticketID, userID, reservationID);
         }
 
@@ -67,6 +73,11 @@ namespace TicketBrite.Core.Services
         public void RemoveReservedTicket(Guid reservedID)
         {
             _ticketRepository.RemoveReserveTicket(reservedID);
+        }
+
+        public ReservedTicket GetReservedTicket(Guid reservationID)
+        {
+            return _ticketRepository.GetReservedTicket(reservationID);
         }
 
         public void UpdateReservedTicketsToPursche(Guid userID, Guid purchaseID)
