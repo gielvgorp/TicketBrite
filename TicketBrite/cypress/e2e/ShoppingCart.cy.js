@@ -76,7 +76,7 @@ describe('Test shopping cart', () => {
 
             cy.log(purchaseId);
 
-            cy.get("._signInContainer_11k3u_65 a").click();
+            cy.get(".sign-in-container a").click();
             cy.get("#profile-ticket").click();
 
             cy.get(".list-group-item h5").contains(purchaseId).should("exist");

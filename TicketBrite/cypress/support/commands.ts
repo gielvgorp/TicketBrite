@@ -7,7 +7,7 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     cy.get('#password-input').type(password); // Enter the password
     cy.get('button[type="submit"]').click(); // Click the login button
 
-    cy.get("._signInContainer_11k3u_65 a").should("contain.text", "Welkom, ");
+    cy.get(".sign-in-container a").should("contain.text", "Welkom, ");
 });
 
 Cypress.Commands.add('register', (email: string, fullname: string, password: string) => {
@@ -20,14 +20,14 @@ Cypress.Commands.add('register', (email: string, fullname: string, password: str
 });
 
 Cypress.Commands.add('navigateToOrganizationPanel', () => {
-    cy.get("._signInContainer_11k3u_65 a").click();
+    cy.get(".sign-in-container a").click();
     cy.get("#profile-organization").should("exist");
     cy.get("#profile-organization").click();
     cy.get("#submenu1").click();
 });
 
 Cypress.Commands.add('navigateToAdminPanel', () => {
-    cy.get("._signInContainer_11k3u_65 a").click();
+    cy.get(".sign-in-container a").click();
     cy.get("#profile-admin").should("exist");
     cy.get("#profile-admin").click();
     cy.get("#submenu2").click();

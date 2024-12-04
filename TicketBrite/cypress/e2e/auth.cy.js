@@ -110,6 +110,6 @@ describe('Authentication register and login', () => {
     it("Should login successfull", () => {
         cy.login("cypress@e2e.com", "E2ETesting!");
 
-        cy.get("._signInContainer_11k3u_65 a").should("have.text", "Welkom, Cypress!");
+        cy.get(".sign-in-container a").should("have.text", "Welkom, Cypress!");
     });
 });

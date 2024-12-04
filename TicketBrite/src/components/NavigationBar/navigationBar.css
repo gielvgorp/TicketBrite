@@ -3,7 +3,7 @@ nav * {
     margin: 0 !important;
 }
 
-.navBar {
+.nav-bar {
     width: 100%;
     height: min(8vh, 75px);
     background-color: #024ddf;
@@ -13,12 +13,12 @@ nav * {
 
 }
 
-.navBar .title {
+.nav-bar .title {
     font-family: var(--font);
     color: white;
 }
 
-.navBar a {
+.nav-bar a {
     text-decoration: none;
 }
 
@@ -30,14 +30,14 @@ nav * {
     color: white;
 }
 
-.signInContainer {
+.sign-in-container {
     width: 300px;
     text-align: center;
     line-height: min(8vh, 75px);
     transition: .5s ease;
 }
 
-.signInContainer:hover {
+.sign-in-container:hover {
     background-color: #0d6efd;
 }
 
