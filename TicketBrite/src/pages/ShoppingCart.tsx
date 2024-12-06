@@ -52,7 +52,7 @@ function ShoppingCart(){
             }
 
             const data = await response.json();
-            console.log(data.value);
+
             setShoppingCart(data.value);
             setCartItems(data.value.items);
             setTotalPrice(data.value.totalPrice);

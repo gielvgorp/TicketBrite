@@ -118,7 +118,7 @@ function EventInfo(){
                         <div className={`${styles.header} p-3 d-flex align-items-center shadow`}>
                             <img className={styles.eventImage} src={event.eventImage} alt="" />
                             <div className={`${styles.eventInfo} ps-3`}>
-                                <h1>{event.eventName}</h1>
+                                <h1 data-test="event-name">{event.eventName}</h1>
                                 <p>{event.eventLocation}</p>
                                 <p>{new Date(event.eventDateTime).toLocaleDateString('nl-NL', optionsDate)} {new Date(event.eventDateTime).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}</p>
                                 <p>Leeftijdsrestrictie: {event.eventAge}+</p>
@@ -134,7 +134,7 @@ function EventInfo(){
                         <div className={`${styles.topContainer} d-flex align-items-center justify-content-center`}>
                             <h4>Koop nu je tickets van Snelle!</h4>
                         </div>
-                        <div className={`${styles.ticketSelectorContainer}`}>
+                        <div data-test="ticket-selector-container" className={`${styles.ticketSelectorContainer}`}>
                             {
                                 tickets.length > 0 ? (
                                     tickets.map((ticket: Ticket) => (
@@ -153,7 +153,7 @@ function EventInfo(){
                             }     
                         </div>
                         <div className='align-self-end p-3'>
-                            <button onClick={handlePayTickets} className='btn btn-success px-4 py-2'>Betalen <i className="fa-solid fa-money-bill px-2"></i></button>
+                            <button data-test="btn-buy-tickets" onClick={handlePayTickets} className='btn btn-success px-4 py-2'>Betalen <i className="fa-solid fa-money-bill px-2"></i></button>
                         </div>
                     </div>
                     { showLoginWarning && <LoginModal setShowModal={setShowLoginWarning} showModal={showLoginWarning} /> }

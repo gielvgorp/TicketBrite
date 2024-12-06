@@ -1,6 +1,6 @@
-describe('Test organization role', () => {
-    it('Should organization tab not show when have no permission', () => {
-        cy.login(Cypress.env('testUser'), Cypress.env('testPassword'));
+describe("Test organization role", () => {
+    it("Should organization tab not show when have no permission", () => {
+        cy.login(Cypress.env('testUser'), Cypress.env("testPassword"));
 
         cy.get(".sign-in-container a").click();
         cy.get("#profile-organization").should("not.exist");
