@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Data.Repositories
 {
