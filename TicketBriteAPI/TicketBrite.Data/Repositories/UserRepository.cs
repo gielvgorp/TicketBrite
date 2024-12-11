@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
-using TicketBrite.DTO;
+using TicketBrite.Core.Domains;
 
 namespace TicketBrite.Data.Repositories
 {
@@ -19,15 +19,38 @@ namespace TicketBrite.Data.Repositories
             _dbContext = context;
         }
 
-        public void AddUser(User user)
+        public void AddUser(UserDomain userDomain)
         {
+            User user = new User
+            {
+                userID = userDomain.userID,
+                organizationID = userDomain.organizationID,
+                roleID = userDomain.roleID,
+                userEmail = userDomain.userEmail,
+                userName = userDomain.userName,
+                userPasswordHash = userDomain.userPasswordHash
+            };
+
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
         }
 
-        public User GetUser(Guid uid)
+        public UserDomain GetUser(Guid uid)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.userID == uid);
+            User result = _dbContext.Users.FirstOrDefault(u => u.userID == uid);
+
+            if (result == null)
+                return null;
+
+            return new UserDomain
+            {
+                userID = result.userID,
+                organizationID = result.organizationID,
+                roleID = result.roleID,
+                userEmail = result.userEmail,
+                userName = result.userName,
+                userPasswordHash = result.userPasswordHash
+            };
         }
 
         public void SetOrganization(Guid userID, Guid organizationID)
@@ -35,7 +58,7 @@ namespace TicketBrite.Data.Repositories
             User user = _dbContext.Users.Find(userID);
 
             if (user == null)
-                throw new Exception("User not found!");
+                throw new InvalidOperationException("User not found!");
 
             user.organizationID = organizationID;
 
@@ -47,44 +70,70 @@ namespace TicketBrite.Data.Repositories
             User user = _dbContext.Users.Find(userID);
 
             if (user == null)
-                throw new Exception("User not found!");
+                throw new InvalidOperationException("User not found!");
 
             user.roleID = roleID;
 
             _dbContext.SaveChanges();
         }
 
-        public Role GetUserRole(Guid userID)
+        public RoleDomain GetUserRole(Guid userID)
         {
-            User user = GetUser(userID);
+            UserDomain user = GetUser(userID);
 
-            if (user != null)
-            {
-                return GetRole(user.roleID);
-            }
+            if (user == null)
+                return null;
 
-            return null;
+            return GetRole(user.roleID);
         }
 
-        public User GetUserByEmail(string email)
+        public UserDomain GetUserByEmail(string email)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.userEmail == email);
+            return _dbContext.Users
+             .Where(u => u.userEmail == email)
+             .Select(u => new UserDomain
+             {
+                 userID = u.userID,
+                 organizationID = u.organizationID,
+                 roleID = u.roleID,
+                 userEmail = u.userEmail,
+                 userName = u.userName,
+                 userPasswordHash = u.userPasswordHash
+             })
+             .FirstOrDefault();
         }
         
-        public void AddGuest(Guest guest)
+        public void AddGuest(GuestDomain guestDomain)
         {
+            Guest guest = new Guest
+            {
+                guestID = guestDomain.guestID,
+                guestEmail = guestDomain.guestEmail,
+                guestName = guestDomain.guestName,
+                verificationCode = guestDomain.verificationCode
+            };
+
             _dbContext.Guests.Add(guest);
             _dbContext.SaveChanges();
         }
 
         public bool VerifyEmail(string email)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.userEmail == email) == null && _dbContext.Guests.FirstOrDefault(g => g.guestEmail == email) == null;
+            return !_dbContext.Users.Any(u => u.userEmail == email) && !_dbContext.Guests.Any(g => g.guestEmail == email);
         }
 
-        public Role GetRole(Guid roleID)
+        public RoleDomain GetRole(Guid roleID)
         {
-            return _dbContext.Roles.FirstOrDefault(r => r.roleID == roleID);
+            Role result = _dbContext.Roles.FirstOrDefault(r => r.roleID == roleID);
+
+            if (result == null)
+                return null;
+
+            return new RoleDomain
+            {
+                roleID = roleID,
+                roleName = result.roleName,
+            };
         }
     }
 }
