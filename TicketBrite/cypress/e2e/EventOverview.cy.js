@@ -24,7 +24,7 @@ describe('Events overview page', () => {
     it('Login warning should pop up when user wants to add ticket to shoppingcart', () => {
         cy.visit('http://localhost:5173/event/f827d813-e04a-4e84-8d69-72baef15fcd4');
 
-        cy.get("._signInContainer_11k3u_65 a").should("have.text", "Inloggen / Registreren");
+        cy.get(".sign-in-container a").should("have.text", "Inloggen / Registreren");
 
         cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().find("button").last().click();
 

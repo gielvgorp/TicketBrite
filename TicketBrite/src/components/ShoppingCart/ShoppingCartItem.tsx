@@ -36,7 +36,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
 
     {
         return showItem ? (
-        <ListGroup.Item key={ticket.reservedTicket.reservedID} className="cart-item d-flex justify-content-between align-items-center">
+        <ListGroup.Item key={ticket.reservedTicket.reservedID} data-test="cart-item" className="cart-item d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center col-9">
                 <Image src={ticket.event.eventImage} alt="Ticket Icon" rounded className="ticket-icon me-2" />
                 <span className="ticket-name"><span id='ticket-name'>{ticket.eventTicket.ticketName}</span> - <strong>{ticket.event.eventName}</strong></span>

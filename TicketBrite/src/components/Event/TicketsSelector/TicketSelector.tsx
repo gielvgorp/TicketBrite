@@ -22,18 +22,18 @@ function TicketSelector(props: Props){
     }
 
     return (
-        <div className={`${styles.ticketSelector} px-3`}>
+        <div data-test="ticket-selector" className={`${styles.ticketSelector} px-3`}>
             <div className='d-flex flex-column'>
                 <p>{props.name}</p>
                 <span className={styles.ticketPrice}>Prijs per ticket: {props.ticketPrice},-</span>
             </div>
-            <div className={styles.selectTicket}>
+            <div data-test="select-ticket" className={styles.selectTicket}>
                 {
                     props.ticket.ticketsRemaining > 0 && 
                     <>
-                        <button onClick={() => handleSelectTicket(-1)} disabled={amount === 0}><i className="fa-solid fa-minus"></i></button>
+                        <button data-test="btn-subtract-ticket" onClick={() => handleSelectTicket(-1)} disabled={amount === 0}><i className="fa-solid fa-minus"></i></button>
                         <span>{amount}</span>
-                        <button onClick={() => handleSelectTicket(1)} disabled={amount === maxTickets}><i className="fa-solid fa-plus"></i></button>
+                        <button data-test="btn-add-ticket" onClick={() => handleSelectTicket(1)} disabled={amount === maxTickets}><i className="fa-solid fa-plus"></i></button>
                     </>
                 }
             </div>
