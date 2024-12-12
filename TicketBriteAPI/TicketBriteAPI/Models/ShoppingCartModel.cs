@@ -1,4 +1,5 @@
 ﻿using TicketBrite.Core.Entities;
+using TicketBrite.DTO;
 
 namespace TicketBriteAPI.Models
 {
@@ -12,6 +13,6 @@ namespace TicketBriteAPI.Models
     {
         public ReservedTicket reservedTicket { get; set; }
         public EventTicket eventTicket { get; set; }
-        public Event Event { get; set; }
+        public EventDTO Event { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
@@ -30,7 +31,7 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("/event/get-all-verified/{category?}")]
         public JsonResult GetAllVerifiedEvents(string category = "")
         {
-            List<Event> events = eventService.GetAllVerifiedEvents(category);
+            List<EventDTO> events = eventService.GetAllVerifiedEvents(category);
 
             return new JsonResult(Ok(events));
         }
@@ -42,7 +43,7 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpPost("/event/new")]
-        public JsonResult AddEvent(Event model)
+        public JsonResult AddEvent(EventDTO model)
         {
             eventService.AddEvent(model);
 
