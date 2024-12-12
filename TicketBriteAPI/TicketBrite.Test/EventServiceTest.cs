@@ -148,7 +148,7 @@ namespace TicketBrite.Test
                 eventName = "Unit test event",
                 eventCategory = "Unit test",
                 eventDescription = "Description",
-                eventImage = "",
+                eventImage = "image.jpg",
                 eventDateTime = DateTime.Now.AddDays(1),
                 eventLocation = "Fontys Rachelsmolen",
                 eventAge = 18

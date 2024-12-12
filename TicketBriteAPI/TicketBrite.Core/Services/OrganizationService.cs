@@ -86,6 +86,9 @@ namespace TicketBrite.Core.Services
                     organizationWebsite = organization.organizationWebsite
                 };
 
+                if (GetOrganizationByID(organization.organizationID) == null)
+                    throw new KeyNotFoundException("Organisatie niet gevonden!");
+
                 organizationRepository.UpdateOrganization(organizationDomain);
             }
             catch (KeyNotFoundException ex)
