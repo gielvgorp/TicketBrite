@@ -111,8 +111,6 @@ function ShoppingCart(){
                     </ListGroup> : <h6 className='text-center'>Geen items in de winkelwagen!</h6>
                     }
                    
-
-                   
                     {
                         shoppingCart?.items !== undefined && 
                         shoppingCart.items.length > 0 &&  
@@ -167,7 +165,7 @@ function ShoppingCart(){
                                     </Dropdown.Menu>
                                 </Dropdown>
                             )}
-                            <Button onClick={handlePurscheTickets} variant="success" className="w-100 payment-button mt-3">
+                            <Button onClick={handlePurscheTickets} id="payment-button" variant="success" className="w-100 mt-3">
                                 <i className="fas fa-credit-card me-2"></i>
                                 Doorgaan naar Betaling
                             </Button>

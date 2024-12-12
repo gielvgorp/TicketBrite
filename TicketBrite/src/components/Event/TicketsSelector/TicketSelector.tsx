@@ -23,8 +23,8 @@ function TicketSelector(props: Props){
 
     return (
         <div data-test="ticket-selector" className={`${styles.ticketSelector} px-3`}>
-            <div className='d-flex flex-column'>
-                <p>{props.name}</p>
+            <div className="d-flex flex-column">
+                <p data-test="selector-ticket-name">{props.name}</p>
                 <span className={styles.ticketPrice}>Prijs per ticket: {props.ticketPrice},-</span>
             </div>
             <div data-test="select-ticket" className={styles.selectTicket}>
