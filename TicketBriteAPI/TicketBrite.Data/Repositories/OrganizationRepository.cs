@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
-using TicketBrite.Data.Migrations;
 
 namespace TicketBrite.Data.Repositories
 {
@@ -18,27 +13,47 @@ namespace TicketBrite.Data.Repositories
             _dbContext = context;
         }
 
-        public List<Event> GetAllEventsByOrganization(Guid organizationID)
+        private List<EventDomain> ConvertToDomainList(List<Event> events)
         {
-            return _dbContext.Events.Where(e => e.organizationID == organizationID).ToList();
+            return events.Select(e => new EventDomain
+            {
+                eventID = e.eventID,
+                eventAge = e.eventAge,
+                eventCategory = e.eventCategory,
+                eventDateTime = e.eventDateTime,
+                eventDescription = e.eventDescription,
+                eventImage = e.eventImage,
+                eventLocation = e.eventLocation,
+                eventName = e.eventName,
+                isVerified = e.isVerified,
+                organizationID = e.organizationID
+            }).ToList();
         }
 
-        public List<Event> GetVerifiedEventsByOrganization(Guid organizationID)
+        public List<EventDomain> GetAllEventsByOrganization(Guid organizationID)
         {
-            return _dbContext.Events.Where(e => e.organizationID == organizationID && e.isVerified).ToList();
+            List<Event> events = _dbContext.Events.Where(e => e.organizationID == organizationID).ToList();
+            return ConvertToDomainList(events);
         }
 
-        public List<Event> GetUnVerifiedEventsByOrganization(Guid organizationID)
+        public List<EventDomain> GetVerifiedEventsByOrganization(Guid organizationID)
         {
-            return _dbContext.Events.Where(e => e.organizationID == organizationID && !e.isVerified).ToList();
+            List<Event> events = _dbContext.Events.Where(e => e.organizationID == organizationID && e.isVerified).ToList();
+            return ConvertToDomainList(events);
         }
 
-        public void UpdateOrganization(Organization organization)
+        public List<EventDomain> GetUnVerifiedEventsByOrganization(Guid organizationID)
+        {
+            List<Event> events = _dbContext.Events.Where(e => e.organizationID == organizationID && !e.isVerified).ToList();
+            return ConvertToDomainList(events);
+        }
+
+        public void UpdateOrganization(OrganizationDomain organization)
         {
             Organization existingOrganization = _dbContext.Organizations.Find(organization.organizationID);
 
             if (existingOrganization == null)
-                throw new Exception("Event not found!");
+                throw new KeyNotFoundException("Organization not found!");
 
             existingOrganization.organizationName = organization.organizationName;
             existingOrganization.organizationEmail = organization.organizationEmail;
@@ -46,13 +61,25 @@ namespace TicketBrite.Data.Repositories
             existingOrganization.organizationAddress = organization.organizationAddress;
             existingOrganization.organizationWebsite = organization.organizationWebsite;
           
-
             _dbContext.SaveChanges();
         }
 
-        public Organization GetOrganizationByID(Guid organizationID)
+        public OrganizationDomain GetOrganizationByID(Guid organizationID)
         {
-            return _dbContext.Organizations.FirstOrDefault(o => o.organizationID == organizationID);
+            Organization result = _dbContext.Organizations.FirstOrDefault(o => o.organizationID == organizationID);
+
+            if (result == null)
+                throw new KeyNotFoundException("Organization not found!");
+
+            return new OrganizationDomain
+            {
+                organizationID = result.organizationID,
+                organizationAddress = result.organizationAddress,
+                organizationEmail = result.organizationEmail,
+                organizationName = result.organizationName,
+                organizationPhone = result.organizationPhone,
+                organizationWebsite = result.organizationWebsite
+            };
         }
     }
 }
