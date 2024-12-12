@@ -5,7 +5,7 @@ EXPOSE 80
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+WORKDIR ./
 COPY ./TicketBriteAPI/TicketBriteAPI.sln ./TicketBriteAPI/TicketBriteAPI.sln
 COPY ./TicketBriteAPI/Controllers/ ./TicketBriteAPI/Controllers/
 COPY ./TicketBriteAPI/Models/ ./TicketBriteAPI/Models/
