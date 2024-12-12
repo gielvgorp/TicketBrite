@@ -113,14 +113,14 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
     };
 
     return (
-        <div className="container" style={{ marginTop: '20px' }}>
+        <div className="container" style={{ marginTop: "20px" }}>
             <h3 className="mb-4">Mijn Evenementen</h3>
-            <Button id='btn-new-event' variant="success" onClick={handleShow} style={{ padding: '10px 20px', marginBottom: '20px' }}>
+            <Button data-test="btn-new-event" variant="success" onClick={handleShow} style={{ padding: "10px 20px", marginBottom: "20px" }}>
                 Evenement toevoegen
             </Button>
 
             {/* Modal for Adding Event */}
-            <Modal className='add-event-modal' show={showModal} onHide={handleClose} size="lg">
+            <Modal className="add-event-modal" show={showModal} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Nieuw Evenement Toevoegen</Modal.Title>
                 </Modal.Header>
@@ -129,36 +129,36 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Naam evenement</label>
-                                <input id="event-name" type="text" className="form-control" name="eventName" value={eventDetails.eventName} onChange={handleEventChange} />
+                                <input data-test="event-name" type="text" className="form-control" name="eventName" value={eventDetails.eventName} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Datum van evenement</label>
-                                <input id="event-dateTime" type="date" className="form-control" name="eventDateTime" value={eventDetails.eventDateTime} onChange={handleEventChange} />
+                                <input data-test="event-dateTime" type="date" className="form-control" name="eventDateTime" value={eventDetails.eventDateTime} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Locatie</label>
-                                <input id="event-location" type="text" className="form-control" name="eventLocation" value={eventDetails.eventLocation} onChange={handleEventChange} />
+                                <input data-test="event-location" type="text" className="form-control" name="eventLocation" value={eventDetails.eventLocation} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Minimum leeftijd</label>
-                                <input id='event-age' type="number" className="form-control" name="eventAge" value={eventDetails.eventAge} onChange={handleEventChange} />
+                                <input data-test='event-age' type="number" className="form-control" name="eventAge" value={eventDetails.eventAge} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Categorie</label>
-                                <input id="event-category" type="text" className="form-control" name="eventCategory" value={eventDetails.eventCategory} onChange={handleEventChange} />
+                                <input data-test="event-category" type="text" className="form-control" name="eventCategory" value={eventDetails.eventCategory} onChange={handleEventChange} />
                             </div>
                             <div className="col-md-6 mb-3">
                                 <label className="form-label">Afbeelding URL</label>
-                                <input id='event-image' type="text" className="form-control" name="eventImage" value={eventDetails.eventImage} onChange={handleEventChange} />
+                                <input data-test='event-image' type="text" className="form-control" name="eventImage" value={eventDetails.eventImage} onChange={handleEventChange} />
                             </div>
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Beschrijving</label>
-                            <textarea id='event-description' className="form-control" name="eventDescription" rows={3} value={eventDetails.eventDescription} onChange={handleEventChange}></textarea>
+                            <textarea data-test='event-description' className="form-control" name="eventDescription" rows={3} value={eventDetails.eventDescription} onChange={handleEventChange}></textarea>
                         </div>
                     </form>
                 </Modal.Body>
@@ -166,7 +166,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                     <Button variant="secondary" onClick={handleClose}>
                         Annuleren
                     </Button>
-                    <Button id="btn-submit-new-event" variant="primary" onClick={handleAddEvent}>
+                    <Button data-test="btn-submit-new-event" variant="primary" onClick={handleAddEvent}>
                         Evenement opslaan
                     </Button>
                 </Modal.Footer>

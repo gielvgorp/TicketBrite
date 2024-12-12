@@ -2,14 +2,14 @@ describe("Test organization role", () => {
     it("Should organization tab not show when have no permission", () => {
         cy.login(Cypress.env('testUser'), Cypress.env("testPassword"));
 
-        cy.get(".sign-in-container a").click();
+        cy.get("[data-test='nav-item-profile']").click();
         cy.get("#profile-organization").should("not.exist");
     });
 
     it('Should organization tab show when have permission', () => {
         cy.login(Cypress.env('testOrganization'), Cypress.env('testPassword'));
 
-        cy.get(".sign-in-container a").click();
+        cy.get("[data-test='nav-item-profile']").click();
         cy.get("#profile-organization").should("exist");
     });
 
@@ -18,18 +18,18 @@ describe("Test organization role", () => {
 
         cy.navigateToOrganizationPanel();
 
-        cy.get("#btn-new-event").click();
+        cy.get("[data-test='btn-new-event']").click();
         cy.get(".add-event-modal").should("have.class", "show");
 
-        cy.get("#event-name").type("Cypress test event");
-        cy.get("#event-dateTime").type('2024-12-25');
-        cy.get("#event-location").type("Fontys Rachelsmolen");
-        cy.get("#event-age").type("18");
-        cy.get("#event-category").type("E2E Testing");
-        cy.get("#event-image").type("https://miro.medium.com/v2/resize:fit:785/1*uBf3SgcGi-I6Sml9aG10kw.png");
-        cy.get("#event-description").type("Dit is een evenement wat is gemaakt door een Cypress test!");
+        cy.get("[data-test='event-name']").type("Cypress test event");
+        cy.get("[data-test='event-dateTime']").type('2024-12-25');
+        cy.get("[data-test='event-location']").type("Fontys Rachelsmolen");
+        cy.get("[data-test='event-age']").type("18");
+        cy.get("[data-test='event-category']").type("E2E Testing");
+        cy.get("[data-test='event-image']").type("https://miro.medium.com/v2/resize:fit:785/1*uBf3SgcGi-I6Sml9aG10kw.png");
+        cy.get("[data-test='event-description']").type("Dit is een evenement wat is gemaakt door een Cypress test!");
 
-        cy.get("#btn-submit-new-event").click();
+        cy.get("[data-test='btn-submit-new-event']").click();
     });
 
     it('New event should not be visable on public event overview', () => {

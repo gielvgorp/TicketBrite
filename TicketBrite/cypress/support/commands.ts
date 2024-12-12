@@ -6,8 +6,7 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     cy.get('#email-input').type(email); // Enter the email
     cy.get('#password-input').type(password); // Enter the password
     cy.get('button[type="submit"]').click(); // Click the login button
-
-    cy.get(".sign-in-container a").should("contain.text", "Welkom, ");
+    cy.get("[data-test='nav-item-profile']").should("contain.text", "Welkom, ");
 });
 
 Cypress.Commands.add('register', (email: string, fullname: string, password: string) => {

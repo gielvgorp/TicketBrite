@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
 import { Event, Ticket } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TiketStatistics';
-import { getEventDetails, updateEventDetails } from '../hooks/useEvent';
+import { updateEventDetails } from '../hooks/useEvent';
 import '../Dashboard.css';
 
-const DashboardPage: React.FC = () => {
+function DashboardPage(){
     const { eventId } = useParams<{ eventId: string | undefined }>();
     const [eventDetails, setEventDetails] = useState<Event | null>(null);
     const [eventTickets, setEventTickets] = useState<Ticket[] | null>(null);
@@ -41,7 +41,6 @@ const DashboardPage: React.FC = () => {
         await updateEventDetails(eventId, updatedDetails);
         setEventDetails(updatedDetails);
     };
-    
 
     if (loading) return <div>Loading...</div>;
 
@@ -61,6 +60,6 @@ const DashboardPage: React.FC = () => {
             </div>
         </div>
     );
-};
+}
 
 export default DashboardPage;

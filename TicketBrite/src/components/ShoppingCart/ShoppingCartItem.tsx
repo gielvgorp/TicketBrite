@@ -39,16 +39,16 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
         <ListGroup.Item key={ticket.reservedTicket.reservedID} data-test="cart-item" className="cart-item d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center col-9">
                 <Image src={ticket.event.eventImage} alt="Ticket Icon" rounded className="ticket-icon me-2" />
-                <span className="ticket-name"><span id='ticket-name'>{ticket.eventTicket.ticketName}</span> - <strong>{ticket.event.eventName}</strong></span>
+                <span className="ticket-name"><span data-test="cart-item-ticket-name">{ticket.eventTicket.ticketName}</span> - <strong data-test="cart-item-event-name">{ticket.event.eventName}</strong></span>
             </div>
             <div className='col-1 text-center'>
             <span className="price"><strong>00:00</strong></span>
             </div>
             <div className='col-1 text-end'>
-                <span className="price">€{(ticket.eventTicket.ticketPrice)}</span>
+                <span data-test="cart-item-ticket-price" className="price">€{(ticket.eventTicket.ticketPrice)}</span>
             </div>
             <div className='col-1 text-end'>
-                <Button id='btn-remove-item' variant="outline-danger" size="sm" onClick={() => handleDeleteItem()}>
+                <Button data-test='btn-remove-item' variant="outline-danger" size="sm" onClick={() => handleDeleteItem()}>
                     <i className="fas fa-trash"></i>
                 </Button>
             </div>
