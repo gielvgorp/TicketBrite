@@ -4,6 +4,7 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -21,7 +22,7 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("/admin/get-unverified-events")]
         public JsonResult GetAdminUnverifiedEvents()
         {
-            List<Event> result = adminService.GetAllUnVerifiedEvents();
+            List<EventDTO> result = adminService.GetAllUnVerifiedEvents();
 
             return new JsonResult(Ok(result));
         }
