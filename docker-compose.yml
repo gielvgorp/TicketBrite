@@ -18,14 +18,14 @@ services:
       context: ./TicketBrite
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - api
     networks:
       - app-network
 
   db:
-   image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: ticketbrite_db
     environment:
       - ACCEPT_EULA=Y
@@ -39,3 +39,5 @@ networks:
   app-network:
     driver: bridge
 
+volumes:
+  mssql_data:
