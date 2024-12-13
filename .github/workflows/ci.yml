@@ -75,8 +75,7 @@ jobs:
       - name: Wait for frontend to start
         working-directory: ./TicketBrite
         run: |
-          npm run huild & 
-          npm run preview
+          run: npm run start:background
 
         
       # Stap 9: Voer Cypress-tests uit
