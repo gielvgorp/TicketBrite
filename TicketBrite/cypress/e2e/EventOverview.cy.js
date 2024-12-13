@@ -2,7 +2,7 @@ describe('Events overview page', () => {
     it('Ticket selector should add ticket when clicking plus button', () => {
         cy.visit('http://localhost:5173/event/f827d813-e04a-4e84-8d69-72baef15fcd4');
 
-        cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().as("TicketSelector").find("span").should("have.text", "0");
+        cy.get("[data-test='ticket-selector']:first-child [data-test='select-ticket']").first().as("TicketSelector").find("span").should("have.text", "0");
 
         cy.get('@TicketSelector').first().find("button").last().click();
 
@@ -12,7 +12,7 @@ describe('Events overview page', () => {
     it('Ticket selector button should disable at 10 tickets', () => {
         cy.visit('http://localhost:5173/event/f827d813-e04a-4e84-8d69-72baef15fcd4');
 
-        cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().as("TicketSelector").find("span").should("have.text", "0");
+        cy.get("[data-test='ticket-selector']:first-child [data-test='select-ticket']").first().as("TicketSelector").find("span").should("have.text", "0");
 
         for (let i = 0; i < 10; i++) {
             cy.get('@TicketSelector').first().find("button").last().click();
@@ -26,8 +26,7 @@ describe('Events overview page', () => {
 
         cy.get(".sign-in-container a").should("have.text", "Inloggen / Registreren");
 
-        cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().find("button").last().click();
-
+        cy.get("[data-test='ticket-selector']:first-child [data-test='select-ticket']").first().as("TicketSelector").find("button").last().click();
 
         cy.get('._sideBar_13834_29 button.btn-success').first().click();
 

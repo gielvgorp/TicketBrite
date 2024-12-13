@@ -65,7 +65,7 @@ function LoginForm(){
                     <label htmlFor="password-input">Password</label>
                     <input onChange={handleChange} type="password" className="form-control p-2" id="password-input" name="Password" placeholder="**********" />
                 </div>
-                <p className="text-danger">{errorMsg}</p>
+                <p data-test="validation-message" className="text-danger">{errorMsg}</p>
                 <button type="submit" className="btn btn-primary d-block ms-auto mt-3 w-25 py-2">Inloggen</button>
             </form>
         </>
