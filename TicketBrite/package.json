@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview --port 5173",
-    "start:background": "concurrently \"vite --port 5173\""
+    "start:background": "vite --port 5173 &"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.7",
