@@ -19,14 +19,14 @@ Cypress.Commands.add('register', (email: string, fullname: string, password: str
 });
 
 Cypress.Commands.add('navigateToOrganizationPanel', () => {
-    cy.get(".sign-in-container a").click();
+    cy.get("[data-test='nav-item-profile'] a").click();
     cy.get("#profile-organization").should("exist");
     cy.get("#profile-organization").click();
     cy.get("#submenu1").click();
 });
 
 Cypress.Commands.add('navigateToAdminPanel', () => {
-    cy.get(".sign-in-container a").click();
+    cy.get("[data-test='nav-item-profile'] a").click();
     cy.get("#profile-admin").should("exist");
     cy.get("#profile-admin").click();
     cy.get("#submenu2").click();

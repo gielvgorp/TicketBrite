@@ -54,7 +54,7 @@ function PaymentSuccess(){
                         isAuthenticated ? <p>U kunt uw bestelling terug vinden in de bestelling overzicht bij uw profiel</p> : <p>U krijgt binnen 1-2 minuten een e-mail met uw tickets!</p>
                     }
                     
-                    <h5>Aankoopnummer: <strong>{id}</strong></h5>
+                    <h5>Aankoopnummer: <strong data-test='purchase-id'>{id}</strong></h5>
 
                     <Card className="mt-3">
                         <Card.Header>Gekozen Tickets</Card.Header>
