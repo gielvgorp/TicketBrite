@@ -65,7 +65,7 @@ jobs:
           ConnectionStrings__DefaultConnection: "Server=localhost;Database=TicketBriteDb;User=sa;Password=${{ secrets.DB_PASSWORD_CI }};TrustServerCertificate=True"
           ASPNETCORE_URLS: "http://+:5000/"
         run: |
-          dotnet run --project ./TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
+          dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
           echo "Waiting for API to start..."
           sleep 10
 
