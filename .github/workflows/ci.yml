@@ -72,9 +72,11 @@ jobs:
         working-directory: ./TicketBrite
         run: npm ci
 
-      - name: Start frontend
+      - name: Wait for frontend to start
         working-directory: ./TicketBrite
-        run: npm run dev
+        run: |
+          nohup npm run dev > /dev/null 2>&1
+
         
       # Stap 9: Voer Cypress-tests uit
       - name: Run Cypress tests
