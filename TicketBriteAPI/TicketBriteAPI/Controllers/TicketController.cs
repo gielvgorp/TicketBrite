@@ -26,14 +26,19 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpPost("/ticket/new")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public JsonResult AddTIcket(EventTicket model)
         {
             ticketService.CreateTicket(model);
 
-            return new JsonResult(Ok());
+            return new JsonResult(Ok("Ticket successfully created!"));
         }
 
         [HttpGet("/get-ticket/{ticketID}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TicketModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public JsonResult GetTicket(Guid ticketID)
         {
             EventTicket ticket = ticketService.GetTicket(ticketID);
@@ -53,6 +58,9 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpGet("/event/{eventID}/get-tickets")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<TicketModel>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public JsonResult GetTicketsOfEvent(Guid eventID)
         {
             List<EventTicket> tickets = ticketService.GetTicketsOfEvent(eventID);
@@ -77,6 +85,9 @@ namespace TicketBriteAPI.Controllers
 
         [HttpPost("/ticket/set-reserve")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<JsonResult> AddReservedTickets(List<ReservedTicketModel> model)
         {
             var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -149,7 +160,15 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpGet("/get-purchase/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<EventTicket>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
+        /// <summary>
+        /// Get purchased tickets of purchse by id
+        /// </summary>
+        /// <param name="id">Primary key purchase id.</param>
+        /// <returns>Returns a list of tickets.</returns>
         public JsonResult GetPurchaseByID(Guid id)
         {
             try
