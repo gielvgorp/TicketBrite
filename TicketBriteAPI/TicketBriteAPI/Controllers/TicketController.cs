@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
@@ -90,25 +91,41 @@ namespace TicketBriteAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<JsonResult> AddReservedTickets(List<ReservedTicketModel> model)
         {
-            var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userID == null) return new JsonResult(Unauthorized());
-            Guid reservationID = Guid.NewGuid();
-
-            foreach (ReservedTicketModel ticket in model)
+            try
             {
-                int remaining = ticketService.CalculateRemainingTickets(ticket.ticketID);
+                var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-                if (remaining < ticket.quantity) throw new Exception("Er zijn niet genoeg tickets meer over!");
+                if (userID == null)
+                    throw new AuthenticationException("Gebruiker is niet ingelogd!");
 
-                for (int i = 0; i < ticket.quantity; i++)
+                Guid reservationID = Guid.NewGuid();
+
+                foreach (ReservedTicketModel ticket in model)
                 {
-                    ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), reservationID);
+                    int remaining = ticketService.CalculateRemainingTickets(ticket.ticketID);
+
+                    if (remaining < ticket.quantity) 
+                        throw new Exception("Er zijn niet genoeg tickets meer over!");
+
+                    for (int i = 0; i < ticket.quantity; i++)
+                    {
+                        ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), reservationID);
+                    }
+
+                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
                 }
 
-                await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
+                return new JsonResult(Ok());
             }
-
-            return new JsonResult(Ok());
+            catch (AuthenticationException ex)
+            {
+                return new JsonResult(Unauthorized(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(BadRequest("Er is iets misgegaan met het reserveren van de ticket!"));
+            }
+          
         }
 
         [HttpGet("/ticket/reserve-ticket/get-tickets")]
