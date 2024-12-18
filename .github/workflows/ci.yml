@@ -81,7 +81,7 @@ jobs:
         working-directory: ./TicketBrite
         run: |
           npm run build
-          npm start &
+          npm run dev &
 
       # Stap 9: Wacht tot services beschikbaar zijn
       - name: Wait for services
