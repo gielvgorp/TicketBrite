@@ -36,8 +36,8 @@ jobs:
       # Stap 5: Wacht tot de services beschikbaar zijn
       - name: Wait for services
         run: |
-          npx wait-on http://localhost:5000
-          npx wait-on http://localhost:3000
+          wait-on http://localhost:5000
+          wait-on http://localhost:3000
 
       # Stap 6: Voer Cypress-tests uit
       - name: Run Cypress tests
