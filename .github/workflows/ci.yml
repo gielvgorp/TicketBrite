@@ -19,72 +19,68 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Stap 2: Setup .NET Core en Node.js
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0'
+      # Stap 2: Log in op Docker Hub
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      # Stap 3: Maak de Docker images voor de services
+      - name: Build Docker Images
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-api ./TicketBriteAPI
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-frontend ./TicketBrite
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-db ./db
 
-      # Stap 3: Maak een Docker Compose bestand voor de database
-      - name: Create Docker Compose file for database
+      # Stap 4: Genereer een docker-compose.ci.yml-bestand om de services te starten
+      - name: Create Docker Compose file
         run: |
           cat << EOF > docker-compose.ci.yml
           version: '3.8'
           services:
-            db:
+            sqlserver:
               image: mcr.microsoft.com/mssql/server:2022-latest
+              container_name: sqlserver-container
               environment:
-                ACCEPT_EULA: Y
-                SA_PASSWORD: ${{ secrets.DB_PASSWORD_CI }}
-                MSSQL_PID: Express
+                - ACCEPT_EULA=Y
+                - MSSQL_SA_PASSWORD=YourPassword123
               ports:
                 - "1433:1433"
+              networks:
+                - app-network
+              volumes:
+                - mssql_data:/var/opt/mssql
+                
+            api:
+              image: ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-api
+              environment:
+                ConnectionStrings__DefaultConnection: "Server=db;Database=TicketBriteDb;User=sa;Password=${{ secrets.DB_PASSWORD_CI }};TrustServerCertificate=True"
+              ports:
+                - "5000:5000"
+              depends_on:
+                - sqlserver
+                
+            frontend:
+              image: ${{ secrets.DOCKERHUB_USERNAME }}/ticketbrite-frontend
+              ports:
+                - "3000:3000"
+              depends_on:
+                - api
           EOF
 
-      # Stap 4: Start de database
-      - name: Start database
-        run: |
-          docker compose -f docker-compose.ci.yml up -d
-          echo "Waiting for database to start..."
-          sleep 15
+      # Stap 5: Start de services met Docker Compose
+      - name: Start services
+        run: docker compose -f docker-compose.ci.yml up -d
 
-      # Stap 5: Herstel afhankelijkheden en bouw de API
-      - name: Restore dependencies
-        run: dotnet restore ./TicketBriteAPI/TicketBriteAPI.sln
-
-      - name: Build API
-        run: dotnet build ./TicketBriteAPI/TicketBriteAPI.sln --configuration Release --no-restore
-
-      # Stap 6: Start de API
-      - name: Start API
-        env:
-          ASPNETCORE_ENVIRONMENT: "Development"
-          ConnectionStrings__DefaultConnection: "Server=localhost;Database=TicketBriteDb;User=sa;Password=${{ secrets.DB_PASSWORD_CI }};TrustServerCertificate=True"
-          ASPNETCORE_URLS: "http://+:5000/"
-        run: |
-          dotnet run --project ./TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
-          echo "Waiting for API to start..."
-          sleep 10
-
-      # Stap 7: Installeer frontend-afhankelijkheden
-      - name: Install frontend dependencies
-        working-directory: ./TicketBrite
-        run: npm ci
-
-      # Stap 8: Wacht tot services beschikbaar zijn
+      # Stap 6: Wacht tot de services beschikbaar zijn
       - name: Wait for services
-        run: npx wait-on http://localhost:5000
+        run: |
+          npx wait-on http://localhost:5000
+          npx wait-on http://localhost:3000
 
-      # Stap 9: Voer Cypress-tests uit
+      # Stap 7: Voer Cypress-tests uit
       - name: Run Cypress tests
         working-directory: ./TicketBrite
         run: npx cypress run
 
-      # Stap 10: Stop services
+      # Stap 8: Stop en verwijder de services
       - name: Stop services
-        run: docker-compose -f docker-compose.ci.yml down
+        run: docker compose -f docker-compose.ci.yml down
