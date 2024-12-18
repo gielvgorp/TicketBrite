@@ -33,6 +33,9 @@ jobs:
       - name: Start services
         run: docker compose -f ./docker-compose.yml up -d
 
+      - name: Install Cypress
+        run: npm install cypress@latest --save-dev
+
       # Stap 6: Voer Cypress-tests uit
       - name: Run Cypress tests
         working-directory: ./TicketBrite
