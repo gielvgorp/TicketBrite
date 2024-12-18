@@ -33,12 +33,6 @@ jobs:
       - name: Start services
         run: docker compose -f ./docker-compose.yml up -d
 
-      # Stap 5: Wacht tot de services beschikbaar zijn
-      - name: Wait for services
-        run: |
-          wait-on http://localhost:5000
-          wait-on http://localhost:3000
-
       # Stap 6: Voer Cypress-tests uit
       - name: Run Cypress tests
         working-directory: ./TicketBrite
