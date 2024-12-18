@@ -31,6 +31,10 @@ namespace TicketBrite.Data.ApplicationDbContext
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<EventTicket>()
+           .Property(e => e.ticketPrice)
+           .HasColumnType("decimal(18, 2)");
+
             // Voorbeeld seeding
             modelBuilder.Entity<Role>().HasData(
                 new Role { roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"), roleName = "Klant" },

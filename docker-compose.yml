@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   api:
     build:
@@ -9,9 +8,9 @@ services:
     networks:
       - app-network
     environment:
-      - ConnectionStrings__DefaultConnection=Server=database;Database=TicketBriteDB;User Id=sa;Password=YourPassword123;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver-container,1433;Database=TicketBrite;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;
     depends_on:
-      - db
+      - sqlserver
 
   frontend:
     build:
@@ -24,14 +23,16 @@ services:
     networks:
       - app-network
 
-  db:
-   image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: ticketbrite_db
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-container
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=YourPassword123
     ports:
       - "1433:1433"
+    networks:
+      - app-network
     volumes:
       - mssql_data:/var/opt/mssql
 
@@ -39,3 +40,5 @@ networks:
   app-network:
     driver: bridge
 
+volumes:
+  mssql_data: {}

@@ -4,8 +4,6 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
-using TicketBriteAPI.Hubs;
-using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {

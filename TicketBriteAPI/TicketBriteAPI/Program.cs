@@ -8,6 +8,14 @@ using TicketBriteAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
+
+// Haal de connection string op uit de configuratie
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Log de connection string (zorg ervoor dat dit in productie niet gebeurt voor beveiliging)
+logger.LogInformation("Connection String: {ConnectionString}", connectionString);
+
 // Add services to the container.
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ITicketStatisticsNotifier, TicketStatisticsNotifier>();

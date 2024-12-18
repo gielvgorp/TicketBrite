@@ -1,8 +1,6 @@
-version: '3.4'
-
 services:
   ticketbriteapi:
-    image: ${DOCKER_REGISTRY-}ticketbriteapi
+    image: ${DOCKER_REGISTRY:-}ticketbriteapi
     build:
       context: .
       dockerfile: TicketBriteAPI/Dockerfile
