@@ -6,6 +6,12 @@ describe('Events overview page', () => {
 
         cy.get('@TicketSelector').first().find("button").last().click();
 
+        cy.intercept('GET', '**/get-events').as('getEvents');
+
+        cy.wait('@getEvents').then((interception) => {
+            expect(interception.response.statusCode).to.eq(201)
+        });
+
         cy.get('@TicketSelector').first().find("span").should("have.text", "1");
     });
 
