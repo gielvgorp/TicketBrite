@@ -50,8 +50,6 @@ jobs:
       - name: Start database
         run: |
           docker compose -f docker-compose.ci.yml up -d
-          echo "Waiting for database to start..."
-          sleep 15
 
       # Stap 5: Herstel afhankelijkheden en bouw de API
       - name: Restore dependencies

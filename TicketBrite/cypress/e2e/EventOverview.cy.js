@@ -31,8 +31,7 @@ describe('Events overview page', () => {
 
         cy.get(".sign-in-container a").should("have.text", "Inloggen / Registreren");
 
-        cy.get('._ticketSelector_1r6ku_1:first-child ._selectTicket_1r6ku_37').first().find("button").last().click();
-
+        cy.get("[data-test='ticket-selector']:first-child [data-test='select-ticket']").first().as("TicketSelector").find("button").last().click();
 
         cy.get('._sideBar_13834_29 button.btn-success').first().click();
 

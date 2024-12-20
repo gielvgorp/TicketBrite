@@ -4,6 +4,7 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
@@ -54,7 +55,7 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpPost("/dashboard/event/save")]
-        public JsonResult SaveEvent(Event model)
+        public JsonResult SaveEvent(EventDTO model)
         {
             try
             {

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
 {
@@ -13,8 +14,8 @@ namespace TicketBrite.Core.Services
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IEventRepository _eventRepository;
-        public DashboardService(ITicketRepository ticketRepository, IEventRepository eventRepository) 
-        { 
+        public DashboardService(ITicketRepository ticketRepository, IEventRepository eventRepository)
+        {
             _ticketRepository = ticketRepository;
             _eventRepository = eventRepository;
         }
@@ -36,9 +37,23 @@ namespace TicketBrite.Core.Services
             }
         }
 
-        public void SaveEvent(Event _event)
+        public void SaveEvent(EventDTO _event)
         {
-            _eventRepository.UpdateEvent(_event);
+            EventDomain eventDomain = new EventDomain
+            {
+                eventID = _event.eventID,
+                organizationID = _event.organizationID,
+                isVerified = _event.isVerified,
+                eventName = _event.eventName,
+                eventLocation = _event.eventLocation,
+                eventImage = _event.eventImage,
+                eventAge = _event.eventAge,
+                eventCategory = _event.eventCategory,
+                eventDateTime = _event.eventDateTime,
+                eventDescription = _event.eventDescription
+            };
+
+            _eventRepository.UpdateEvent(eventDomain);
         }
 
         public int GetSoldTickets(Guid ticketID)

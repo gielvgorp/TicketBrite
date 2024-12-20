@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.Data.ApplicationDbContext;
@@ -17,20 +18,22 @@ namespace TicketBrite.Data.Repositories
             _context = context;
         }
 
-
-        public User VerifyUser(string email, string password)
+        public GuestDomain VerifyGuest(Guid guestID, Guid verificationCode)
         {
-            return _context.Users.FirstOrDefault(u => u.userEmail == email && u.userPasswordHash == password);
-        }
+            Guest guest = _context.Guests.FirstOrDefault(g => g.guestID == guestID && g.verificationCode == verificationCode);
 
-        public User RegisterUser()
-        {
-            return null;
-        }
+            if (guest == null)
+                return null;
 
-        public Guest VerifyGuest(Guid guestID, Guid verificationCode)
-        {
-            return _context.Guests.FirstOrDefault(g => g.guestID == guestID && g.verificationCode == verificationCode);
+            GuestDomain domain = new GuestDomain
+            {
+                guestID = guestID,
+                guestName = guest.guestName,
+                guestEmail = guest.guestEmail,
+                verificationCode = verificationCode
+            };
+
+            return domain;
         }
     }
 }

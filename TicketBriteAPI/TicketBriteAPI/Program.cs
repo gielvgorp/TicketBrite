@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TicketBriteAPI.Hubs;
+using TicketBriteAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,7 +81,8 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.EnsureCreated();
-  
+
+    DatabaseSeeder.SeedDatabase(dbContext);
 }
 
 

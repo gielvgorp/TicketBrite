@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 
 namespace TicketBrite.Core.Interfaces
 {
     public interface IAdminRepository
     {
-        public List<Event> GetAllUnVerifiedEvents();
+        public List<EventDomain> GetAllUnVerifiedEvents();
 
-        public List<Event> GetAllVerifiedEvents();
+        public List<EventDomain> GetAllVerifiedEvents();
 
         public void UpdateEventVerificationStatus(bool value, Guid eventID);
     }

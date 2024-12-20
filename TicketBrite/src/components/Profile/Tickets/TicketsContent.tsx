@@ -88,7 +88,7 @@ const fetchEvents = async () => {
               <ListGroup.Item key={purchase.userPurchase.purchaseID} className="d-flex justify-content-between align-items-center">
                 <div>
                   <h5>
-                    <i className="fa-solid fa-ticket text-primary"></i> Aankoop ID: {purchase.userPurchase.purchaseID}
+                    <i className="fa-solid fa-ticket text-primary"></i> Aankoop ID: <span data-test="purchase-id">{purchase.userPurchase.purchaseID}</span>
                   </h5>
                   <p>
                     <i className="fa-solid fa-calendar text-secondary"></i> Aankoopdatum: {"01-01-2024"}

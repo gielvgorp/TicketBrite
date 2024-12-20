@@ -4,6 +4,9 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
+using TicketBriteAPI.Hubs;
+using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -16,7 +19,7 @@ namespace TicketBriteAPI.Controllers
         private readonly OrganizationService organizationService;
         private readonly AdminService adminService;
 
-        public OrganizationController(ApplicationDbContext context) 
+        public OrganizationController(ApplicationDbContext context)
         {
             eventService = new EventService(new EventRepository(context));
             ticketService = new TicketService(new TicketRepository(context));
@@ -27,7 +30,7 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("get-events/{organizationID}")]
         public JsonResult GetAllEventsOfOrganization(Guid organizationID)
         {
-            List<Event> events = organizationService.GetAllEventsByOrganization(organizationID);
+            List<EventDTO> events = organizationService.GetAllEventsByOrganization(organizationID);
 
             return new JsonResult(Ok(events));
         }
@@ -35,21 +38,16 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("/organization/get-events/overview/{organizationID}")]
         public JsonResult GetEventsOfOrganizationOverview(Guid organizationID)
         {
-            List<Event> verifiedEvents = organizationService.GetVerifiedEventsByOrganization(organizationID);
-            List<Event> UnverifiedEvents = organizationService.GetUnVerifiedEventsByOrganization(organizationID);
+            List<EventDTO> verifiedEvents = organizationService.GetVerifiedEventsByOrganization(organizationID);
+            List<EventDTO> UnverifiedEvents = organizationService.GetUnVerifiedEventsByOrganization(organizationID);
 
             return new JsonResult(Ok(new { verifiedEvents, UnverifiedEvents }));
         }
 
         [HttpPost("event/new")]
-        public JsonResult AddNewEvent(Event model)
+        public JsonResult AddNewEvent(EventDTO model)
         {
             eventService.AddEvent(model);
-
-/*            foreach (EventTicket ticket in model.Tickets)
-            {
-                ticketService.CreateTicket(ticket);
-            }*/
 
             return new JsonResult(Ok("Evenement aangemaakt!"));
         }

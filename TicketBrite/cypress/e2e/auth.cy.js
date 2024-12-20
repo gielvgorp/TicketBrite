@@ -31,8 +31,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Gebruiker niet gevonden");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Gebruiker niet gevonden");
     });
 
     it("Should show error message on password empty", () => {
@@ -43,8 +43,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Gebruiker niet gevonden");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Gebruiker niet gevonden");
     })
 
     it("Should show error message on email empty", () => {
@@ -55,8 +55,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Gebruiker niet gevonden");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Gebruiker niet gevonden");
     });
 
     it("Should show error message on register empty full name", () => {
@@ -68,8 +68,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Een of meerdere velden zijn leeg!");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Een of meerdere velden zijn leeg!");
     });
 
     it("Should show error message on register empty email empty", () => {
@@ -81,8 +81,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Een of meerdere velden zijn leeg!");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Een of meerdere velden zijn leeg!");
     });
 
     it("Should show error message on register empty password", () => {
@@ -94,8 +94,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger").should("be.visible");
-        cy.get(".text-danger").should("have.text", "Een of meerdere velden zijn leeg!");
+        cy.get("[data-test='validation-message']").should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Een of meerdere velden zijn leeg!");
     });
 
     it("Should show error message on email already in use", () => {
@@ -103,8 +103,8 @@ describe('Authentication register and login', () => {
 
         cy.get("button").click();
 
-        cy.get(".text-danger", { timeout: 10000 }).should("be.visible");
-        cy.get(".text-danger").should("have.text", "Email adres bestaat al!");
+        cy.get("[data-test='validation-message']", { timeout: 10000 }).should("be.visible");
+        cy.get("[data-test='validation-message']").should("have.text", "Email adres bestaat al!");
     });
 
     it("Should login successfull", () => {

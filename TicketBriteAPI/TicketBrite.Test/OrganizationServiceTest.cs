@@ -12,6 +12,7 @@ using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Test
 {
@@ -143,7 +144,7 @@ namespace TicketBrite.Test
         {
             Guid parsedOrganizationID = Guid.Parse(organizationID);
 
-            List<Event> events = organizationService.GetAllEventsByOrganization(parsedOrganizationID);
+            List<EventDTO> events = organizationService.GetAllEventsByOrganization(parsedOrganizationID);
 
             Assert.IsNotNull(events, "The returned list is null");
 
@@ -155,7 +156,7 @@ namespace TicketBrite.Test
         public void GetAllVerifiedEventsByOrganization(string organizationID)
         {
             Guid parsedOrganizationID = Guid.Parse(organizationID);
-            List<Event> events = organizationService.GetVerifiedEventsByOrganization(parsedOrganizationID);
+            List<EventDTO> events = organizationService.GetVerifiedEventsByOrganization(parsedOrganizationID);
 
             Assert.IsNotNull(events, "The returned list is null");
 
@@ -169,7 +170,7 @@ namespace TicketBrite.Test
         public void GetAllUnVerifiedEventsByOrganization(string organizationID)
         {
             Guid parsedOrganizationID = Guid.Parse(organizationID);
-            List<Event> events = organizationService.GetUnVerifiedEventsByOrganization(parsedOrganizationID);
+            List<EventDTO> events = organizationService.GetUnVerifiedEventsByOrganization(parsedOrganizationID);
 
             Assert.IsNotNull(events, "The returned list is null");
 
@@ -184,7 +185,7 @@ namespace TicketBrite.Test
         {
             Guid parsedOrganizationID = Guid.Parse(organizationID);
 
-            Organization organization = organizationService.GetOrganizationByID(parsedOrganizationID);
+            OrganizationDTO organization = organizationService.GetOrganizationByID(parsedOrganizationID);
 
             Assert.IsNotNull(organization, "The organization is not found!");
             Assert.AreEqual(organization.organizationID, parsedOrganizationID);
@@ -196,7 +197,7 @@ namespace TicketBrite.Test
         {
             Guid parsedOrganizationID = Guid.Parse(organizationID);
 
-            Organization organization = organizationService.GetOrganizationByID(parsedOrganizationID);
+            OrganizationDTO organization = organizationService.GetOrganizationByID(parsedOrganizationID);
 
             Assert.IsNotNull(organization, "The organization is not found!");
             Assert.AreEqual(organization.organizationID, parsedOrganizationID);
@@ -207,7 +208,7 @@ namespace TicketBrite.Test
 
             organizationService.UpdateOrganization(organization);
 
-            Organization updatedOrganization = organizationService.GetOrganizationByID(parsedOrganizationID);
+            OrganizationDTO updatedOrganization = organizationService.GetOrganizationByID(parsedOrganizationID);
 
             Assert.IsNotNull(updatedOrganization, "The organization is not found!");
             Assert.AreEqual(updatedOrganization.organizationName, newOrganizationName);
