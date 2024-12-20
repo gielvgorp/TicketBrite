@@ -26,7 +26,7 @@ function EventInfo(){
 
     useEffect(() => {      
         console.log(id); 
-          fetch(`https://localhost:7150/get-event/${id}`)
+          fetch(`http://localhost:7150/get-event/${id}`)
               .then(response => response.json())
               .then(data => {
                 setLoading(false);
