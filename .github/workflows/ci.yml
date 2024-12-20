@@ -68,7 +68,9 @@ jobs:
         run: |
           dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
           echo "Waiting for API to start..."
-          sleep 10
+          
+      - name: Wait for API
+        run: npx wait-on http://localhost:7150/get-events
 
       # Stap 7: Installeer frontend-afhankelijkheden
       - name: Install frontend dependencies
@@ -81,6 +83,9 @@ jobs:
         run: |
           npm run build
           npm run dev &
+      
+      - name: Wait for Frontend
+        run: npx wait-on http://localhost:5173
 
       # Stap 10: Voer Cypress-tests uit
       - name: Run Cypress tests

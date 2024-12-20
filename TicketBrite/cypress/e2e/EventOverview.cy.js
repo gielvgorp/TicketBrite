@@ -4,7 +4,7 @@ describe('Events overview page', () => {
 
         cy.intercept('GET', '**/get-events').as('getEvents');
         cy.wait('@getEvents').then((interception) => {
-            expect(interception.response.statusCode).to.eq(201)
+            expect(interception.response.statusCode).to.eq(200);
         });
 
         cy.get("[data-test='ticket-selector-container'] [data-test='ticket-selector']:first-child").as("TicketSelector").find("span").should("have.text", "0");
