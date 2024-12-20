@@ -2,6 +2,7 @@ describe('Events overview page', () => {
     it('Ticket selector should add ticket when clicking plus button', () => {
         cy.visit('http://localhost:5173/event/f827d813-e04a-4e84-8d69-72baef15fcd4');
 
+        cy.intercept('GET', '**/get-events').as('getEvents');
         cy.wait('@getEvents').then((interception) => {
             expect(interception.response.statusCode).to.eq(201)
         });
@@ -9,8 +10,6 @@ describe('Events overview page', () => {
         cy.get("[data-test='ticket-selector-container'] [data-test='ticket-selector']:first-child").as("TicketSelector").find("span").should("have.text", "0");
 
         cy.get('@TicketSelector').first().find("button").last().click();
-
-        cy.intercept('GET', '**/get-events').as('getEvents');
 
         cy.get('@TicketSelector').first().find("span").should("have.text", "1");
     });
