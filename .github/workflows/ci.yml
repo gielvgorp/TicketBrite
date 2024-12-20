@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - CI/CD
+      - CI/CD-http
   pull_request:
     branches:
       - main
