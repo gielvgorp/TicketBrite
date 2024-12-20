@@ -4,19 +4,20 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TicketBrite.Core.Entities;
+using TicketBrite.Core.Domains;
+
 
 namespace TicketBrite.Core.Interfaces
 {
         public interface IUserRepository
         {
-                public void AddUser(User user);
-                public User GetUser(Guid uid);
-                public Role GetUserRole(Guid userID);
-                public User GetUserByEmail(string email);
-                public void AddGuest(Guest guest);
+                public void AddUser(UserDomain user);
+                public UserDomain GetUser(Guid uid);
+                public RoleDomain GetUserRole(Guid userID);
+                public UserDomain GetUserByEmail(string email);
+                public void AddGuest(GuestDomain guest);
                 public bool VerifyEmail(string email);
-                public Role GetRole(Guid roleID);
+                public RoleDomain GetRole(Guid roleID);
                 public void SetRole(Guid userID, Guid roleID);
                 public void SetOrganization(Guid userID, Guid organizationID);
         }

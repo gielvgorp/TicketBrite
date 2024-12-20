@@ -1,69 +1,112 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
 {
     public class UserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly PasswordHasher _passwordHasher;
 
         public UserService(IUserRepository c_userRepository)
         {
             _userRepository = c_userRepository;
         }
 
-        public void AddUser(User user)
+        public void AddUser(CreateUserDTO user)
         {
-            VerifyEmail(user.userEmail);
-            _userRepository.AddUser(user);
-        }
+            VerifyEmail(user.UserEmail);
 
-        public string HashPassword(string plainPassword)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(plainPassword);
-        }
+            string passwordHash = _passwordHasher.Hash(user.Password);
 
-        public bool VerifyUser(string email, string enteredPassword)
-        {
-            User user = _userRepository.GetUserByEmail(email);
-
-            if (user != null)
+            UserDomain userDomain = new UserDomain
             {
-                return BCrypt.Net.BCrypt.Verify(enteredPassword, user.userPasswordHash);
-            }
+                userID = Guid.NewGuid(),
+                organizationID = Guid.Empty,
+                userEmail = user.UserEmail,
+                userName = user.UserName,
+                roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
+                userPasswordHash = passwordHash
+            };
 
-            return false;
+            _userRepository.AddUser(userDomain);
         }
 
-        public User GetUserByEmail(string email)
+        public UserDTO GetUserByEmail(string email)
         {
-            return _userRepository.GetUserByEmail(email);
+            UserDomain user = _userRepository.GetUserByEmail(email);
+
+            if (user == null)
+                throw new InvalidOperationException("Gebruiker is niet gevonden!");
+
+            return new UserDTO
+            {
+                userID = user.userID,
+                organizationID = user.organizationID,
+                roleID = user.roleID,
+                userEmail = user.userEmail,
+                userName = user.userName,
+            };
         }
 
-        public User GetUser(Guid uid)
+        public UserDTO GetUser(Guid uid)
         {
-            return _userRepository.GetUser(uid);
+            UserDomain user = _userRepository.GetUser(uid);
+
+            if(user == null)
+                throw new InvalidOperationException("Gebruiker is niet gevonden!");
+
+            return new UserDTO
+            {
+                userID = user.userID,
+                organizationID = user.organizationID,
+                roleID = user.roleID,
+                userEmail = user.userEmail,
+                userName = user.userName,
+            };
         }
 
         public void VerifyEmail(string email)
         {
-            if (!_userRepository.VerifyEmail(email)) throw new Exception("Email adres bestaat al!");
+            if (!_userRepository.VerifyEmail(email)) 
+                throw new InvalidOperationException("Het opgegeven e-mailadres bestaat al!");
         }
 
-        public Role GetUserRole(Guid userID)
+        public RoleDTO GetUserRole(Guid userID)
         {
-            return _userRepository.GetUserRole(userID);
+            RoleDomain role = _userRepository.GetUserRole(userID);
+
+            if (role == null)
+                throw new InvalidOperationException("Rol niet gevonden!");
+
+            return new RoleDTO
+            {
+                roleID = role.roleID,
+                roleName = role.roleName
+            };
         }
 
-        public void AddGuest(Guest guest)
+        public void AddGuest(GuestDTO guest)
         {
             VerifyEmail(guest.guestEmail);
-            _userRepository.AddGuest(guest);
+
+            GuestDomain guestDomain = new GuestDomain
+            {
+                guestID = Guid.NewGuid(),
+                guestEmail = guest.guestEmail,
+                guestName = guest.guestName,
+                verificationCode = Guid.NewGuid()
+            };
+
+            _userRepository.AddGuest(guestDomain);
         }
 
         public void SetRole(Guid userID, Guid roleID)
@@ -71,9 +114,18 @@ namespace TicketBrite.Core.Services
             _userRepository.SetRole(userID, roleID);
         }
 
-        public Role GetRole(Guid roleID)
+        public RoleDTO GetRole(Guid roleID)
         {
-            return _userRepository.GetRole(roleID);
+            RoleDomain role = _userRepository.GetRole(roleID);
+
+            if (role == null)
+                throw new InvalidOperationException("Rol niet gevonden!");
+
+            return new RoleDTO
+            {
+                roleID = role.roleID,
+                roleName = role.roleName
+            };
         }
 
         public void SetOrganization(Guid organizationID, Guid userID)

@@ -1,38 +1,46 @@
 ﻿using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicketBrite.Core.Entities;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
 {
     public class AuthService
     {
-        IAuthRepository _authRepository;
+        private readonly IAuthRepository _authRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly PasswordHasher _passwordHasher;
+
         public AuthService(IAuthRepository authRepository) 
         { 
             _authRepository = authRepository;
         }
 
-        public User VerifyUser(string email, string password)
+        public GuestDTO VerifyGuest(Guid guestID, Guid verificationCode)
         {
-            User user = _authRepository.VerifyUser(email, password);
+            GuestDomain guest = _authRepository.VerifyGuest(guestID, verificationCode);
 
-            if (user == null) throw new Exception("Gebruiker niet gevonden!");
+            if (guest == null) 
+                throw new InvalidOperationException("Gast niet gevonden!");
 
-            return user;
+            GuestDTO result = new GuestDTO
+            {
+                guestID = guest.guestID,
+                guestEmail = guest.guestEmail,
+                guestName = guest.guestName
+            };
+
+            return result;
         }
 
-        public Guest VerifyGuest(Guid guestID, Guid verificationCode)
+        public bool VerifyUser(string email, string enteredPassword)
         {
-            Guest guest = _authRepository.VerifyGuest(guestID, verificationCode);
+            UserDomain user = _userRepository.GetUserByEmail(email);
 
-            if (guest == null) throw new Exception("Gast niet gevonden!");
+            if (user == null)
+                return false;
 
-            return guest;
+            return _passwordHasher.Verify(enteredPassword, user.userPasswordHash);
         }
     }
 }

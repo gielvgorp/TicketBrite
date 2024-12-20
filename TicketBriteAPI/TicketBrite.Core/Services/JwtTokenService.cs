@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
 {
@@ -20,9 +21,9 @@ namespace TicketBrite.Core.Services
             userService = _userService;
         }
 
-        public string GenerateJwtToken(User user)
+        public string GenerateJwtToken(UserDTO user)
         {
-            Role role = userService.GetUserRole(user.userID);
+            RoleDTO role = userService.GetUserRole(user.userID);
 
             var claims = new[]
             {
@@ -45,7 +46,7 @@ namespace TicketBrite.Core.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateJwtToken(Guest guest)
+        public string GenerateJwtToken(GuestDTO guest)
         {
             var claims = new[]
             {

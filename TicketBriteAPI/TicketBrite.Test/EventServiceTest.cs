@@ -7,6 +7,7 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Bogus;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Test
 {
@@ -112,7 +113,7 @@ namespace TicketBrite.Test
         {
             Guid eventID = Guid.Parse("1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97");
 
-            Event result = eventService.GetEvent(eventID);
+            EventDTO result = eventService.GetEvent(eventID);
 
             Assert.AreEqual(eventID, result.eventID);
         }
@@ -122,7 +123,7 @@ namespace TicketBrite.Test
         [DataRow("FakeTestCategory", 0, new string[] { })]    // Category that doesn't exist
         public void Get_Events_By_Category(string category, int expectedAmount, string[] expectedEventIds)
         {
-            List<Event> events = eventService.GetEvents(category);
+            List<EventDTO> events = eventService.GetEvents(category);
 
             Assert.AreEqual(expectedAmount, events.Count, $"Expected {expectedAmount} events, but found {events.Count} events for category '{category}'");
 
@@ -140,7 +141,7 @@ namespace TicketBrite.Test
 
             Guid id = Guid.NewGuid();
 
-            Event newEvent = new Event
+            EventDTO newEvent = new EventDTO
             {
                 eventID = id,
                 organizationID = Guid.NewGuid(),
@@ -155,7 +156,7 @@ namespace TicketBrite.Test
 
             eventService.AddEvent(newEvent);
 
-            Event result = eventService.GetEvent(id);
+            EventDTO result = eventService.GetEvent(id);
 
             Assert.AreEqual(newEvent, result);
             Assert.AreEqual(eventService.GetEvents().Count, initialCount + 1);
@@ -167,7 +168,7 @@ namespace TicketBrite.Test
         public void Update_Event_Save_To_Repository(string eventID, bool eventExists)
         {
             Guid parsedEventID = Guid.Parse(eventID);
-            Event result = eventService.GetEvent(parsedEventID);
+            EventDTO result = eventService.GetEvent(parsedEventID);
 
             if (!eventExists)
             {
@@ -181,7 +182,7 @@ namespace TicketBrite.Test
             result.eventName = newEventName;
             eventService.UpdateEvent(result);
 
-            Event updatedResult = eventService.GetEvent(parsedEventID);
+            EventDTO updatedResult = eventService.GetEvent(parsedEventID);
 
             Assert.IsNotNull(updatedResult, "Updated event was not found.");
             Assert.AreEqual(newEventName, updatedResult.eventName, "Event name was not updated correctly.");
@@ -192,7 +193,7 @@ namespace TicketBrite.Test
         [TestMethod("Get all events")]
         public void Get_All_Events()
         {
-            List<Event> events = eventService.GetEvents();
+            List<EventDTO> events = eventService.GetEvents();
 
             Assert.IsNotNull(events);
         }

@@ -6,6 +6,7 @@ using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -48,12 +49,16 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
-                model.guestID = Guid.NewGuid();
-                model.verificationCode = Guid.NewGuid();
 
-                _userService.AddGuest(model);
+                GuestDTO guestDTO = new GuestDTO
+                {
+                    guestName = model.guestName,
+                    guestEmail = model.guestEmail,
+                };
 
-                var token = _jwtTokenService.GenerateJwtToken(model); // Token genereren
+                _userService.AddGuest(guestDTO);
+
+                var token = _jwtTokenService.GenerateJwtToken(guestDTO); // Token genereren
                 return new JsonResult(Ok(new { Token = token }));
             }
             catch (Exception ex)

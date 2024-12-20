@@ -1,12 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
-using TicketBrite.Data.ApplicationDbContext;
 
 namespace TicketBrite.Data.Repositories
 {
@@ -19,19 +13,42 @@ namespace TicketBrite.Data.Repositories
             _context = context;
         }
 
-        public List<Event> GetAllUnVerifiedEvents()
+        private List<EventDomain> GetEventsByVerificationStatus(bool isVerified)
         {
-            return _context.Events.Where(e => !e.isVerified).ToList();
+            return _context.Events
+                .Where(e => e.isVerified == isVerified)
+                .Select(item => new EventDomain
+                {
+                    eventID = item.eventID,
+                    organizationID = item.organizationID,
+                    eventAge = item.eventAge,
+                    eventCategory = item.eventCategory,
+                    eventDateTime = item.eventDateTime,
+                    eventDescription = item.eventDescription,
+                    eventImage = item.eventImage,
+                    eventLocation = item.eventLocation,
+                    eventName = item.eventName,
+                    isVerified = item.isVerified
+                }).ToList();
         }
 
-        public List<Event> GetAllVerifiedEvents()
+        public List<EventDomain> GetAllUnVerifiedEvents()
         {
-            return _context.Events.Where(e => e.isVerified).ToList();
+            return GetEventsByVerificationStatus(false);
+        }
+
+        public List<EventDomain> GetAllVerifiedEvents()
+        {
+            return GetEventsByVerificationStatus(true);
         }
 
         public void UpdateEventVerificationStatus(bool value, Guid eventID)
         {
             Event result = _context.Events.Find(eventID);
+
+            if (result == null)
+                throw new InvalidOperationException("Evenement niet gevonden!");
+
             result.isVerified = value;
 
             _context.SaveChanges();

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicketBrite.Core.Entities;
+﻿using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
+using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
 {
@@ -17,29 +13,113 @@ namespace TicketBrite.Core.Services
             organizationRepository = c_organizationRepository;
         }
 
-        public List<Event> GetAllEventsByOrganization(Guid organizationID)
+        private List<EventDTO> ConvertToDTOList(List<EventDomain> events)
         {
-            return organizationRepository.GetAllEventsByOrganization(organizationID);
+            return events.Select(e => new EventDTO
+            {
+                eventID = e.eventID,
+                eventAge = e.eventAge,
+                eventCategory = e.eventCategory,
+                eventDateTime = e.eventDateTime,
+                eventDescription = e.eventDescription,
+                eventImage = e.eventImage,
+                eventLocation = e.eventLocation,
+                eventName = e.eventName,
+                isVerified = e.isVerified,
+                organizationID = e.organizationID
+            }).ToList();
         }
 
-        public List<Event> GetVerifiedEventsByOrganization(Guid organizationID)
+        public List<EventDTO> GetAllEventsByOrganization(Guid organizationID)
         {
-            return organizationRepository.GetVerifiedEventsByOrganization(organizationID);
+            List<EventDomain> eventsDomain = organizationRepository.GetAllEventsByOrganization(organizationID);
+            return ConvertToDTOList(eventsDomain);
         }
 
-        public List<Event> GetUnVerifiedEventsByOrganization(Guid organizationID)
+        public List<EventDTO> GetVerifiedEventsByOrganization(Guid organizationID)
         {
-            return organizationRepository.GetUnVerifiedEventsByOrganization(organizationID);
+            List<EventDomain> eventsDomain = organizationRepository.GetVerifiedEventsByOrganization(organizationID);
+            return ConvertToDTOList(eventsDomain);
         }
 
-        public void UpdateOrganization(Organization organization)
+        public List<EventDTO> GetUnVerifiedEventsByOrganization(Guid organizationID)
         {
-            organizationRepository.UpdateOrganization(organization);
+            List<EventDomain> eventsDomain = organizationRepository.GetUnVerifiedEventsByOrganization(organizationID);
+            return ConvertToDTOList(eventsDomain);
         }
 
-        public Organization GetOrganizationByID(Guid organizationID)
+        private void ValidateOrganization(OrganizationDTO organization)
         {
-            return organizationRepository.GetOrganizationByID(organizationID);
+            if (organization == null)
+                throw new ArgumentNullException("Event kan niet null zijn!");
+
+            if (organization.organizationID == Guid.Empty)
+                throw new ArgumentNullException("Event ID mag niet leeg zijn!");
+
+            if (string.IsNullOrWhiteSpace(organization.organizationName))
+                throw new ArgumentException("Organisatie naam mag niet leeg zijn!");
+
+            if (string.IsNullOrWhiteSpace(organization.organizationEmail))
+                throw new ArgumentException("Organisatie email mag niet leeg zijn!");
+
+            if (string.IsNullOrWhiteSpace(organization.organizationWebsite))
+                throw new ArgumentException("Organisatie website mag niet leeg zijn!");
+
+
+            if (string.IsNullOrWhiteSpace(organization.organizationPhone))
+                throw new ArgumentException("Organisatie website mag niet leeg zijn!");
+        }
+
+        public void UpdateOrganization(OrganizationDTO organization)
+        {
+            try
+            {
+                ValidateOrganization(organization);
+
+                OrganizationDomain organizationDomain = new OrganizationDomain
+                {
+                    organizationID = organization.organizationID,
+                    organizationName = organization.organizationName,
+                    organizationAddress = organization.organizationAddress,
+                    organizationEmail = organization.organizationEmail,
+                    organizationPhone = organization.organizationPhone,
+                    organizationWebsite = organization.organizationWebsite
+                };
+
+                organizationRepository.UpdateOrganization(organizationDomain);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new KeyNotFoundException("Organisatie niet gevonden: " + ex.Message, ex);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException("Ongeldige invoer: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Onverwachte fout: " + ex.Message, ex);
+            }
+        }
+
+        public OrganizationDTO GetOrganizationByID(Guid organizationID)
+        {
+            OrganizationDomain organizationDomain = organizationRepository.GetOrganizationByID(organizationID);
+
+            if (organizationDomain == null)
+            {
+                throw new KeyNotFoundException($"Organisatie met ID {organizationID} is niet gevonden.");
+            }
+
+            return new OrganizationDTO
+            {
+                organizationID = organizationDomain.organizationID,
+                organizationName=organizationDomain.organizationName,
+                organizationAddress =organizationDomain.organizationAddress,
+                organizationEmail=organizationDomain.organizationEmail,
+                organizationPhone = organizationDomain.organizationPhone,
+                organizationWebsite = organizationDomain.organizationWebsite
+            };
         }
     }
 }
