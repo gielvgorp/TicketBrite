@@ -67,7 +67,7 @@ jobs:
           ASPNETCORE_URLS: "http://+:7150/"
         run: |
           dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
-          echo "Waiting for API to start..."
+          sleep 20
           
       - name: Wait for API
         run: npx wait-on http://localhost:7150/get-events
