@@ -63,7 +63,7 @@ jobs:
       - name: Start API
         env:
           ASPNETCORE_ENVIRONMENT: "Development"
-          ConnectionStrings__DefaultConnection: "Server=localhost;Database=TicketBriteDb;User=sa;Password=${{ secrets.DB_PASSWORD_CI }};TrustServerCertificate=True"
+          ConnectionStrings__DefaultConnection: "Server=localhost;Database=TicketBrite;User=sa;Password=${{ secrets.DB_PASSWORD_CI }};TrustServerCertificate=True"
           ASPNETCORE_URLS: "http://+:7150/"
         run: |
           dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
