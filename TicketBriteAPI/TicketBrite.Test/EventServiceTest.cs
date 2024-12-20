@@ -119,7 +119,7 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Get events by category")]
-        [DataRow("Muziek", 3, new [] { "1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97", "ee4819fa-157f-49c5-a2ba-a2541d56e54b", "a21c1e59-4edf-4ca9-a6ee-f74142ed6529" })]               // Category that exists
+        [DataRow("Muziek", 3, new[] { "1A07CD1A-81F5-4CA9-B85D-AB12B35BEF97", "ee4819fa-157f-49c5-a2ba-a2541d56e54b", "a21c1e59-4edf-4ca9-a6ee-f74142ed6529" })]               // Category that exists
         [DataRow("FakeTestCategory", 0, new string[] { })]    // Category that doesn't exist
         public void Get_Events_By_Category(string category, int expectedAmount, string[] expectedEventIds)
         {
@@ -148,7 +148,7 @@ namespace TicketBrite.Test
                 eventName = "Unit test event",
                 eventCategory = "Unit test",
                 eventDescription = "Description",
-                eventImage = "",
+                eventImage = "image.jpg",
                 eventDateTime = DateTime.Now.AddDays(1),
                 eventLocation = "Fontys Rachelsmolen",
                 eventAge = 18

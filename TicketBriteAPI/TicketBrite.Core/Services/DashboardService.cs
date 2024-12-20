@@ -14,8 +14,8 @@ namespace TicketBrite.Core.Services
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly IEventRepository _eventRepository;
-        public DashboardService(ITicketRepository ticketRepository, IEventRepository eventRepository) 
-        { 
+        public DashboardService(ITicketRepository ticketRepository, IEventRepository eventRepository)
+        {
             _ticketRepository = ticketRepository;
             _eventRepository = eventRepository;
         }
