@@ -88,6 +88,13 @@ jobs:
       - name: Run Cypress tests
         working-directory: ./TicketBrite
         run: npx cypress run
+        
+      - name: Upload Cypress video as artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: cypress-videos
+            path: cypress/videos
+
 
       # Stap 11: Stop services
       - name: Stop services
