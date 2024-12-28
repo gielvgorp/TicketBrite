@@ -9,7 +9,6 @@ using TicketBriteAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Haal de connection string op uit de configuratie
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
