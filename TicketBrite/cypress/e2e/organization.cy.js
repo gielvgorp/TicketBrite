@@ -22,7 +22,7 @@ describe("Test organization role", () => {
         cy.get(".add-event-modal").should("have.class", "show");
 
         cy.get("[data-test='event-name']").type("Cypress test event");
-        cy.get("[data-test='event-dateTime']").type('2024-12-25');
+        cy.get("[data-test='event-dateTime']").type('2030-12-25');
         cy.get("[data-test='event-location']").type("Fontys Rachelsmolen");
         cy.get("[data-test='event-age']").type("18");
         cy.get("[data-test='event-category']").type("E2E Testing");
@@ -37,6 +37,7 @@ describe("Test organization role", () => {
 
         cy.get("[data-test='event-grid']").as("eventGrid").should('exist');
         cy.get('@eventGrid').find("[data-test='grid-item']").should('have.length.greaterThan', 0);
+
         cy.get('@eventGrid').find("[data-test='grid-item'] [data-test='grid-item-artist']").contains("Cypress test event").should("not.exist");
     });
 
@@ -46,9 +47,9 @@ describe("Test organization role", () => {
         cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");
-        cy.get("@listGroup").find(".list-group-item").should("have.length", 1);
+        cy.get("@listGroup").find("[data-test='list-group-item']").should("have.length", 1);
 
-        cy.get("@listGroup").find(".list-group-item h5").contains("Cypress test event").should("exist");
+        cy.get("@listGroup").find("[data-test='list-group-item'] h5").contains("Cypress test event").should("exist");
     });
 
 
@@ -57,12 +58,12 @@ describe("Test organization role", () => {
 
         cy.navigateToOrganizationPanel();
 
-        cy.get("#list-group-unverified-events").as("listGroup");
-        cy.get("@listGroup").find(".list-group-item").should("have.length", 1);
+        cy.get("[data-test='list-group-unverified-events']").as("listGroup");
+        cy.get("@listGroup").find("[data-test='list-group-item']").should("have.length", 1);
 
-        cy.get("@listGroup").find(".list-group-item h5").contains("Cypress test event").should("exist");
+        cy.get("@listGroup").find("[data-test='list-group-item'] h5").contains("Cypress test event").should("exist");
 
-        cy.get("@listGroup").find(".list-group-item:first-child #btn-open-dashboard").click();
+        cy.get("@listGroup").find("[data-test='list-group-item']:first-child #btn-open-dashboard").click();
 
         cy.url().should("contain", "/organisatie/dashboard/");
 
@@ -74,8 +75,8 @@ describe("Test organization role", () => {
         cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");
-        cy.get("@listGroup").find(".list-group-item").should("have.length", 1);
+        cy.get("@listGroup").find("[data-test='list-group-item']").should("have.length", 1);
 
-        cy.get("@listGroup").find(".list-group-item h5").contains("Cypress test event edited").should("exist");
+        cy.get("@listGroup").find("[data-test='list-group-item'] h5").contains("Cypress test event edited").should("exist");
     });
 });

@@ -209,12 +209,13 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
   <h4 className="text-danger mt-5 mb-3">
     <i className="fa-solid fa-times-circle me-2"></i> Niet-Geverifieerde Evenementen
   </h4>
-  <div id='list-group-unverified-events' className="list-group">
+  <div data-test="list-group-unverified-events" id="list-group-unverified-events" className="list-group">
     {events.unverifiedEvents.map((event, index) => (
       <div
         key={index}
         className="list-group-item d-flex justify-content-between align-items-center border border-danger shadow-sm bg-light"
         style={{ padding: '20px', marginBottom: '15px' }}
+        data-test="list-group-item"
       >
         <div>
           <h5>{event.eventName}</h5>

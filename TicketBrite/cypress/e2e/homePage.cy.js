@@ -9,8 +9,8 @@ describe('Home Page', () => {
 
     cy.get("[data-test='event-grid'] [data-test='grid-item']").each(($el) => {
 
-      cy.wrap($el).find('._artist_zlykb_103').should('exist');
-      cy.wrap($el).find('._category_zlykb_93').should('exist');
+      cy.wrap($el).find("[data-test='grid-item-artist']").should('exist');
+      cy.wrap($el).find("[data-test='grid-item-category']").should('exist');
     });
   });
 
