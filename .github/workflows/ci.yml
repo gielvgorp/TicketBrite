@@ -68,9 +68,6 @@ jobs:
         run: |
           dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
           sleep 40
-          
-      - name: Wait for API
-        run: npx wait-on http://localhost:7150/get-events
 
       # Stap 7: Installeer frontend-afhankelijkheden
       - name: Install frontend dependencies
