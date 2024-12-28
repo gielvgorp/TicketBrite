@@ -112,4 +112,4 @@ describe('Authentication register and login', () => {
 
         cy.get(".sign-in-container a").should("have.text", "Welkom, Cypress!");
     });
-}
+});
