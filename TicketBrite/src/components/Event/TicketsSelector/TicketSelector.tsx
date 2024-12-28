@@ -32,7 +32,7 @@ function TicketSelector(props: Props){
                     props.ticket.ticketsRemaining > 0 && 
                     <>
                         <button data-test="btn-subtract-ticket" onClick={() => handleSelectTicket(-1)} disabled={amount === 0}><i className="fa-solid fa-minus"></i></button>
-                        <span>{amount}</span>
+                        <span data-test="ticket-selector-selected-amount">{amount}</span>
                         <button data-test="btn-add-ticket" onClick={() => handleSelectTicket(1)} disabled={amount === maxTickets}><i className="fa-solid fa-plus"></i></button>
                     </>
                 }
