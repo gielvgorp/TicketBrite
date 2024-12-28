@@ -19,9 +19,9 @@ COPY TicketBriteAPI/appsettings.json ./TicketBriteAPI/appsettings.json
 COPY TicketBriteAPI/appsettings.Development.json ./TicketBriteAPI/appsettings.Development.json
 
 # Kopieer de andere projecten (Core, Data, Test)
+COPY TicketBrite.Test/ ./TicketBrite.Test/
 COPY TicketBrite.Core/ ./TicketBrite.Core/
 COPY TicketBrite.Data/ ./TicketBrite.Data/
-COPY TicketBrite.Test/ ./TicketBrite.Test/
 COPY TicketBriteAPI/ ./TicketBriteAPI/
 
 # Voer dotnet restore uit voor de oplossing
