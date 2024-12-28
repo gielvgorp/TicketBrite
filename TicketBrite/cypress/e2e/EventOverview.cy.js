@@ -34,7 +34,7 @@ describe('Events overview page', () => {
 
         cy.get("[data-test='ticket-selector']:first-child [data-test='select-ticket']").first().as("TicketSelector").find("button").last().click();
 
-        cy.get('._sideBar_13834_29 button.btn-success').first().click();
+        cy.get("[data-test='event-info-side-bar'] button.btn-success").first().click();
 
         cy.get(".modal").should("have.class", "show");
     });

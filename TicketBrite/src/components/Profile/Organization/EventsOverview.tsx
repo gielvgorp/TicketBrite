@@ -41,7 +41,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
 
     const fetchEvents = async () => {
         try {
-            fetch(`https://localhost:7150/organization/get-events/overview/${organizationID}`)
+            fetch(`http://localhost:7150/organization/get-events/overview/${organizationID}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data.value);
@@ -84,7 +84,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
 
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch('https://localhost:7150/api/Organization/event/new', {
+            const res = await fetch('http://localhost:7150/api/Organization/event/new', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

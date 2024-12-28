@@ -39,7 +39,7 @@ function ShoppingCart(){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch('https://localhost:7150/shopping-cart/get-items', {
+            const response = await fetch('http://localhost:7150/shopping-cart/get-items', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -75,7 +75,7 @@ function ShoppingCart(){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch('https://localhost:7150/tickets/buy', {
+            const response = await fetch('http://localhost:7150/tickets/buy', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

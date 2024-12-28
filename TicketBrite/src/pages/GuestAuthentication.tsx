@@ -22,7 +22,7 @@ function GuestAuthentication({setShowNav}: Props){
     const verifyGuest = async () => {
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch(`https://localhost:7150/auth/guest/${guestID}/${verificationCode}`, {
+            const res = await fetch(`http://localhost:7150/auth/guest/${guestID}/${verificationCode}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

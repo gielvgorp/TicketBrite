@@ -21,7 +21,7 @@ function TicketStatistics({eventId}: Props){
 
             try {
                 // Verzend het formulier naar het endpoint
-                const res = await fetch(`https://localhost:7150/dashboard/tickets-statistics/${eventId}`, {
+                const res = await fetch(`http://localhost:7150/dashboard/tickets-statistics/${eventId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ function TicketStatistics({eventId}: Props){
 
     useEffect(() => {
         const newConnection = new HubConnectionBuilder()
-            .withUrl("https://localhost:7150/hubs/ticketStatistics")
+            .withUrl("http://localhost:7150/hubs/ticketStatistics")
             .withAutomaticReconnect()
             .build();
     

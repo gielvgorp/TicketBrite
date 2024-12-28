@@ -24,7 +24,7 @@ function LoginForm(){
 
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch('https://localhost:7150/api/auth/login', {
+            const res = await fetch('http://localhost:7150/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -33,10 +33,9 @@ function LoginForm(){
             });
             
             const data = await res.json(); // Ontvang de JSON-response
-            console.log(data);
             // validation error
             if(data.statusCode !== 200){
-                console.log(data);
+                console.log("Auth reponse: ", data);
                 setErrorMsg(data.value);
             }
 

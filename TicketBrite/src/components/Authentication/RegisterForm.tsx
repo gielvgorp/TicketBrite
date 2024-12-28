@@ -23,7 +23,7 @@ function RegisterForm(){
 
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch('https://localhost:7150/api/auth/Register', {
+            const res = await fetch('http://localhost:7150/api/auth/Register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

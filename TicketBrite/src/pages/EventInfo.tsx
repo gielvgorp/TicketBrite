@@ -75,7 +75,7 @@ function EventInfo(){
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch('https://localhost:7150/ticket/set-reserve', {
+            const response = await fetch('http://localhost:7150/ticket/set-reserve', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -130,7 +130,7 @@ function EventInfo(){
                             <p>{event.eventDescription}</p>
                         </div>
                     </div>
-                    <div className={`${styles.sideBar} shadow ${showTickets ? styles.show : ''} col-3`}>
+                    <div className={`${styles.sideBar} shadow ${showTickets ? styles.show : ''} col-3`} data-test="event-info-side-bar">
                         <div className={`${styles.topContainer} d-flex align-items-center justify-content-center`}>
                             <h4>Koop nu je tickets van Snelle!</h4>
                         </div>

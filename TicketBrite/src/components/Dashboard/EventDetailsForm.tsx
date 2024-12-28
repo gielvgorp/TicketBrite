@@ -20,7 +20,7 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
     const handleSave = async () => {
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch('https://localhost:7150/dashboard/event/save', {
+            const res = await fetch('http://localhost:7150/dashboard/event/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -11,9 +11,11 @@ namespace TicketBrite.Core.Services
         private readonly IUserRepository _userRepository;
         private readonly PasswordHasher _passwordHasher;
 
-        public AuthService(IAuthRepository authRepository) 
+        public AuthService(IAuthRepository authRepository, IUserRepository userRepository) 
         { 
             _authRepository = authRepository;
+            _userRepository = userRepository;
+            _passwordHasher = new PasswordHasher();
         }
 
         public GuestDTO VerifyGuest(Guid guestID, Guid verificationCode)

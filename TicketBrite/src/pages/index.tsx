@@ -7,7 +7,7 @@ function Index(){
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
     useEffect(() => {       
-        fetch(`https://localhost:7150/event/get-all-verified/`)
+        fetch(`http://localhost:7150/event/get-all-verified/`)
         .then(response => response.json())
         .then(data => {
             setEvents(data.value);

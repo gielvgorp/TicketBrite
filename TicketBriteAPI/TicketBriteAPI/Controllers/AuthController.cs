@@ -22,7 +22,7 @@ namespace TicketBriteAPI.Controllers
         {
             _userService = new UserService(new UserRepository(context));
             _jwtTokenService = new JwtTokenService(iConfig, _userService);
-            _authService = new AuthService(new AuthRepository(context));
+            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 
 

@@ -28,7 +28,7 @@ function NotLoggedInModal({ onHide, onGuestContinue, onLogin }: Props){
   const handleCreateGuest = async (email: string, fullName: string) =>{
     try {
         // Verzend het formulier naar het endpoint
-        const res = await fetch(`https://localhost:7150/guest/create`, {
+        const res = await fetch(`http://localhost:7150/guest/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

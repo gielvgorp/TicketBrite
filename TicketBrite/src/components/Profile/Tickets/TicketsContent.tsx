@@ -25,7 +25,7 @@ const fetchEvents = async () => {
 
     try {
       // Verzend het formulier naar het endpoint
-      const res = await fetch(`https://localhost:7150/user/get-purchase`, {
+      const res = await fetch(`http://localhost:7150/user/get-purchase`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

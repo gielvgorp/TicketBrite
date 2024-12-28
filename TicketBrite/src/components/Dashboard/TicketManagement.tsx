@@ -21,7 +21,7 @@ function TicketManagement({initialTickets, eventId}: Props){
     const storeTickets = async () => {
         try {
             // Verzend het formulier naar het endpoint
-            const res = await fetch('https://localhost:7150/dashboard/tickets/save', {
+            const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

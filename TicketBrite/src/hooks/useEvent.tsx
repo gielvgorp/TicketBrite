@@ -3,7 +3,7 @@ import { Event } from '../Types';
 
 export const getEventDetails = async (eventId: string) => {
     try {
-        const response = await axios.get(`https://localhost:7150/get-event/${eventId}`);
+        const response = await axios.get(`http://localhost:7150/get-event/${eventId}`);
         console.log(response.data);
         return response.data; // Retourneer de evenementgegevens
     } catch (error) {

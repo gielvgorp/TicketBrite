@@ -41,7 +41,7 @@ function VerifyEvents(){
   const handleFetchEvents = async () => {
     try {
         // Verzend het formulier naar het endpoint
-        const res = await fetch('https://localhost:7150/admin/get-unverified-events', {
+        const res = await fetch('http://localhost:7150/admin/get-unverified-events', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ function VerifyEvents(){
         console.log("event ID:", eventID);
         console.log("new value:", value);
         // Verzend het formulier naar het endpoint
-        const res = await fetch(`https://localhost:7150/admin/update-event-status/${eventID}/${value}`, {
+        const res = await fetch(`http://localhost:7150/admin/update-event-status/${eventID}/${value}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

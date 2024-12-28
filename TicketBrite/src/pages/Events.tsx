@@ -27,7 +27,7 @@ function Events() {
 
     const fetchEvents = () => {
         console.log(id);
-        fetch(`https://localhost:7150/event/get-all-verified/${id === undefined ? "" : id}`)
+        fetch(`http://localhost:7150/event/get-all-verified/${id === undefined ? "" : id}`)
         .then(response => response.json())
         .then(data => {
             setEvent(data.value);
