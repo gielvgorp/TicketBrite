@@ -1,44 +1,50 @@
 services:
   api:
     build:
-      context: ./TicketBriteAPI
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: TicketBriteAPI/Dockerfile
     ports:
-      - "5000:5000"
-    networks:
-      - app-network
+      - "7150:7150"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver-container,1433;Database=TicketBrite;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TicketBrite;User=sa;Password=Password123;
     depends_on:
-      - sqlserver
+      - db
 
+  # React Frontend
   frontend:
     build:
-      context: ./TicketBrite
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: TicketBrite/Dockerfile
     ports:
-      - "3000:80"
+      - "5173:5173"
     depends_on:
       - api
-    networks:
-      - app-network
 
-  sqlserver:
+  # SQL Server
+  db:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver-container
+    container_name: db
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=YourPassword123
+      - SA_PASSWORD=Password123
+      - MSSQL_PID=Developer
     ports:
       - "1433:1433"
-    networks:
-      - app-network
     volumes:
-      - mssql_data:/var/opt/mssql
+      - db_data:/var/opt/mssql
 
-networks:
-  app-network:
-    driver: bridge
+  # Cypress Test Runner
+  cypress:
+    image: cypress/included:12.0.0
+    environment:
+      - CYPRESS_baseUrl=http://frontend:5173
+    depends_on:
+      - frontend
+    entrypoint: ["npx", "cypress", "run"]
+    volumes:
+      - ./cypress:/e2e
+    working_dir: /e2e
 
 volumes:
-  mssql_data: {}
+  db_data:
