@@ -1,41 +1,34 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
-
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-
+# Stap 1: Gebaseerd op een officiële .NET 8.0 SDK image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR ./
-COPY TicketBriteAPI.sln ./
-COPY TicketBriteAPI/Controllers/ ./TicketBriteAPI/Controllers/
-COPY TicketBriteAPI/Models/ ./TicketBriteAPI/Models/
-COPY TicketBriteAPI/Services/ ./TicketBriteAPI/Services/
-COPY TicketBriteAPI/Program.cs ./TicketBriteAPI/Program.cs
-COPY TicketBriteAPI/TicketBriteAPI.csproj ./TicketBriteAPI/TicketBriteAPI.csproj
-COPY TicketBriteAPI/appsettings.json ./TicketBriteAPI/appsettings.json
-COPY TicketBriteAPI/appsettings.Development.json ./TicketBriteAPI/appsettings.Development.json
 
-# Kopieer de andere projecten (Core, Data, Test)
-COPY TicketBrite.Core/ ./TicketBrite.Core/
-COPY TicketBrite.Data/ ./TicketBrite.Data/
-COPY TicketBrite.Test/ ./TicketBrite.Test/
-COPY TicketBriteAPI/ ./TicketBriteAPI/
+# Zet de werkmap
+WORKDIR /src
 
-# Voer dotnet restore uit voor de oplossing
-RUN dotnet restore ./TicketBriteAPI.sln
+# Kopieer de .csproj-bestanden en herstel de afhankelijkheden
+COPY ["TicketBriteAPI/TicketBriteAPI.csproj", "TicketBriteAPI/"]
+COPY ["TicketBrite.Core/TicketBrite.Core.csproj", "TicketBrite.Core/"]
+COPY ["TicketBrite.Data/TicketBrite.Data.csproj", "TicketBrite.Data/"]
+COPY ["TicketBrite.Test/TicketBrite.Test.csproj", "TicketBrite.Test/"]
 
-# Bouw de applicatie
-RUN dotnet build -c Release -o /app/build
+RUN dotnet restore "TicketBriteAPI/TicketBriteAPI.csproj"
 
-FROM build AS publish
-RUN dotnet publish -c Release -o /app/publish
+# Kopieer de rest van de code
+COPY . .
 
-FROM base AS final
+# Stap 2: Bouw de API
+WORKDIR "/src/TicketBriteAPI"
+RUN dotnet build "TicketBriteAPI.csproj" -c Release -o /app/build
+
+# Stap 3: Publiceer de API
+RUN dotnet publish "TicketBriteAPI.csproj" -c Release -o /app/publish
+
+# Stap 4: Maak de runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 
+# Stel de poort in
+EXPOSE 7150
+
+# Start de API
 ENTRYPOINT ["dotnet", "TicketBriteAPI.dll"]
-ENTRYPOINT ["/wait-for-it.sh", "sqlserver-container:1433", "--", "dotnet", "TicketBriteAPI.dll"]
