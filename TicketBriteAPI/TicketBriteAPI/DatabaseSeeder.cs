@@ -29,8 +29,6 @@ namespace TicketBriteAPI
                         organizationID = Guid.Parse("77726785-FA72-4244-A572-AFFEAF20D5F1")
                     }
                 );
-
-                context.SaveChanges();
             }
 
             if (!context.Tickets.Any())
@@ -82,7 +80,7 @@ namespace TicketBriteAPI
 
                 if (!context.Roles.Any())
                 {
-                    context.AddRange(
+                    context.Roles.AddRange(
                         new Role
                         {
                             roleID = Guid.Parse("3228BA9C-A8DB-48B4-95C4-16998615BB10"),
