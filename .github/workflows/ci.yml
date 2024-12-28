@@ -31,7 +31,6 @@ jobs:
         with:
           node-version: '18'
 
-      # Stap 3: Maak een Docker Compose bestand voor de database
       - name: Create Docker Compose file for database
         run: |
           cat << EOF > docker-compose.ci.yml
