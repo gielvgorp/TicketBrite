@@ -99,12 +99,12 @@ describe('Authentication register and login', () => {
     });
 
     it("Should show error message on email already in use", () => {
-        cy.register("gielvg1@gmail.com", "Cypress", "CypressTestPass123");
+        cy.register("Cypress@e2e.com", "Cypress", "CypressTestPass123");
 
         cy.get("button").click();
 
         cy.get("[data-test='validation-message']", { timeout: 10000 }).should("be.visible");
-        cy.get("[data-test='validation-message']").should("have.text", "Email adres bestaat al!");
+        cy.get("[data-test='validation-message']").should("have.text", "Het opgegeven e-mailadres bestaat al!");
     });
 
     it("Should login successfull", () => {

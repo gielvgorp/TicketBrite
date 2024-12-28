@@ -68,6 +68,11 @@ jobs:
         run: |
           dotnet run --project ./TicketBriteAPI/TicketBriteAPI/TicketBriteAPI.csproj --launch-profile Development &
           sleep 40
+          
+      # Stap 6: Voer unit tests uit
+      - name: Run Unit Tests
+        run: dotnet test ./TicketBriteAPI/TicketBriteAPI.sln --configuration Release --no-build
+
 
       # Stap 7: Installeer frontend-afhankelijkheden
       - name: Install frontend dependencies
