@@ -69,7 +69,7 @@ function RegisterForm(){
                     <label htmlFor="password-input">Password</label>
                     <input type="password" className="form-control p-2" id="password-input" name="password" onChange={handleChange} placeholder="**********" />
                 </div>
-                <p className="text-danger">{errorMsg}</p>
+                <p data-test="validation-message" className="text-danger">{errorMsg}</p>
                 <button type="submit" className="btn btn-success d-block ms-auto mt-3 w-25 py-2">Accont aanmaken</button>
             </form>
         </>

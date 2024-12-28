@@ -12,7 +12,7 @@ function GridItem(props: Props){
     const navigate = useNavigate();
 
     return (
-        <div className={styles.gridItem} onClick={() => navigate(`/event/${props.eventID}`, { replace: true, state: { id: props.eventID} })}>
+        <div data-test="grid-item" className={styles.gridItem} onClick={() => navigate(`/event/${props.eventID}`, { replace: true, state: { id: props.eventID} })}>
             <div className={styles.banner} style={{backgroundImage: `url(${props.image})`}}>
                 <div className={styles.hoverOverlay}>
                     <div className={styles.end}>
@@ -20,8 +20,8 @@ function GridItem(props: Props){
                     </div>
                 </div>
             </div>
-            <p className={`${styles.category} text-secondary fw-lighter`}>{props.category}</p>
-            <p className={styles.artist}>{props.artist}</p>
+            <p data-test="grid-item-category" className={`${styles.category} text-secondary fw-lighter`}>{props.category}</p>
+            <p data-test="grid-item-artist" className={styles.artist}>{props.artist}</p>
         </div>
     );
 }

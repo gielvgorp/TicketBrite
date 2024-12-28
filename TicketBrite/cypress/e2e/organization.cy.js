@@ -35,9 +35,9 @@ describe("Test organization role", () => {
     it('New event should not be visable on public event overview', () => {
         cy.visit(Cypress.env('baseUrl'));
 
-        cy.get('._eventsGrid_tfaik_51').as("eventGrid").should('exist');
-        cy.get('@eventGrid').find("._gridItem_zlykb_1").should('have.length.greaterThan', 0);
-        cy.get('@eventGrid').find("._gridItem_zlykb_1 ._artist_zlykb_103").contains("Cypress test event").should("not.exist");
+        cy.get("[data-test='event-grid']").as("eventGrid").should('exist');
+        cy.get('@eventGrid').find("[data-test='grid-item']").should('have.length.greaterThan', 0);
+        cy.get('@eventGrid').find("[data-test='grid-item'] [data-test='grid-item-artist']").contains("Cypress test event").should("not.exist");
     });
 
     it('Created event should be visable in unverified events list', () => {

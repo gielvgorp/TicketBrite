@@ -36,7 +36,7 @@ function Index(){
                 </div>
             </div>
         </section>
-        <div className={`w-100 p-5 gap-5 ${styles.eventsGrid}`}>
+        <div className={`w-100 p-5 gap-5 ${styles.eventsGrid}`} data-test="event-grid">
             {events.map((event: any, index: number) => <GridItem image={event.eventImage} eventID={event.eventID} key={index} category={event.category} artist={event.eventName} />)}
         </div>
        </>
