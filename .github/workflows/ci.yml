@@ -1,4 +1,4 @@
-name: TicketBrite CI Pipeline
+name: TicketBrite Tests
 
 on:
   push:

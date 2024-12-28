@@ -1,17 +1,15 @@
-name: Build and Push Docker Image
+name: Docker Deploy
 
 on:
-  push:
-    branches:
-      - main
-      - CI/CD
-  pull_request:
-    branches:
-      - main
-      - CI/CD
+  workflow_run:
+    workflows:
+      - TicketBrite Tests
+    types:
+      - completed
 
 jobs:
-  build:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
