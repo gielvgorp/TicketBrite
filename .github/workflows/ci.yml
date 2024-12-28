@@ -90,10 +90,10 @@ jobs:
         run: npx cypress run
         
       - name: Upload Cypress video as artifact
-          uses: actions/upload-artifact@v3
-          with:
-            name: cypress-videos
-            path: cypress/videos
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: cypress/videos
 
 
       # Stap 11: Stop services
