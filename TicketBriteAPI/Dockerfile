@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Zet de werkmap
-WORKDIR /src
+WORKDIR ./
 
 # Kopieer de .csproj-bestanden en herstel de afhankelijkheden
 COPY ["TicketBriteAPI/TicketBriteAPI.csproj", "TicketBriteAPI/"]
