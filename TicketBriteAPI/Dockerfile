@@ -22,6 +22,7 @@ COPY TicketBriteAPI/appsettings.Development.json ./TicketBriteAPI/appsettings.De
 COPY TicketBrite.Core/ ./TicketBrite.Core/
 COPY TicketBrite.Data/ ./TicketBrite.Data/
 COPY TicketBrite.Test/ ./TicketBrite.Test/
+COPY TicketBrite.DTO/ ./TicketBrite.DTO/
 COPY TicketBriteAPI/ ./TicketBriteAPI/
 
 # Voer dotnet restore uit voor de oplossing
