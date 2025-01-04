@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import GridItem from '../components/Index/GridItem/GridItem'
 import styles from '../index.module.css'
+import { SuccessNotification } from '../components/Notifications/Notifications';
 
 function Index(){
     const [events, setEvents] = useState<Array<Event>>([]);  // State to store the fetched events
@@ -20,7 +21,7 @@ function Index(){
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;  // Display loading message while fetching data
+        return <p>Loading...</p>;
     }
 
     return (

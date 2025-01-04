@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Event } from '../../Types';
+import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 interface EventDetailsFormProps {
     eventDetails: Event;
@@ -33,14 +34,13 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
             const data = await res.json(); // Ontvang de JSON-response
            
             // validation error
-            if(data.statusCode === 400){
-                console.log(data);
-                //setErrorMsg(data.value);
+            if(data.statusCode !== 200){
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
             // successful registered
             if(data.statusCode === 200){
-               
+               SuccessNotification({text: 'Gegevens opgeslagen!'});
             }           
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);

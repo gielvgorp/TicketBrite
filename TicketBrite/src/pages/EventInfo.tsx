@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Event, Ticket } from '../Types'
 import LoginModal from '../components/Event/LoginModal/LoginModal';
 import {useAuth} from '../AuthContext';
+import { ErrorNotification, SuccessNotification } from '../components/Notifications/Notifications';
 
 function EventInfo(){
     const { id } = useParams();
@@ -85,11 +86,12 @@ function EventInfo(){
             });
 
             if (!response.ok) {
-                throw new Error('Fout bij het ophalen van gebruikersgegevens');
+                ErrorNotification({text: 'Er is iets mis gegaan met het toevoegen van je items. Probeer het opnieuw!'});
+                //throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
-
-            const data = await response.json();
-            //setUser(data);
+           
+            SuccessNotification({text: 'Je items zijn toegevoegd aan je winkelwagen!'});
+            
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {

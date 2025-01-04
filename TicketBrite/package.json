@@ -18,7 +18,10 @@
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-notifications": "^1.7.4",
+    "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.6",
+    "sweetalert2": "^11.14.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
