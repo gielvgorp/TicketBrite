@@ -45,9 +45,6 @@ const fetchEvents = async () => {
       if(data.statusCode === 200){
           console.log(data.value);
           setPurchases(data.value);
-          // login(data.value.token);
-          // navigate("/", { replace: true});
-          // setShowNav(true);
       }           
 
   } catch (error) {

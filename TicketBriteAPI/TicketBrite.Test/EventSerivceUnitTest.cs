@@ -4,8 +4,7 @@ using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
 using TicketBrite.DTO;
-using System;
-using System.Collections.Generic;
+
 namespace TicketBrite.Test
 {
     [TestClass]

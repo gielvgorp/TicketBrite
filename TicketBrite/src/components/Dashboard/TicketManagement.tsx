@@ -21,7 +21,6 @@ function TicketManagement({initialTickets, eventId}: Props){
 
     const storeTickets = async () => {
         try {
-            // Verzend het formulier naar het endpoint
             const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
                 method: 'POST',
                 headers: {
@@ -29,11 +28,11 @@ function TicketManagement({initialTickets, eventId}: Props){
                 },
                 body: JSON.stringify(
                     tickets
-                ) // Zet de formData om naar JSON
+                )
             });
             
-            const data = await res.json(); // Ontvang de JSON-response
-            
+            const data = await res.json(); 
+
             // validation error
             if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
@@ -44,7 +43,7 @@ function TicketManagement({initialTickets, eventId}: Props){
                SuccessNotification({text: 'Gegevens opgeslagen!'});
             }       
         } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }
     }
 

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Ticket, Event } from '../../../Types';
+import { ErrorNotification, SuccessNotification } from '../../Notifications/Notifications';
 
 interface NewEventRequest {
     event: Event;
@@ -93,19 +94,16 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
             });
 
             const data = await res.json(); // Ontvang de JSON-response
-
+            console.log(data);
             // validation error
-            if(res.status === 400){
-                //setErrorMsg("Een of meerdere velden zijn leeg!");
+            if(data.statusCode === 400){
+                ErrorNotification({text: data.value});
             }
 
-            console.log(eventDetails);
-
             // successful registered
-            if(res.status === 200){
-                //localStorage.setItem('jwtToken', data.token);
-                console.log(data);
-                //navigate("/", {replace: true});
+            if(data.statusCode === 200){
+              handleClose();  
+              SuccessNotification({text: "Evenement aangemaakt!"});
             }           
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);

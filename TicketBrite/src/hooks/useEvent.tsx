@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Event } from '../Types';
+import { ErrorNotification } from '../components/Notifications/Notifications';
 
 export const getEventDetails = async (eventId: string) => {
     try {
@@ -15,8 +16,10 @@ export const getEventDetails = async (eventId: string) => {
 export const updateEventDetails = async (eventId: string, updatedEventDetails: Event) => {
     try {
         const response = await axios.put(`http://localhost:7150/event/update/${eventId}`, updatedEventDetails);
-        return response.data; // Retourneer eventueel bijgewerkte gegevens of status
+        ErrorNotification({text: "Evenement informatie gewijzigd!"});
+        return response.data;
     } catch (error) {
+        ErrorNotification({text: "Kan event details niet opslaan!"});
         console.error("Error updating event details:", error);
         throw error;
     }

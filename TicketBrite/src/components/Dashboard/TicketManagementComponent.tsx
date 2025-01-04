@@ -7,9 +7,6 @@ type TicketManagementItemProps = {
     saveTicket: (ticket: Ticket, index: number) => void;
 }
 
-
-
-
 function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItemProps){
     
     const [ticket, setTicket] = useState<Ticket>({

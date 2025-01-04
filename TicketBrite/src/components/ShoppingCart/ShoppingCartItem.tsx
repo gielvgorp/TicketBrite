@@ -1,6 +1,7 @@
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import { shoppingCartItem, Ticket } from '../../Types';
 import { useState } from 'react';
+import { WarningNotification, SuccessNotification } from '../Notifications/Notifications';
 
 type Props = {
     ticket: shoppingCartItem;
@@ -9,6 +10,15 @@ type Props = {
 
 function ShoppingCartItem({ticket, onRemoveItem}: Props){
     const [showItem, setShowItem] = useState(true);
+
+    const showWarningNotification = () => {
+        WarningNotification({
+            text: "Weet je zeker dat je dit item wilt verwijderen?",
+            onConfirm: handleDeleteItem,
+            onCancel: () => console.log("Verwijderen geannuleerd."),
+        });
+    }
+
     const handleDeleteItem = async () => {
         try {
             const token = localStorage.getItem("jwtToken");
@@ -29,6 +39,8 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
            
             setShowItem(false);
             onRemoveItem(parseInt(ticket.eventTicket.ticketPrice) * -1);
+            SuccessNotification({text: "Ticket is verwijderd uit je winkelwagen!"})
+            
         } finally {
             //setLoading(false);
         }
@@ -48,7 +60,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
                 <span data-test="cart-item-ticket-price" className="price">€{(ticket.eventTicket.ticketPrice)}</span>
             </div>
             <div className='col-1 text-end'>
-                <Button data-test='btn-remove-item' variant="outline-danger" size="sm" onClick={() => handleDeleteItem()}>
+                <Button data-test='btn-remove-item' variant="outline-danger" size="sm" onClick={() => showWarningNotification()}>
                     <i className="fas fa-trash"></i>
                 </Button>
             </div>

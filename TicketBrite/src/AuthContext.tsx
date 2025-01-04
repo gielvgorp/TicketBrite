@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { SuccessNotification } from './components/Notifications/Notifications';
 
 // AuthContext.tsx
 interface AuthContextType {
@@ -34,6 +35,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.removeItem('jwtToken');  // Verwijder het token uit localStorage
         setIsAuthenticated(false);  // Stel isAuthenticated in op false
         setRole(null);  // Reset de rol
+        SuccessNotification({text: "Je bent nu uitgelogd!"});
     };
 
     return (

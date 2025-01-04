@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
+import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 type Props = {
     eventId: string;
@@ -24,11 +25,10 @@ function TicketStatistics({eventId}: Props){
                     }
                 });
                 
-                const data = await res.json(); // Ontvang de JSON-response
+                const data = await res.json();
                 // validation error
                 if(data.statusCode === 400){
-                    console.log(data);
-                    //setErrorMsg(data.value);
+                    ErrorNotification({text: data.value})
                 }
     
                 // successful registered
@@ -80,10 +80,6 @@ function TicketStatistics({eventId}: Props){
             connection.stop();
         };
     }, [connection]);
-
-    useEffect(() => {
-        console.log("Updated tickets: ", stats);
-    }, [stats]);
 
     return (
         <Card className="p-4">

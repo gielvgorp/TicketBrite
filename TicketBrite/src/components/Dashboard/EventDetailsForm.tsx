@@ -28,22 +28,20 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
                 },
                 body: JSON.stringify(
                     formValues
-                ) // Zet de formData om naar JSON
+                )
             });
             
-            const data = await res.json(); // Ontvang de JSON-response
+            const data = await res.json();
            
-            // validation error
             if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
-            // successful registered
             if(data.statusCode === 200){
                SuccessNotification({text: 'Gegevens opgeslagen!'});
             }           
         } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }
     };
 
