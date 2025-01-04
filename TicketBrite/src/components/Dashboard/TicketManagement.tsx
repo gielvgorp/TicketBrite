@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Ticket } from '../../Types';
+import { ApiResponse, Ticket } from '../../Types';
 import TicketManagementItem from './TicketManagementComponent';
 import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
@@ -31,7 +31,7 @@ function TicketManagement({initialTickets, eventId}: Props){
                 )
             });
             
-            const data = await res.json(); 
+            const data: ApiResponse<string> = await res.json(); 
 
             // validation error
             if(data.statusCode !== 200){

@@ -60,7 +60,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
                 <span data-test="cart-item-ticket-price" className="price">€{(ticket.eventTicket.ticketPrice)}</span>
             </div>
             <div className='col-1 text-end'>
-                <Button data-test='btn-remove-item' variant="outline-danger" size="sm" onClick={() => showWarningNotification()}>
+                <Button data-test='btn-remove-item' variant="outline-danger" size="sm" onClick={showWarningNotification}>
                     <i className="fas fa-trash"></i>
                 </Button>
             </div>

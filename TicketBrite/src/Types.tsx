@@ -45,3 +45,9 @@ export interface Reservation {
     userID: string;
     reservedAt: Date;
 }
+
+export interface ApiResponse<T> {
+    statusCode: number;
+    message?: string;
+    value?: T;
+}

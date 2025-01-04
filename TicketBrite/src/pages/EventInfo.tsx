@@ -88,10 +88,10 @@ function EventInfo(){
             if (!response.ok) {
                 ErrorNotification({text: 'Er is iets mis gegaan met het toevoegen van je items. Probeer het opnieuw!'});
                 //throw new Error('Fout bij het ophalen van gebruikersgegevens');
+            }else{
+                SuccessNotification({text: 'Je items zijn toegevoegd aan je winkelwagen!'});
             }
            
-            SuccessNotification({text: 'Je items zijn toegevoegd aan je winkelwagen!'});
-            
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {

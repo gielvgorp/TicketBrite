@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Reservation, shoppingCartItem } from '../Types';
+import { Ticket, Reservation, shoppingCartItem, ApiResponse } from '../Types';
 import ShoppingCartItem from '../components/ShoppingCart/ShoppingCartItem';
 
 interface ReservedTicket {
@@ -51,15 +51,15 @@ function ShoppingCart(){
                 throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
 
-            const data = await response.json();
+            const data: ApiResponse<ShoppingCart> = await response.json();
 
-            setShoppingCart(data.value);
-            setCartItems(data.value.items);
-            setTotalPrice(data.value.totalPrice);
+            if(data.value){
+                setShoppingCart(data.value);
+                setCartItems(data.value.items);
+                setTotalPrice(parseInt(data.value.totalPrice));
+            }
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
-        } finally {
-            //setLoading(false);
         }
     }
 

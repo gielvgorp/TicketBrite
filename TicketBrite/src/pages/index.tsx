@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import GridItem from '../components/Index/GridItem/GridItem'
 import styles from '../index.module.css'
-import { SuccessNotification } from '../components/Notifications/Notifications';
 
 function Index(){
     const [events, setEvents] = useState<Array<Event>>([]);  // State to store the fetched events

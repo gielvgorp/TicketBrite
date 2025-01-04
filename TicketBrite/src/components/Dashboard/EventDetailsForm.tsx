@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Event } from '../../Types';
+import { Event, ApiResponse } from '../../Types';
 import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 interface EventDetailsFormProps {
@@ -31,8 +31,8 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
                 )
             });
             
-            const data = await res.json();
-           
+            const data: ApiResponse<String> = await res.json();
+
             if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }

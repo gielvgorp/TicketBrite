@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Event } from '../../../Types';
+import { Ticket, Event, ApiResponse } from '../../../Types';
 import { ErrorNotification, SuccessNotification } from '../../Notifications/Notifications';
 
 interface NewEventRequest {
@@ -90,18 +90,16 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(model) // Zet de formData om naar JSON
+                body: JSON.stringify(model)
             });
 
-            const data = await res.json(); // Ontvang de JSON-response
-            console.log(data);
-            // validation error
-            if(data.statusCode === 400){
+            const data: ApiResponse<string> = await res.json();
+       
+            if(data.value && data.statusCode === 400){
                 ErrorNotification({text: data.value});
             }
 
-            // successful registered
-            if(data.statusCode === 200){
+            if(data && data.statusCode === 200){
               handleClose();  
               SuccessNotification({text: "Evenement aangemaakt!"});
             }           

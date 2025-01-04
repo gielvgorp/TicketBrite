@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { TicketStatistic } from '../../Types';
+import { ApiResponse, TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
-import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
+import { ErrorNotification } from '../Notifications/Notifications';
 
 type Props = {
     eventId: string;
@@ -25,16 +25,18 @@ function TicketStatistics({eventId}: Props){
                     }
                 });
                 
-                const data = await res.json();
+                // Voor het gebruik
+                const data: ApiResponse<TicketStatistic[]> = await res.json();
+
                 // validation error
                 if(data.statusCode === 400){
-                    ErrorNotification({text: data.value})
+                    ErrorNotification({text: data.value?.toString() || "Er is een onbekende fout opgetreden!"})
                 }
     
                 // successful registered
                 if(data.statusCode === 200){
                     setLoading(false);
-                    setStats(data.value);
+                    setStats(data.value || []);
                 }           
             } catch (error) {
                 console.error('Er is een fout opgetreden:', error);

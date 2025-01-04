@@ -1,10 +1,11 @@
 import { toast, ToastContentProps } from "react-toastify";
+import { Toast } from "react-toastify/dist/types";
 
-type Props = {
+interface Props {
     text: string;
 };
 
-type WarningProp = {
+interface WarningProp {
     text: string;
     onConfirm: () => void;
     onCancel: () => void;
@@ -18,6 +19,7 @@ export function SuccessNotification({ text }: Props) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
+        toastId: 1
     });
 }
 
@@ -29,6 +31,7 @@ export function ErrorNotification({ text }: Props) {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
+        toastId: 2
     });
 }
 
@@ -43,14 +46,7 @@ export function WarningNotification({ text, onConfirm, onCancel }: WarningProp) 
                             onConfirm();
                             props.closeToast?.(); // Sluit de melding
                         }}
-                        style={{
-                            marginRight: "10px",
-                            backgroundColor: "green",
-                            color: "white",
-                            border: "none",
-                            padding: "5px",
-                            cursor: "pointer",
-                        }}
+                        className="btn btn-success"
                     >
                         Ja
                     </button>
@@ -59,13 +55,7 @@ export function WarningNotification({ text, onConfirm, onCancel }: WarningProp) 
                             onCancel();
                             props.closeToast?.(); // Sluit de melding
                         }}
-                        style={{
-                            backgroundColor: "red",
-                            color: "white",
-                            border: "none",
-                            padding: "5px",
-                            cursor: "pointer",
-                        }}
+                        className="btn btn-danger"
                     >
                         Nee
                     </button>
@@ -75,7 +65,8 @@ export function WarningNotification({ text, onConfirm, onCancel }: WarningProp) 
         {
             autoClose: false,
             closeOnClick: false,
-            position: "top-center",
+            position: "top-right",
+            toastId: 3
         }
     );
 }
