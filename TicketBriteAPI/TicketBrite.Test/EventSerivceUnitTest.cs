@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
@@ -49,7 +50,7 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Create event with invalid data")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ValidationException))]
         public void AddEvent_InvalidEvent()
         {
             EventDTO eventDto = new EventDTO
@@ -98,7 +99,7 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Update event with invalid data")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ValidationException))]
         public void UpdateEvent_InvalidData()
         {
             EventDTO eventDto = new EventDTO
