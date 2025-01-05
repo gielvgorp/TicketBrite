@@ -48,6 +48,8 @@ export interface Reservation {
 
 export interface ApiResponse<T> {
     statusCode: number;
-    message?: string;
+    contentTypes: [];
+    formatters: [];
+    declaredType: any;
     value?: T;
 }
