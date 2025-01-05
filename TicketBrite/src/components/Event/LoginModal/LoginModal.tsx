@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NotLoggedInModal from './NotLoggedInModal';
-import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
     showModal: boolean;

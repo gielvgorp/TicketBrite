@@ -14,7 +14,7 @@ export function SuccessNotification({ text }: Props) {
     if (typeof text === 'string') {
         return toast.success(text, {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -30,7 +30,7 @@ export function ErrorNotification({ text }: Props) {
     if (typeof text === 'string') {
         return toast.error(text, {
             position: "top-right",
-            autoClose: 5000,
+            autoClose: 2500,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
