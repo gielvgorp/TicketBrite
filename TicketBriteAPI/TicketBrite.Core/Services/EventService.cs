@@ -1,4 +1,5 @@
-﻿using TicketBrite.Core.Domains;
+﻿using System.ComponentModel.DataAnnotations;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.DTO;
 
@@ -37,47 +38,55 @@ namespace TicketBrite.Core.Services
 
         public void UpdateEvent(EventDTO _event)
         {
-            ValidateEvent(_event);
-
-            EventDomain domain = new EventDomain
+            try
             {
-                eventID = _event.eventID,
-                eventAge = _event.eventAge,
-                eventCategory = _event.eventCategory,
-                eventDateTime = _event.eventDateTime,
-                eventDescription = _event.eventDescription,
-                eventImage = _event.eventImage,
-                eventLocation = _event.eventLocation,
-                eventName = _event.eventName,
-                isVerified = _event.isVerified,
-                organizationID = _event.organizationID
-            };
+                ValidateEvent(_event);
 
-            _eventRepository.UpdateEvent(domain);
+                EventDomain domain = new EventDomain
+                {
+                    eventID = _event.eventID,
+                    eventAge = _event.eventAge,
+                    eventCategory = _event.eventCategory,
+                    eventDateTime = _event.eventDateTime,
+                    eventDescription = _event.eventDescription,
+                    eventImage = _event.eventImage,
+                    eventLocation = _event.eventLocation,
+                    eventName = _event.eventName,
+                    isVerified = _event.isVerified,
+                    organizationID = _event.organizationID
+                };
+
+                _eventRepository.UpdateEvent(domain);
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException(ex.Message);
+            }
+            
         }
 
         private void ValidateEvent(EventDTO _event)
         {
             if (_event == null)
-                throw new ArgumentNullException("Event kan niet null zijn.");
+                throw new ValidationException("Event kan niet null zijn.");
 
             if (string.IsNullOrWhiteSpace(_event.eventName))
-                throw new ArgumentException("Event naam mag niet leeg zijn.");
+                throw new ValidationException("Event naam mag niet leeg zijn.");
 
             if (string.IsNullOrWhiteSpace(_event.eventLocation))
-                throw new ArgumentException("Event locatie mag niet leeg zijn.");
+                throw new ValidationException("Event locatie mag niet leeg zijn.");
 
             if (_event.eventDateTime < DateTime.Now)
-                throw new ArgumentException("Eventdatum moet in de toekomst liggen.");
+                throw new ValidationException("Eventdatum moet in de toekomst liggen.");
 
             if (_event.eventAge < 0 || _event.eventAge > 120)
-                throw new ArgumentException("Event leeftijd moet tussen 0 en 120 liggen.");
+                throw new ValidationException("Event leeftijd moet tussen 0 en 120 liggen.");
 
             if (string.IsNullOrWhiteSpace(_event.eventCategory))
-                throw new ArgumentException("Eventcategorie mag niet leeg zijn.");
+                throw new ValidationException("Eventcategorie mag niet leeg zijn.");
 
             if (string.IsNullOrWhiteSpace(_event.eventImage))
-                throw new ArgumentException("Event afbeelding mag niet leeg zijn.");
+                throw new ValidationException("Event afbeelding mag niet leeg zijn.");
         }
 
         private List<EventDTO> ConvertToDtoList(List<EventDomain> domainList)

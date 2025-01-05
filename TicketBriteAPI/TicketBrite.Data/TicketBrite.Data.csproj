@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TicketBrite.DTO\TicketBrite.DTO.csproj" />
+    <ProjectReference Include="..\TicketBrite.DTO\TicketBrite.DTO.csproj" />
     <ProjectReference Include="..\TicketBrite.Core\TicketBrite.Core.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Event } from '../../Types';
+import { Event, ApiResponse } from '../../Types';
+import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 interface EventDetailsFormProps {
     eventDetails: Event;
@@ -27,23 +28,20 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
                 },
                 body: JSON.stringify(
                     formValues
-                ) // Zet de formData om naar JSON
+                )
             });
-            
-            const data = await res.json(); // Ontvang de JSON-response
-           
-            // validation error
-            if(data.statusCode === 400){
-                console.log(data);
-                //setErrorMsg(data.value);
+
+            const data = await res.json() as ApiResponse<string>;
+
+            if(data.statusCode !== 200){
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
-            // successful registered
             if(data.statusCode === 200){
-               
+               SuccessNotification({text: 'Gegevens opgeslagen!'});
             }           
         } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }
     };
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
@@ -47,9 +48,16 @@ namespace TicketBriteAPI.Controllers
         [HttpPost("event/new")]
         public JsonResult AddNewEvent(EventDTO model)
         {
-            eventService.AddEvent(model);
+            try
+            {
+                eventService.AddEvent(model);
 
-            return new JsonResult(Ok("Evenement aangemaakt!"));
+                return new JsonResult(Ok("Evenement aangemaakt!"));
+            }
+            catch (ValidationException ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
         }
     }
 }

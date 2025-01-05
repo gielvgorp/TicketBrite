@@ -5,8 +5,6 @@ using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
-using Microsoft.Extensions.Configuration;
-using Bogus;
 using TicketBrite.DTO;
 
 namespace TicketBrite.Test

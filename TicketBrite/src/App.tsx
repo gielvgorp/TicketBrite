@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import NavigationBar from './components/NavigationBar/NavigationBar'
+import "react-toastify/dist/ReactToastify.css";
 import Index from './pages'
 import Events from './pages/Events'
 import EventInfo from './pages/EventInfo'
@@ -13,11 +14,13 @@ import { AuthProvider } from './AuthContext'
 import DashboardPage from './pages/Dashboard'
 import GuestAuthentication from './pages/GuestAuthentication'
 import PaymentSuccess from './pages/PaymentSuccess'
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const [showNav, setShowNav] = useState(true);
   return (
     <AuthProvider>
+      <ToastContainer />
      { showNav && <NavigationBar /> }
      <Routes>
       <Route path="/" element={<Index />} />

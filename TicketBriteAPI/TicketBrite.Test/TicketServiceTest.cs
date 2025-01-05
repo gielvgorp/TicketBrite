@@ -1,15 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
-using TicketBrite.Data.Migrations;
 using TicketBrite.Data.Repositories;
 
 namespace TicketBrite.Test

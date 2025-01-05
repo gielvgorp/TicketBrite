@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Event } from '../../../Types';
+import { Ticket, Event, ApiResponse } from '../../../Types';
+import { ErrorNotification, SuccessNotification } from '../../Notifications/Notifications';
 
 interface NewEventRequest {
     event: Event;
@@ -89,23 +90,18 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(model) // Zet de formData om naar JSON
+                body: JSON.stringify(model)
             });
 
-            const data = await res.json(); // Ontvang de JSON-response
-
-            // validation error
-            if(res.status === 400){
-                //setErrorMsg("Een of meerdere velden zijn leeg!");
+             const data = await res.json() as ApiResponse<string>;
+       
+            if(data.value && data.statusCode === 400){
+                ErrorNotification({text: data.value});
             }
 
-            console.log(eventDetails);
-
-            // successful registered
-            if(res.status === 200){
-                //localStorage.setItem('jwtToken', data.token);
-                console.log(data);
-                //navigate("/", {replace: true});
+            if(data.statusCode === 200){
+              handleClose();  
+              SuccessNotification({text: "Evenement aangemaakt!"});
             }           
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);

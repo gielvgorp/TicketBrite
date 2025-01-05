@@ -20,7 +20,7 @@ function Index(){
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;  // Display loading message while fetching data
+        return <p>Loading...</p>;
     }
 
     return (

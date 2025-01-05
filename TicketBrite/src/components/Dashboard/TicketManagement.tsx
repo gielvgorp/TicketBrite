@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Ticket } from '../../Types';
+import { ApiResponse, Ticket } from '../../Types';
 import TicketManagementItem from './TicketManagementComponent';
+import { ErrorNotification, SuccessNotification } from '../Notifications/Notifications';
 
 
 type Props = {
@@ -20,7 +21,6 @@ function TicketManagement({initialTickets, eventId}: Props){
 
     const storeTickets = async () => {
         try {
-            // Verzend het formulier naar het endpoint
             const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
                 method: 'POST',
                 headers: {
@@ -28,25 +28,22 @@ function TicketManagement({initialTickets, eventId}: Props){
                 },
                 body: JSON.stringify(
                     tickets
-                ) // Zet de formData om naar JSON
+                )
             });
             
-            const data = await res.json(); // Ontvang de JSON-response
-            console.log(data);
+            const data: ApiResponse<string> = await res.json(); 
+
             // validation error
-            if(data.statusCode === 400){
-                console.log(data);
-                //setErrorMsg(data.value);
+            if(data.statusCode !== 200){
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
             // successful registered
-            // if(data.statusCode === 200){
-            //     login(data.value.token);
-            //     console.log("Token:", localStorage.getItem('jwtToken'));
-            //     navigate("/", {replace: true});
-            // }           
+            if(data.statusCode === 200){
+               SuccessNotification({text: 'Gegevens opgeslagen!'});
+            }       
         } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }
     }
 
