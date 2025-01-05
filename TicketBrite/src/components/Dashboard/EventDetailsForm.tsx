@@ -31,7 +31,7 @@ function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
                 )
             });
 
-            const data: ApiResponse<string> = await res.json();
+            const data = await res.json() as ApiResponse<string>;
 
             if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});

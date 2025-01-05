@@ -1,7 +1,7 @@
 import { ErrorNotification } from "../components/Notifications/Notifications";
 import { ApiResponse } from "../Types";
 
-export async function APICall(url: string, type: string, value: any){
+export async function APICall(url: string, type: string, value: unknown){
         try {
             // Verzend het formulier naar het endpoint
             const res = await fetch(url, {
@@ -14,7 +14,7 @@ export async function APICall(url: string, type: string, value: any){
                 )
             });
 
-            const data: ApiResponse<string> = await res.json();
+            const data = await res.json() as ApiResponse<string>;
             return data;
         } catch (error) {
             ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
