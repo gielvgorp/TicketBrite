@@ -36,6 +36,8 @@ describe("Test shopping cart", () => {
 
         cy.get("[data-test='cart-item']").first().find("[data-test='btn-remove-item']").click();
 
+        cy.get("[data-test='confirm-delete-item']").first().click();
+
         cy.get("[data-test='cart-item']", { timeout: 10000 }).should("have.length", 0);
     });
 
@@ -73,7 +75,8 @@ describe("Test shopping cart", () => {
         cy.get("body").contains("Aankoopnummer").then((text) => {
             const purchaseId = text.text().split("Aankoopnummer: ")[1].trim();
 
-            cy.get("[data-test='nav-item-profile']").click();
+            cy.hideAllNotificaitons();
+            cy.get("[data-test='nav-item-profile']", { force: true }).click();
             cy.get("#profile-ticket").click();
 
             cy.get("[data-test='purchase-id']").contains(purchaseId).should("exist");

@@ -32,3 +32,8 @@ Cypress.Commands.add('navigateToAdminPanel', () => {
     cy.get("#submenu2").click();
 });
 
+Cypress.Commands.add("hideAllNotificaitons", () => {
+    cy.get('.Toastify__toast').each(($toast) => {
+        cy.wrap($toast).invoke('hide');
+    });
+});

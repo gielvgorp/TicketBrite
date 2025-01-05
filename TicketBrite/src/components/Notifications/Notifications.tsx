@@ -1,5 +1,4 @@
 import { toast, ToastContentProps } from "react-toastify";
-import { Toast } from "react-toastify/dist/types";
 
 interface Props {
     text: string;
@@ -47,6 +46,7 @@ export function WarningNotification({ text, onConfirm, onCancel }: WarningProp) 
                             props.closeToast?.(); // Sluit de melding
                         }}
                         className="btn btn-success"
+                        data-test="confirm-delete-item"
                     >
                         Ja
                     </button>
@@ -56,6 +56,7 @@ export function WarningNotification({ text, onConfirm, onCancel }: WarningProp) 
                             props.closeToast?.(); // Sluit de melding
                         }}
                         className="btn btn-danger"
+                         data-test="cancel-delete-item"
                     >
                         Nee
                     </button>

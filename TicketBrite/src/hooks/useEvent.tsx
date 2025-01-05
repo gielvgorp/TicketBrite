@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ApiResponse, Event } from '../Types';
 import { ErrorNotification, SuccessNotification } from '../components/Notifications/Notifications';
+import { Event } from '../Types';
 
 export const getEventDetails = async (eventId: string) => {
     try {
