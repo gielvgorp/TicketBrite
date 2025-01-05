@@ -15,7 +15,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
         WarningNotification({
             text: "Weet je zeker dat je dit item wilt verwijderen?",
             onConfirm: handleDeleteItem,
-            onCancel: () => console.log("Verwijderen geannuleerd."),
+            onCancel: () => { console.log("Verwijderen geannuleerd."); },
         });
     }
 
@@ -35,8 +35,6 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
                 throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
 
-            const data = await response.json();
-           
             setShowItem(false);
             onRemoveItem(parseInt(ticket.eventTicket.ticketPrice) * -1);
             SuccessNotification({text: "Ticket is verwijderd uit je winkelwagen!"})

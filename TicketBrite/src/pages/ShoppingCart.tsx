@@ -51,7 +51,7 @@ function ShoppingCart(){
                 throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
 
-            const data: ApiResponse<ShoppingCart> = await response.json();
+             const data = await response.json() as ApiResponse<ShoppingCart>;
 
             if(data.value){
                 setShoppingCart(data.value);

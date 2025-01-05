@@ -26,17 +26,17 @@ function TicketStatistics({eventId}: Props){
                 });
                 
                 // Voor het gebruik
-                const data: ApiResponse<TicketStatistic[]> = await res.json();
+                const data = await res.json() as ApiResponse<TicketStatistic[]>;
 
                 // validation error
                 if(data.statusCode === 400){
-                    ErrorNotification({text: data.value?.toString() || "Er is een onbekende fout opgetreden!"})
+                    ErrorNotification({text: data.value?.toString() ?? "Er is een onbekende fout opgetreden!"})
                 }
     
                 // successful registered
                 if(data.statusCode === 200){
                     setLoading(false);
-                    setStats(data.value || []);
+                    setStats(data.value ?? []);
                 }           
             } catch (error) {
                 console.error('Er is een fout opgetreden:', error);

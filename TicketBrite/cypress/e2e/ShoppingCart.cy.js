@@ -75,7 +75,7 @@ describe("Test shopping cart", () => {
         cy.get("body").contains("Aankoopnummer").then((text) => {
             const purchaseId = text.text().split("Aankoopnummer: ")[1].trim();
 
-            Cypress.Commands.hideAllNotificaitons();
+            cy.hideAllNotificaitons();
             cy.get("[data-test='nav-item-profile']").click();
             cy.get("#profile-ticket").click();
 

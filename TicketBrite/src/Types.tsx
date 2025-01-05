@@ -50,6 +50,6 @@ export interface ApiResponse<T> {
     statusCode: number;
     contentTypes: [];
     formatters: [];
-    declaredType: any;
+    declaredType: unknown;
     value?: T;
 }

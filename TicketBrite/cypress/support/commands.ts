@@ -33,7 +33,7 @@ Cypress.Commands.add('navigateToAdminPanel', () => {
 });
 
 Cypress.Commands.add("hideAllNotificaitons", () => {
-    cy.get('.Toastify__toast').each(($toast) => {
+    cy.get('.toast-class').then(($toast: JQuery<HTMLElement>) => {
         cy.wrap($toast).invoke('hide');
     });
 });

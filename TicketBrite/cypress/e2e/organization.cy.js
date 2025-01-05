@@ -71,7 +71,7 @@ describe("Test organization role", () => {
 
         cy.get("#btn-save-event-info").click();
 
-        Cypress.Commands.hideAllNotificaitons();
+        cy.hideAllNotificaitons();
 
         // check for saved changes
         cy.navigateToOrganizationPanel();

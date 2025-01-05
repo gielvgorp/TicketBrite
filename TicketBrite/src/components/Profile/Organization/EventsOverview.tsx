@@ -93,13 +93,13 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                 body: JSON.stringify(model)
             });
 
-            const data: ApiResponse<string> = await res.json();
+             const data = await res.json() as ApiResponse<string>;
        
             if(data.value && data.statusCode === 400){
                 ErrorNotification({text: data.value});
             }
 
-            if(data && data.statusCode === 200){
+            if(data.statusCode === 200){
               handleClose();  
               SuccessNotification({text: "Evenement aangemaakt!"});
             }           
