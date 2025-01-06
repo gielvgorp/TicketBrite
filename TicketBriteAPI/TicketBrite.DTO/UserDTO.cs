@@ -8,6 +8,5 @@
         public string userName { get; set; }
         public string userEmail { get; set; }
         public Guid? organizationID { get; set; }
-
     }
 }

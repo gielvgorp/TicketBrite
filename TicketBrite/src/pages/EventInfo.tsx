@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from '../EventInfo.module.css'
 import TicketSelector from '../components/Event/TicketsSelector/TicketSelector';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Event, Ticket } from '../Types'
+import { ApiResponse, Event, Ticket } from '../Types'
 import LoginModal from '../components/Event/LoginModal/LoginModal';
 import {useAuth} from '../AuthContext';
 import { ErrorNotification, SuccessNotification } from '../components/Notifications/Notifications';
@@ -59,7 +59,6 @@ function EventInfo(){
                 return [...prevSelected, { ticketID, quantity }];
             }
         });
-        console.log(selectedTickets);
     };
 
     const handlePayTickets = () => {
@@ -85,11 +84,13 @@ function EventInfo(){
                 body: JSON.stringify(selectedTickets) // Zet de formData om naar JSON
             });
 
-            if (!response.ok) {
-                ErrorNotification({text: 'Er is iets mis gegaan met het toevoegen van je items. Probeer het opnieuw!'});
+            const data = await response.json() as ApiResponse<string>;
+
+            if (data.statusCode !== 200) {
+                ErrorNotification({text: data.value ?? "Er is een onverwachte fout opgetreden!"});
                 //throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }else{
-                SuccessNotification({text: 'Je items zijn toegevoegd aan je winkelwagen!'});
+                SuccessNotification({text: data.value ?? "Items succesvol opgeslagen in uw winkelwagen!"});
             }
            
         } catch (error) {
