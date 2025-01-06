@@ -30,6 +30,7 @@
         "no-unsafe-argument": "off",
         "no-unsafe-assignment": "off",
         "no-unsafe-call": "off",
-        "no-unsafe-return": "off"
+        "no-unsafe-return": "off",
+        "no-unencrypted-http": "off"
     }
 }

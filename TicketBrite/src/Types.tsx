@@ -1,5 +1,3 @@
-import { StringNullableChain } from "cypress/types/lodash";
-
 export interface Event {
     eventID: string;            // Guid in C# translates to a string in TypeScript
     organizationID: string;     // Guid in C# translates to a string in TypeScript

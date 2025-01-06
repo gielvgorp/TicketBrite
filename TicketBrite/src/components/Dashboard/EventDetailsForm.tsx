@@ -7,7 +7,7 @@ interface EventDetailsFormProps {
     onSave: (updatedDetails: Event) => void;
 }
 
-function EventDetailsForm({ eventDetails, onSave }: EventDetailsFormProps){
+function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
     console.log("Event details", eventDetails);
     const [formValues, setFormValues] = useState<Event>(eventDetails);
 
