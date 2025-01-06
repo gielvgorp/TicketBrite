@@ -5,8 +5,9 @@ export async function APICall(url: string, type: string, value: unknown, authTok
         try {
             // Verzend het formulier naar het endpoint
             const res = await fetch(url, {
-                method: 'POST',
+                method: type,
                 headers: {
+                    'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(

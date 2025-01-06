@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { ApiResponse } from '../Types';
+import { ApiResponse, User } from '../Types';
 
 interface ProtectedRouteProps {
     roleRequired: string;
@@ -22,8 +22,13 @@ const getUserRole = async (): Promise<string | null> => {
             throw new Error('Fout bij het ophalen van gebruikersgegevens');
         }
 
-        const data = await response.json() as ApiResponse<any>;
-        return data.value.roleName as string;
+        const data = await response.json() as ApiResponse<User>;
+
+        if(data.value === null){
+            return null;
+        }else{
+            return data.value?.roleName as string;
+        }
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         return null; // Retourneer null bij een fout
@@ -42,7 +47,7 @@ const ProtectedRoute = ({ roleRequired, children }: ProtectedRouteProps) => {
         fetchUserRole();
     }, []);
 
-    if (userRole === roleRequired) {
+    if (userRole !== null && userRole === roleRequired) {
         return <>{children}</>;
     }
 

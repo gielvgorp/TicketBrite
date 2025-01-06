@@ -1,3 +1,5 @@
+import { StringNullableChain } from "cypress/types/lodash";
+
 export interface Event {
     eventID: string;            // Guid in C# translates to a string in TypeScript
     organizationID: string;     // Guid in C# translates to a string in TypeScript
@@ -52,4 +54,13 @@ export interface ApiResponse<T> {
     formatters: [];
     declaredType: unknown;
     value?: T;
+}
+
+export interface User{
+    userID: string;
+    roleID: string;
+    roleName: string;
+    userName: string;
+    userEmail: string;
+    organizationID: string;
 }
