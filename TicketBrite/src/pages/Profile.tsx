@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileContent from '../components/Profile/ProfileContent/ProfileContent';
 import EventsOverview from '../components/Profile/Organization/EventsOverview';
 import { useAuth } from '../AuthContext';
 import TicketContent from '../components/Profile/Tickets/TicketsContent';
 import VerifyEvents from '../components/Profile/Administator/VerifyEvents';
+import ProtectedRoute from '../hooks/useAuth';
 
 const Profile = () => {
     // State voor het bijhouden van de huidige content die moet worden weergegeven
     const [activeContent, setActiveContent] = useState('profile');
-    const { logout, role } = useAuth();
+    const { logout } = useAuth();
 
     // Functie om de content te veranderen op basis van klikken
     const handleContentChange = (content: any) => {
@@ -31,24 +32,21 @@ const Profile = () => {
                                     <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-ticket px-2"></i> Tickets</span>
                                 </a>
                             </li>
-                            {
-                                role === 'Organization' && (
-                                    <li>
-                                        <a href="#submenu1" id="profile-organization" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
-                                            <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-sitemap px-2"></i> Organisatie</span> 
-                                        </a>
-                                        <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                            <li className="w-100">
-                                                <a href="#" onClick={() => handleContentChange('events')} className="nav-link px-0"> 
-                                                    <span className="d-none d-sm-inline">Evenementen</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                )
-                            }
-                            {
-                                role === 'Beheerder' && 
+                            <ProtectedRoute roleRequired='Organization'>
+                                <li>
+                                    <a href="#submenu1" id="profile-organization" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
+                                        <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-sitemap px-2"></i> Organisatie</span> 
+                                    </a>
+                                    <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                                        <li className="w-100">
+                                            <a href="#" onClick={() => handleContentChange('events')} className="nav-link px-0"> 
+                                                <span className="d-none d-sm-inline">Evenementen</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ProtectedRoute>
+                            <ProtectedRoute roleRequired='Beheerder'>
                                 <li>
                                     <a href="#submenu2" id="profile-admin" data-bs-toggle="collapse" className="nav-link px-0 align-middle">
                                         <i className="fs-4 bi-speedometer2"></i> <span className="ms-1 d-none d-sm-inline"><i className="fa-solid fa-building-circle-check px-2"></i> Beheerder</span> 
@@ -61,8 +59,7 @@ const Profile = () => {
                                         </li>
                                     </ul>
                                 </li>
-                            }
-                           
+                            </ProtectedRoute>
                             <li className="nav-item justify-self-end">
                                 <a href="#" onClick={logout} className="nav-link align-middle px-0">
                                     <i className="fs-4 bi-house"></i> <span className="text-danger ms-1 d-none d-sm-inline"><i className="fa-solid fa-right-from-bracket px-2"></i> Uitloggen</span>
@@ -76,7 +73,6 @@ const Profile = () => {
                     {activeContent === 'profile' && <ProfileContent /> }
                     {activeContent === 'tickets' && <TicketContent /> }
                     {activeContent === 'events' && <EventsOverview organizationID='77726785-FA72-4244-A572-AFFEAF20D5F1' /> }
-                    {activeContent === 'logout' && <div>Uitloggen Content</div>}
                     {activeContent === 'events-verification' && <VerifyEvents />}
                 </div>
             </div>
