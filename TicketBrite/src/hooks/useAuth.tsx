@@ -21,10 +21,12 @@ const getUserRole = async (): Promise<string | null> => {
         if (!response.ok) {
             throw new Error('Fout bij het ophalen van gebruikersgegevens');
         }
-
         const data = await response.json() as ApiResponse<User>;
 
-        return data.value!.roleName as string;
+        const roleName = data.value?.roleName ?? ''; 
+        
+        return roleName as string;
+        
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         return null; // Retourneer null bij een fout
