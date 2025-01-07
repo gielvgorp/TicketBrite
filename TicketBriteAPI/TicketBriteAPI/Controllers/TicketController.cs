@@ -98,8 +98,6 @@ namespace TicketBriteAPI.Controllers
                 if (userID == null)
                     throw new AuthenticationException("Gebruiker is niet ingelogd!");
 
-                Guid reservationID = Guid.NewGuid();
-
                 foreach (ReservedTicketModel ticket in model)
                 {
                     int remaining = ticketService.CalculateRemainingTickets(ticket.ticketID);
@@ -109,7 +107,7 @@ namespace TicketBriteAPI.Controllers
 
                     for (int i = 0; i < ticket.quantity; i++)
                     {
-                        ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), reservationID);
+                        ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), Guid.NewGuid());
                     }
 
                     await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
@@ -123,7 +121,7 @@ namespace TicketBriteAPI.Controllers
             }
             catch (Exception ex)
             {
-                return new JsonResult(BadRequest("Er is iets misgegaan met het reserveren van de ticket!"));
+                return new JsonResult(BadRequest(ex.Message));
             }
           
         }

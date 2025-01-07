@@ -56,17 +56,31 @@ namespace TicketBrite.Core.Services
         {
             EventTicket ticket = GetTicket(ticketID);
 
-            if(ticket == null) throw new Exception("Ticket niet gevonden!");
-            if (!ticket.ticketStatus) throw new Exception("Er kunnen geen reserveringen plaats vinden voor deze ticket!");
-            if(CalculateRemainingTickets(ticketID) == 0) throw new Exception("Er zijn geen tickets meer beschikbaar!");
+            if(ticket == null)
+            {
+                throw new Exception("Ticket niet gevonden!");
+            }
+
+            if (!ticket.ticketStatus)
+            {
+                throw new Exception("Er kunnen geen reserveringen plaats vinden voor deze ticket!");
+            }   
+
+            if(CalculateRemainingTickets(ticketID) == 0)
+            {
+                throw new Exception("Er zijn geen tickets meer beschikbaar!");
+            }
 
             _ticketRepository.SetReserveTicket(ticketID, userID, reservationID);
         }
 
         public void SetPurscheTicket(Guid ticketID, Guid userID, Guid purchaseID)
         {   
-            if (CalculateRemainingTickets(ticketID) <= 0) throw new Exception("Ticket niet meer op voorraad!");
-
+            if ((GetTicket(ticketID).ticketMaxAvailable - GetSoldTickes(ticketID).Count) <= 0)
+            {
+                throw new Exception("Ticket niet meer op voorraad!");
+            }
+                   
             _ticketRepository.SetPurscheTicket(ticketID, userID, purchaseID);
         }
 
