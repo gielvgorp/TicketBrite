@@ -192,7 +192,7 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
                         </p>
                       </div>
                       <Button
-                        onClick={() => navigate(`/organisatie/dashboard/${event.eventID}`)}
+                        onClick={() => { navigate(`/organisatie/dashboard/${event.eventID}`)}}
                         className="align-self-end"
                         variant="outline-success"
                         style={{ padding: '10px 20px' }}

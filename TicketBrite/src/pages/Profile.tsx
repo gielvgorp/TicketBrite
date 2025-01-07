@@ -39,7 +39,7 @@ const Profile = () => {
                                     </a>
                                     <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                                         <li className="w-100">
-                                            <a href="#" onClick={() => handleContentChange('events')} className="nav-link px-0"> 
+                                            <a href="#" onClick={() =>{ handleContentChange('events')}} className="nav-link px-0"> 
                                                 <span className="d-none d-sm-inline">Evenementen</span>
                                             </a>
                                         </li>

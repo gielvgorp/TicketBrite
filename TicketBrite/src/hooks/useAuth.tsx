@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 const getUserRole = async (): Promise<string | null> => {
     try {
         const token = localStorage.getItem("jwtToken");
-        
+
         const response = await fetch('http://localhost:7150/api/User/get-user', {
             method: 'GET',
             headers: {
@@ -26,9 +26,9 @@ const getUserRole = async (): Promise<string | null> => {
 
         if(data.value === null){
             return null;
-        }else{
-            return data.value?.roleName as string;
         }
+        
+        return data.value?.roleName as string;
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         return null; // Retourneer null bij een fout
@@ -37,15 +37,19 @@ const getUserRole = async (): Promise<string | null> => {
 
 const ProtectedRoute = ({ roleRequired, children }: ProtectedRouteProps) => {
     const [userRole, setUserRole] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchUserRole = async () => {
+    const fetchUserRole = async () => {
+        try {
             const role = await getUserRole();
             setUserRole(role);
-        };
-
+        } catch (error) {
+            console.error('Error fetching user role:', error);
+        }
+    };
+    
+    useEffect(() => {
         fetchUserRole();
     }, []);
+    
 
     if (userRole !== null && userRole === roleRequired) {
         return <>{children}</>;
