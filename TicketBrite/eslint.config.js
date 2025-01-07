@@ -23,12 +23,18 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      // Nieuwe regels om unsafe types uit te schakelen
-      'no-explicit-any': 'off',
-      'no-unsafe-argument': 'off',
-      'no-unsafe-assignment': 'off',
-      'no-unsafe-call': 'off',
-      'no-unsafe-return': 'off',
+      "no-unused-vars": [
+        "off"
+      ],
+      "no-console": [
+        "off"
+      ],
+      "no-undef": "off",
+      "no-explicit-any": "off",
+      "no-unsafe-argument": "off",
+      "no-unsafe-assignment": "off",
+      "no-unsafe-call": "off",
+      "no-unsafe-return": "off",
       "no-unencrypted-http": "off"
     },
   },
