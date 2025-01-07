@@ -7,7 +7,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:vue/vue3-essential"
+        "plugin:vue/vue3-essential",
+        "plugin:security/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -16,7 +17,8 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "vue"
+        "vue",
+        "security"
     ],
     "rules": {
         "no-unused-vars": [
@@ -31,6 +33,7 @@
         "no-unsafe-assignment": "off",
         "no-unsafe-call": "off",
         "no-unsafe-return": "off",
-        "no-unencrypted-http": "off"
+        "no-unencrypted-http": "off",
+        "security/detect-unsafe-regex": "off"
     }
 }
