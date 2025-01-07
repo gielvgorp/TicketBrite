@@ -45,3 +45,20 @@ export interface Reservation {
     userID: string;
     reservedAt: Date;
 }
+
+export interface ApiResponse<T> {
+    statusCode: number;
+    contentTypes: [];
+    formatters: [];
+    declaredType: unknown;
+    value?: T;
+}
+
+export interface User{
+    userID: string;
+    roleID: string;
+    roleName: string;
+    userName: string;
+    userEmail: string;
+    organizationID: string;
+}

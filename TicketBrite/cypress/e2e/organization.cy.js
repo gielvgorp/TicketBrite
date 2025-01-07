@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe("Test organization role", () => {
     it("Should organization tab not show when have no permission", () => {
         cy.login(Cypress.env('testUser'), Cypress.env("testPassword"));

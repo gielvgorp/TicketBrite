@@ -32,3 +32,13 @@ Cypress.Commands.add('navigateToAdminPanel', () => {
     cy.get("#submenu2").click();
 });
 
+Cypress.Commands.add('hideAllNotificaitons', () => {
+    cy.get('.toast-class', { timeout: 5000 }).then(($toast) => {
+        if ($toast.length > 0) {
+            cy.wrap($toast).invoke('hide');
+        } else {
+            cy.log('Toast not found, skipping hide action');
+        }
+    });
+
+});

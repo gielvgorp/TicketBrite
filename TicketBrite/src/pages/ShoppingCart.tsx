@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Reservation, shoppingCartItem } from '../Types';
+import { Ticket, Reservation, shoppingCartItem, ApiResponse } from '../Types';
 import ShoppingCartItem from '../components/ShoppingCart/ShoppingCartItem';
+import { ErrorNotification } from '../components/Notifications/Notifications';
 
 interface ReservedTicket {
     ticket: Ticket;
@@ -51,15 +52,15 @@ function ShoppingCart(){
                 throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
 
-            const data = await response.json();
+             const data = await response.json() as ApiResponse<ShoppingCart>;
 
-            setShoppingCart(data.value);
-            setCartItems(data.value.items);
-            setTotalPrice(data.value.totalPrice);
+            if(data.value){
+                setShoppingCart(data.value);
+                setCartItems(data.value.items);
+                setTotalPrice(parseInt(data.value.totalPrice));
+            }
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
-        } finally {
-            //setLoading(false);
         }
     }
 
@@ -87,8 +88,15 @@ function ShoppingCart(){
                 throw new Error('Fout bij het ophalen van gebruikersgegevens');
             }
 
-            const data = await response.json();
-            navigate(`/Payment-success/${data.value}`, {replace: true});
+            const data = await response.json() as ApiResponse<string>;
+
+            if(data.statusCode !== 200){
+                ErrorNotification({text: data.value ?? "Er is een onverwachte fout opgetreden!"});
+            }
+
+            if(data.statusCode === 200){
+                navigate(`/Payment-success/${data.value}`, {replace: true});
+            }          
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         } finally {

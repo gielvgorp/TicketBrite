@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { TicketStatistic } from '../../Types';
+import { ApiResponse, TicketStatistic } from '../../Types';
 import { Card, ListGroup, Spinner, Alert } from "react-bootstrap";
 import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
+import { ErrorNotification } from '../Notifications/Notifications';
 
 type Props = {
     eventId: string;
@@ -15,10 +16,6 @@ function TicketStatistics({eventId}: Props){
 
     useEffect(() => {
         const fetchStats = async () => {
-            // const data = await getTicketOfEvent(eventId);
-            // setStats(data.value);
-            // setLoading(false);
-
             try {
                 // Verzend het formulier naar het endpoint
                 const res = await fetch(`http://localhost:7150/dashboard/tickets-statistics/${eventId}`, {
@@ -28,17 +25,18 @@ function TicketStatistics({eventId}: Props){
                     }
                 });
                 
-                const data = await res.json(); // Ontvang de JSON-response
+                // Voor het gebruik
+                const data = await res.json() as ApiResponse<TicketStatistic[]>;
+
                 // validation error
                 if(data.statusCode === 400){
-                    console.log(data);
-                    //setErrorMsg(data.value);
+                    ErrorNotification({text: data.value?.toString() ?? "Er is een onbekende fout opgetreden!"})
                 }
     
                 // successful registered
                 if(data.statusCode === 200){
                     setLoading(false);
-                    setStats(data.value);
+                    setStats(data.value ?? []);
                 }           
             } catch (error) {
                 console.error('Er is een fout opgetreden:', error);
@@ -84,10 +82,6 @@ function TicketStatistics({eventId}: Props){
             connection.stop();
         };
     }, [connection]);
-
-    useEffect(() => {
-        console.log("Updated tickets: ", stats);
-    }, [stats]);
 
     return (
         <Card className="p-4">

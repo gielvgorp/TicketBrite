@@ -24,34 +24,40 @@ namespace TicketBriteAPI.Controllers
         [HttpPost("/dashboard/tickets/save")]
         public JsonResult SaveTickets(List<TicketModel> tickets)
         {
-            List<EventTicket> col = new List<EventTicket>();
-            Guid eventID = Guid.Empty;
-
-            if(tickets.Count > 0)
+            try
             {
-                eventID = tickets[0].eventID;
+                List<EventTicket> col = new List<EventTicket>();
 
-                foreach (TicketModel ticket in tickets)
+                if (tickets.Count > 0)
                 {
-                    if(ticket.ticketID == Guid.Empty) ticket.ticketID = Guid.NewGuid();
+                    Guid eventID = tickets[0].eventID;
 
-                    col.Add(new EventTicket
+                    foreach (TicketModel ticket in tickets)
                     {
-                        ticketID = ticket.ticketID,
-                        eventID = ticket.eventID,
-                        ticketMaxAvailable = ticket.ticketMaxAvailbale,
-                        ticketName = ticket.ticketName,
-                        ticketPrice = ticket.ticketPrice,
-                        ticketStatus = ticket.ticketStatus,
-                    });
+                        if (ticket.ticketID == Guid.Empty) ticket.ticketID = Guid.NewGuid();
+
+                        col.Add(new EventTicket
+                        {
+                            ticketID = ticket.ticketID,
+                            eventID = ticket.eventID,
+                            ticketMaxAvailable = ticket.ticketMaxAvailbale,
+                            ticketName = ticket.ticketName,
+                            ticketPrice = ticket.ticketPrice,
+                            ticketStatus = ticket.ticketStatus,
+                        });
+                    }
+
+                    _dashboardService.SaveTickets(eventID, col);
                 }
 
-                _dashboardService.SaveTickets(eventID, col);
+                return new JsonResult(Ok("Tickets succesfully edited!"));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(NotFound(ex.Message));
             }
 
-
-
-            return new JsonResult(Ok());
+           
         }
 
         [HttpPost("/dashboard/event/save")]
@@ -74,9 +80,16 @@ namespace TicketBriteAPI.Controllers
         [HttpGet("/dashboard/tickets-statistics/{eventID}")]
         public JsonResult GetTicketStats(Guid eventID)
         {
-            List<TicketStatistic> model = _dashboardService.GetTicketStatistics(eventID);
+            try
+            {
+                List<TicketStatistic> model = _dashboardService.GetTicketStatistics(eventID);
 
-            return new JsonResult(Ok(model));
+                return new JsonResult(Ok(model));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(NotFound(ex.Message));
+            }
         }
     }
 }

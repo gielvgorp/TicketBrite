@@ -7,9 +7,6 @@ type TicketManagementItemProps = {
     saveTicket: (ticket: Ticket, index: number) => void;
 }
 
-
-
-
 function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItemProps){
     
     const [ticket, setTicket] = useState<Ticket>({
@@ -33,54 +30,52 @@ function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItem
     
     // set endpoint api to save ticket
     const handleSave = (ticket: Ticket, index: number) => {
-        console.log(ticket.ticketMaxAvailable);
         saveTicket(ticket, index);
     };
     
-
     useEffect(() => {
         setTicket(_ticket);
     }, []);
 
     return (
         <div key={ticket.ticketID} className="mb-3">
-                    <div className="form-group mb-2">
-                        <label>Ticket Naam</label>
-                        <input
-                            type="text"
-                            value={ticket.ticketName}
-                            onChange={(e) => handleInputChange('ticketName', e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group mb-2">
-                        <label>Ticket Prijs</label>
-                        <input
-                            type="text"
-                            value={ticket.ticketPrice}
-                            onChange={(e) => handleInputChange('ticketPrice', e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group mb-2">
-                        <label>Maximaal Beschikbaar</label>
-                        <input
-                            type="text"
-                            value={ticket.ticketMaxAvailable}
-                            onChange={(e) => handleInputChange('ticketMaxAvailable', e.target.value)}
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group form-check mb-2">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            checked={ticket.ticketStatus}
-                            onChange={(e) => handleInputChange('ticketStatus', e.target.checked)}
-                        />
-                        <label className="form-check-label">Ticket Actief</label>
-                    </div>
-                </div>
+            <div className="form-group mb-2">
+                <label>Ticket Naam</label>
+                <input
+                    type="text"
+                    value={ticket.ticketName}
+                    onChange={(e) => handleInputChange('ticketName', e.target.value)}
+                    className="form-control"
+                />
+            </div>
+            <div className="form-group mb-2">
+                <label>Ticket Prijs</label>
+                <input
+                    type="text"
+                    value={ticket.ticketPrice}
+                    onChange={(e) => handleInputChange('ticketPrice', e.target.value)}
+                    className="form-control"
+                />
+            </div>
+            <div className="form-group mb-2">
+                <label>Maximaal Beschikbaar</label>
+                <input
+                    type="text"
+                    value={ticket.ticketMaxAvailable}
+                    onChange={(e) => handleInputChange('ticketMaxAvailable', e.target.value)}
+                    className="form-control"
+                />
+            </div>
+            <div className="form-group form-check mb-2">
+                <input
+                    type="checkbox"
+                    className="form-check-input"
+                    checked={ticket.ticketStatus}
+                    onChange={(e) => handleInputChange('ticketStatus', e.target.checked)}
+                />
+                <label className="form-check-label">Ticket Actief</label>
+            </div>
+        </div>
     )
 }
 

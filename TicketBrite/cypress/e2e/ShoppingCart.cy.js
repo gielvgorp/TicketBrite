@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 describe("Test shopping cart", () => {
     it("Should add ticket to shopping cart", () => {
         cy.login(Cypress.env('testUser'), Cypress.env("testPassword"));
@@ -35,6 +36,8 @@ describe("Test shopping cart", () => {
         cy.get("[data-test='cart-item']", { timeout: 10000 }).should("have.length", 1);
 
         cy.get("[data-test='cart-item']").first().find("[data-test='btn-remove-item']").click();
+
+        cy.get("[data-test='confirm-delete-item']").first().click();
 
         cy.get("[data-test='cart-item']", { timeout: 10000 }).should("have.length", 0);
     });
