@@ -10,6 +10,7 @@ const getUserRole = async (): Promise<string | null> => {
     try {
         const token = localStorage.getItem("jwtToken");
 
+        // eslint-disable-next-line security/detect-unsafe-regex
         const response = await fetch('http://localhost:7150/api/User/get-user', {
             method: 'GET',
             headers: {
