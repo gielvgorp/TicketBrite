@@ -25,7 +25,7 @@ const getUserRole = async (): Promise<string | null> => {
 
         const roleName = data.value?.roleName ?? ''; 
         
-        return roleName as string;
+        return roleName;
         
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
