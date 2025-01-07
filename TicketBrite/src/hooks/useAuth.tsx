@@ -37,18 +37,17 @@ const getUserRole = async (): Promise<string | null> => {
 
 const ProtectedRoute = ({ roleRequired, children }: ProtectedRouteProps) => {
     const [userRole, setUserRole] = useState<string | null>(null);
-    const fetchUserRole = async () => {
-        try {
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
             const role = await getUserRole();
             setUserRole(role);
-        } catch (error) {
-            console.error('Error fetching user role:', error);
-        }
-    };
+        };
     
-    useEffect(() => {
-        fetchUserRole();
-    }, []);
+        void fetchUserRole();
+    
+    }, []); 
+    
     
 
     if (userRole !== null && userRole === roleRequired) {
