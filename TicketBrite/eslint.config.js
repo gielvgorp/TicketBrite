@@ -18,23 +18,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      "no-unused-vars": [
-        "off"
-      ],
-      "no-console": [
-        "off"
-      ],
-      "no-undef": "off",
-      "no-explicit-any": "off",
-      "no-unsafe-argument": "off",
-      "no-unsafe-assignment": "off",
-      "no-unsafe-call": "off",
-      "no-unsafe-return": "off",
-      "no-unencrypted-http": "off"
+
     },
   },
 )
