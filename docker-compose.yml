@@ -9,6 +9,7 @@ services:
       - app-network
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver-container,1433;Database=TicketBrite;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;
+      - SQL_SERVER=sqlserver-container
     depends_on:
       - sqlserver
 
