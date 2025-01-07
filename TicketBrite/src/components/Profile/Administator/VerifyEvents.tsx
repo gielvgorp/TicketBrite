@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Modal, Tab, Tabs } from "react-bootstrap";
 import { Event } from "../../../Types";
+import ProtectedRoute from "../../../hooks/useAuth";
 
 function VerifyEvents(){
     const [showModal, setShowModal] = useState(false);
@@ -98,7 +99,8 @@ function VerifyEvents(){
   }
 
   return (
-    <div className="container my-5">
+    <ProtectedRoute roleRequired="Beheerder">
+<div className="container my-5">
       <h2 className="text-center mb-4">Evenementen Beheren</h2>
 
       {/* Tabs voor goedgekeurde en niet-goedgekeurde evenementen */}
@@ -196,6 +198,8 @@ function VerifyEvents(){
         </Modal.Footer>
       </Modal>
     </div>
+    </ProtectedRoute>
+    
   );
 }
 

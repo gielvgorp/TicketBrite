@@ -53,3 +53,12 @@ export interface ApiResponse<T> {
     declaredType: unknown;
     value?: T;
 }
+
+export interface User{
+    userID: string;
+    roleID: string;
+    roleName: string;
+    userName: string;
+    userEmail: string;
+    organizationID: string;
+}

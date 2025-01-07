@@ -69,6 +69,7 @@ namespace TicketBrite.Core.Services
                 userID = user.userID,
                 organizationID = user.organizationID,
                 roleID = user.roleID,
+                roleName = GetRole(user.roleID).roleName,
                 userEmail = user.userEmail,
                 userName = user.userName,
             };

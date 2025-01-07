@@ -27,21 +27,27 @@ namespace TicketBriteAPI.Controllers
         [Authorize] // Beveilig het eindpunt met JWT-authenticatie
         public JsonResult GetUserData()
         {
-            // Haal de gebruikersnaam van de claims
-            var username = User.FindFirst("name")?.Value;
-
-            if (string.IsNullOrEmpty(username))
+            try
             {
-                return new JsonResult(NotFound("Gebruiker niet gevonden."));
+                var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userID == null)
+                {
+                    throw new KeyNotFoundException("Gebruiker heeft geen geldige ID");
+                }
+
+                UserDTO user = _userService.GetUser(Guid.Parse(userID));
+
+                return new JsonResult(Ok(user));
             }
-
-            // Hier kun je andere gebruikersgegevens ophalen, bijvoorbeeld uit een database
-            var userModel = new 
+            catch (KeyNotFoundException ex)
             {
-                Username = username
-            };
-
-            return new JsonResult(Ok(userModel)); // Retourneer de gebruikersgegevens
+                return new JsonResult(NotFound(ex.Message));
+            } 
+            catch(InvalidOperationException ex)
+            {
+                return new JsonResult(BadRequest(ex.Message));
+            }
         }
 
         [HttpPost("/guest/create")]
