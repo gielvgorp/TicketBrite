@@ -24,11 +24,7 @@ const getUserRole = async (): Promise<string | null> => {
 
         const data = await response.json() as ApiResponse<User>;
 
-        if(data.value === null){
-            return null;
-        }
-        
-        return data.value?.roleName as string;
+        return data.value!.roleName as string;
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
         return null; // Retourneer null bij een fout
