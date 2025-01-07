@@ -29,6 +29,7 @@ export default tseslint.config(
       'no-unsafe-assignment': 'off',
       'no-unsafe-call': 'off',
       'no-unsafe-return': 'off',
+      "no-unencrypted-http": "off"
     },
   },
 )
