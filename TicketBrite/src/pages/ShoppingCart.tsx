@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Button, ListGroup, Dropdown, Form, Row, Col } from 'react-bootstrap';
 import '../ShoppingCart.css';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Reservation, shoppingCartItem, ApiResponse } from '../Types';
+import { shoppingCartItem, ApiResponse } from '../Types';
 import ShoppingCartItem from '../components/ShoppingCart/ShoppingCartItem';
 import { ErrorNotification } from '../components/Notifications/Notifications';
 

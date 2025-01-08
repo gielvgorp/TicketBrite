@@ -4,7 +4,6 @@ import EventDetailsForm from '../components/Dashboard/EventDetailsForm';
 import { Event, Ticket } from '../Types';
 import TicketManagement from '../components/Dashboard/TicketManagement';
 import TicketStatistics from '../components/Dashboard/TicketStatistics';
-import { updateEventDetails } from '../hooks/useEvent';
 import '../Dashboard.css';
 
 function DashboardPage(){
