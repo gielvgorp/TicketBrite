@@ -19,32 +19,36 @@ function TicketManagement({initialTickets, eventId}: Props){
         setTickets(updatedTickets);
     }
 
-    const storeTickets = async () => {
-        try {
-            const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    tickets
-                )
-            });
-            
-            const data: ApiResponse<string> = await res.json(); 
+    const storeTickets = () => {
+        const saveData = async () => {
+            try {
+                const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        tickets
+                    )
+                });
+                
+                const data: ApiResponse<string> = await res.json(); 
 
-            // validation error
-            if(data.statusCode !== 200){
+                // validation error
+                if(data.statusCode !== 200){
+                    ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+                }
+
+                // successful registered
+                if(data.statusCode === 200){
+                SuccessNotification({text: 'Gegevens opgeslagen!'});
+                }       
+            } catch (error) {
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
-
-            // successful registered
-            if(data.statusCode === 200){
-               SuccessNotification({text: 'Gegevens opgeslagen!'});
-            }       
-        } catch (error) {
-            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }
+
+        saveData();
     }
 
     const handleAddTicket = () => {

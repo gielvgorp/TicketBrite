@@ -19,35 +19,39 @@ function LoginForm(){
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = (e: React.FormEvent) => {
+        
         e.preventDefault(); // Voorkom de standaard formulierverzending
-
-        try {
-            // Verzend het formulier naar het endpoint
-            const res = await fetch('http://localhost:7150/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData) // Zet de formData om naar JSON
-            });
-            
-            const data = await res.json(); // Ontvang de JSON-response
-            // validation error
-            if(data.statusCode !== 200){
-                console.log("Auth reponse: ", data);
-                setErrorMsg(data.value);
+        const saveData = async () => {
+            try {
+                // Verzend het formulier naar het endpoint
+                const res = await fetch('http://localhost:7150/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData) // Zet de formData om naar JSON
+                });
+        
+                const data = await res.json(); // Ontvang de JSON-response
+        
+                // Validation error
+                if (data.statusCode !== 200) {
+                    console.log("Auth response: ", data);
+                    setErrorMsg(data.value);
+                }
+        
+                // Successful login
+                if (data.statusCode === 200) {
+                    login(data.value.token);
+                    navigate("/", { replace: true });
+                }
+            } catch (error) {
+                console.error('Er is een fout opgetreden:', error);
             }
-
-            // successful registered
-            if(data.statusCode === 200){
-                login(data.value.token);
-                navigate("/", {replace: true});
-            }           
-        } catch (error) {
-            console.error('Er is een fout opgetreden:', error);
         }
-    };
+        saveData();
+    };    
 
     return (
         <>

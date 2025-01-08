@@ -17,31 +17,32 @@ function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
         }));
     };
 
-    const handleSave = async () => {
-        try {
-            // Verzend het formulier naar het endpoint
-            const res = await fetch('http://localhost:7150/dashboard/event/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    formValues
-                )
-            });
-
-            const data = await res.json() as ApiResponse<string>;
-
-            if(data.statusCode !== 200){
-                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+    const handleSave = () => {
+        const saveData = async () => {
+            try {
+                const res = await fetch('http://localhost:7150/dashboard/event/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formValues)
+                });
+    
+                const data = await res.json() as ApiResponse<string>;
+    
+                if (data.statusCode !== 200) {
+                    ErrorNotification({ text: "Gegevens kunnen niet worden opgeslagen!" });
+                }
+    
+                if (data.statusCode === 200) {
+                    SuccessNotification({ text: 'Gegevens opgeslagen!' });
+                }
+            } catch (error) {
+                ErrorNotification({ text: "Gegevens kunnen niet worden opgeslagen!" });
             }
-
-            if(data.statusCode === 200){
-               SuccessNotification({text: 'Gegevens opgeslagen!'});
-            }           
-        } catch (error) {
-            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
-        }
+        };
+    
+        saveData(); // Roep de async functie aan zonder deze direct te koppelen aan de onClick handler
     };
 
     return (
