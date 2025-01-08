@@ -47,7 +47,7 @@ namespace TicketBriteAPI.Controllers
                         });
                     }
 
-                    _dashboardService.SaveTickets(eventID, col);
+                    _dashboardService.SaveTickets(col);
                 }
 
                 return new JsonResult(Ok("Tickets succesfully edited!"));
