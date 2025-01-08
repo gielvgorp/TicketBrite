@@ -32,7 +32,7 @@ namespace TicketBrite.Test
 
             _ticketRepositoryMock.Setup(repo => repo.GetTicketsOfEvent(eventID)).Returns(tickets);
 
-            var result = _ticketService.GetTicketsOfEvent(eventID);
+            List<EventTicket> result = _ticketService.GetTicketsOfEvent(eventID);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
@@ -44,7 +44,7 @@ namespace TicketBrite.Test
         [ExpectedException(typeof(Exception))]
         public void SetReservedTicket_TicketDoesntExist()
         {
-            var ticketID = Guid.NewGuid();
+            Guid ticketID = Guid.NewGuid();
             _ticketRepositoryMock.Setup(repo => repo.GetTicketByID(ticketID)).Returns((EventTicket)null);
 
             _ticketService.SetReservedTicket(ticketID, Guid.NewGuid(), Guid.NewGuid());
@@ -53,12 +53,12 @@ namespace TicketBrite.Test
         [TestMethod("Should purchase ticket")]
         public void SetPurscheTicket()
         {
-            var ticketID = Guid.NewGuid();
-            var userID = Guid.NewGuid();
-            var purchaseID = Guid.NewGuid();
+            Guid ticketID = Guid.NewGuid();
+            Guid userID = Guid.NewGuid();
+            Guid purchaseID = Guid.NewGuid();
 
-            var ticket = new EventTicket { ticketID = ticketID, ticketMaxAvailable = 100 };
-            var soldTickets = new List<SoldTicket>();
+            EventTicket ticket = new EventTicket { ticketID = ticketID, ticketMaxAvailable = 100 };
+            List<SoldTicket> soldTickets = new List<SoldTicket>();
 
             _ticketRepositoryMock.Setup(repo => repo.GetTicketByID(ticketID)).Returns(ticket);
             _ticketRepositoryMock.Setup(repo => repo.GetSoldTickets(ticketID)).Returns(soldTickets);
@@ -72,22 +72,18 @@ namespace TicketBrite.Test
         [DataRow(100, 10, 5, 85)]
         [DataRow(50, 48, 2, 0)]
         [DataRow(0, 0, 0, 0)]
-        public void CalculateRemainingTickets(
-            int maxAvailable,
-            int soldCount,
-            int reservedCount,
-            int expectedRemaining)
+        public void CalculateRemainingTickets(int maxAvailable, int soldCount, int reservedCount, int expectedRemaining)
         {
-            var ticketID = Guid.NewGuid();
-            var ticket = new EventTicket { ticketID = ticketID, ticketMaxAvailable = maxAvailable };
-            var soldTickets = new List<SoldTicket>(new SoldTicket[soldCount]);
-            var reservedTickets = new List<ReservedTicket>(new ReservedTicket[reservedCount]);
+            Guid ticketID = Guid.NewGuid();
+            EventTicket ticket = new EventTicket { ticketID = ticketID, ticketMaxAvailable = maxAvailable };
+            List<SoldTicket> soldTickets = new List<SoldTicket>(new SoldTicket[soldCount]);
+            List<ReservedTicket> reservedTickets = new List<ReservedTicket>(new ReservedTicket[reservedCount]);
 
             _ticketRepositoryMock.Setup(repo => repo.GetTicketByID(ticketID)).Returns(ticket);
             _ticketRepositoryMock.Setup(repo => repo.GetSoldTickets(ticketID)).Returns(soldTickets);
             _ticketRepositoryMock.Setup(repo => repo.GetReservedTicketsByTicket(ticketID)).Returns(reservedTickets);
 
-            var remainingTickets = _ticketService.CalculateRemainingTickets(ticketID);
+            int remainingTickets = _ticketService.CalculateRemainingTickets(ticketID);
 
             Assert.AreEqual(expectedRemaining, remainingTickets);
         }
