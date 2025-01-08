@@ -1,6 +1,5 @@
 ﻿using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
-using Microsoft.AspNetCore.SignalR;
 
 namespace TicketBrite.Core.Services
 {

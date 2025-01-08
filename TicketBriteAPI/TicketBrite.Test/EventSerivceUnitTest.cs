@@ -29,11 +29,11 @@ namespace TicketBrite.Test
                 eventID = Guid.NewGuid(),
                 eventName = "Test Event",
                 eventLocation = "Test Location",
-                eventDateTime = DateTime.Now.AddDays(1), // Future date
+                eventDateTime = DateTime.Now.AddDays(1),
                 eventAge = 18,
                 eventCategory = "Music",
                 eventImage = "image.jpg",
-                isVerified = true,
+                isVerified = false,
                 organizationID = Guid.NewGuid()
             };
 
@@ -62,7 +62,7 @@ namespace TicketBrite.Test
                 eventAge = 18,
                 eventCategory = "Music",
                 eventImage = "image.jpg",
-                isVerified = true,
+                isVerified = false,
                 organizationID = Guid.NewGuid()
             };
 
@@ -77,7 +77,7 @@ namespace TicketBrite.Test
                 eventID = Guid.NewGuid(),
                 eventName = "Updated Event",
                 eventLocation = "Updated Location",
-                eventDateTime = DateTime.Now.AddDays(1), // Future date
+                eventDateTime = DateTime.Now.AddDays(1),
                 eventAge = 20,
                 eventCategory = "Sports",
                 eventImage = "updatedimage.jpg",

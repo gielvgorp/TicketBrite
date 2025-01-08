@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
@@ -20,7 +17,7 @@ namespace TicketBrite.Core.Services
             _eventRepository = eventRepository;
         }
 
-        public void SaveTickets(Guid eventID, List<EventTicket> tickets)
+        public void SaveTickets(List<EventTicket> tickets)
         {
             foreach (EventTicket ticket in tickets)
             {
