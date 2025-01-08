@@ -6,7 +6,7 @@ namespace TicketBrite.Core.Services
 {
     public class OrganizationService
     {
-        public readonly IOrganizationRepository organizationRepository;
+        private readonly IOrganizationRepository organizationRepository;
 
         public OrganizationService(IOrganizationRepository c_organizationRepository)
         {

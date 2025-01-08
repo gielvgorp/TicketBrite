@@ -13,12 +13,10 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class DashboardController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly DashboardService _dashboardService;
         public DashboardController(ApplicationDbContext context) 
         { 
-            _context = context;
-            _dashboardService = new DashboardService(new TicketRepository(_context), new EventRepository(_context));
+            _dashboardService = new DashboardService(new TicketRepository(context), new EventRepository(context));
         }
 
         [HttpPost("/dashboard/tickets/save")]

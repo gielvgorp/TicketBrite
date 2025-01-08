@@ -29,7 +29,7 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpGet("/event/get-all-verified/{category?}")]
-        public JsonResult GetAllVerifiedEvents(string category = "")
+        public JsonResult GetAllVerifiedEvents(string category)
         {
             List<EventDTO> events = eventService.GetAllVerifiedEvents(category);
 

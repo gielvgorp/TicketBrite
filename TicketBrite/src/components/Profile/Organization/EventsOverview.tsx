@@ -6,11 +6,6 @@ import { Ticket, Event, ApiResponse } from '../../../Types';
 import { ErrorNotification, SuccessNotification } from '../../Notifications/Notifications';
 import ProtectedRoute from '../../../hooks/useAuth';
 
-interface NewEventRequest {
-    event: Event;
-    tickets: Ticket[];
-}
-
 interface Events {
     verifiedEvents: Event[];
     unverifiedEvents: Event[];

@@ -32,16 +32,6 @@ function DashboardPage(){
         });
     }
 
-    const handleUpdateEvent = async (updatedDetails: Event) => {
-        if (!eventId) {
-            console.error("Event ID is missing, cannot update event details.");
-            return;
-        }
-        
-        await updateEventDetails(eventId, updatedDetails);
-        setEventDetails(updatedDetails);
-    };
-
     if (loading) return <div>Loading...</div>;
 
     return (
@@ -49,7 +39,7 @@ function DashboardPage(){
             <h2>Dashboard voor {eventDetails?.eventName}</h2>
             <div className="row">
                 <div className="col-md-6">
-                    <EventDetailsForm eventDetails={eventDetails!} onSave={handleUpdateEvent} />
+                    { eventDetails ? <EventDetailsForm eventDetails={eventDetails} /> : <div>Error: Event details is missing.</div>}
                 </div>
                 <div className="col-md-6">
                     {eventId ? <TicketManagement initialTickets={eventTickets || []} eventId={eventId} />: <div>Error: Event ID is missing.</div>}

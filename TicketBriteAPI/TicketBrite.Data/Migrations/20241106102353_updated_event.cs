@@ -10,13 +10,13 @@ namespace TicketBrite.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            // Deze migratie brengt geen wijzigingen aan in de database.
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            // Deze migratie brengt geen wijzigingen aan in de database.
         }
     }
 }

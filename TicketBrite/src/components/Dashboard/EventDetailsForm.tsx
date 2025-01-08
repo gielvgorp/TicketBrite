@@ -4,7 +4,6 @@ import { ErrorNotification, SuccessNotification } from '../Notifications/Notific
 
 interface EventDetailsFormProps {
     eventDetails: Event;
-    onSave: (updatedDetails: Event) => void;
 }
 
 function EventDetailsForm({ eventDetails }: EventDetailsFormProps){

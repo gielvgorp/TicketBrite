@@ -1,5 +1,5 @@
-import { Card, Button, ListGroup, Dropdown, Form, Image, Row, Col } from 'react-bootstrap';
-import { shoppingCartItem, Ticket } from '../../Types';
+import { Button, ListGroup, Image} from 'react-bootstrap';
+import { shoppingCartItem } from '../../Types';
 import { useState } from 'react';
 import { WarningNotification, SuccessNotification } from '../Notifications/Notifications';
 
