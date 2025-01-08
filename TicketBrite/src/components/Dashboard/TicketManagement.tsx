@@ -20,35 +20,34 @@ function TicketManagement({initialTickets, eventId}: Props){
     }
 
     const storeTickets = () => {
-        const saveData = async () => {
-            try {
-                const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(
-                        tickets
-                    )
-                });
-                
-                const data: ApiResponse<string> = await res.json(); 
-
+        try {
+            fetch('http://localhost:7150/dashboard/tickets/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    tickets
+                )
+            })
+            .then(response => response.json()) // Verwerk de response als JSON
+            .then(data => {
                 // validation error
-                if(data.statusCode !== 200){
-                    ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
-                }
-
-                // successful registered
-                if(data.statusCode === 200){
-                SuccessNotification({text: 'Gegevens opgeslagen!'});
-                }       
-            } catch (error) {
+            if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
-        }
 
-        saveData();
+            // successful registered
+            if(data.statusCode === 200){
+            SuccessNotification({text: 'Gegevens opgeslagen!'});
+            }         
+            })
+            .catch(error => {
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+            });
+        } catch (error) {
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+        }
     }
 
     const handleAddTicket = () => {

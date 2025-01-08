@@ -19,39 +19,39 @@ function RegisterForm(){
     };
 
     const handleSubmit = (e: React.FormEvent) => {
-        const saveData = async () => {
             e.preventDefault(); // Voorkom de standaard formulierverzending
 
-            try {
-                // Verzend het formulier naar het endpoint
-                const res = await fetch('http://localhost:7150/api/auth/Register', {
+            try {  
+                fetch('http://localhost:7150/api/auth/Register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(formData) // Zet de formData om naar JSON
-                });
-    
-                const data = await res.json(); // Ontvang de JSON-response
-    
-                // validation error
-                if(data.statusCode !== 200){
-                    console.log(data);
-                    setErrorMsg(data.value);
-                }
-    
-                // successful registered
-                if(data.statusCode === 200){
-                    console.log("Result: ", data);
-                    login(data.value.token);
-                    navigate("/", {replace: true});
-                }           
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json()) // Verwerk de response als JSON
+                    .then(data => {
+                       // validation error
+                        if(data.statusCode !== 200){
+                            console.log(data);
+                            setErrorMsg(data.value);
+                        }
+            
+                        // successful registered
+                        if(data.statusCode === 200){
+                            console.log("Result: ", data);
+                            login(data.value.token);
+                            navigate("/", {replace: true});
+                        }       
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);  // Log eventuele fouten
+                        setErrorMsg("Er heeft zich een onbekende fout opgetreden!");
+                    });
+                
             } catch (error) {
                 console.error('Er is een fout opgetreden:', error);
             }
-        }
-       
-        saveData();
     };
 
     return (

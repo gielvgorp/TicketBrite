@@ -18,31 +18,30 @@ function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
     };
 
     const handleSave = () => {
-        const saveData = async () => {
-            try {
-                const res = await fetch('http://localhost:7150/dashboard/event/save', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formValues)
-                });
-    
-                const data = await res.json() as ApiResponse<string>;
-    
+        try {
+            fetch('http://localhost:7150/dashboard/event/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formValues)
+            })
+            .then(response => response.json()) // Verwerk de response als JSON
+            .then(data => {
                 if (data.statusCode !== 200) {
                     ErrorNotification({ text: "Gegevens kunnen niet worden opgeslagen!" });
                 }
     
                 if (data.statusCode === 200) {
                     SuccessNotification({ text: 'Gegevens opgeslagen!' });
-                }
-            } catch (error) {
-                ErrorNotification({ text: "Gegevens kunnen niet worden opgeslagen!" });
-            }
-        };
-    
-        saveData(); // Roep de async functie aan zonder deze direct te koppelen aan de onClick handler
+                }   
+            })
+            .catch(error => {
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+            });
+        } catch (error) {
+            ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+        }
     };
 
     return (

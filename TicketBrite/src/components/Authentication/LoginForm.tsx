@@ -20,37 +20,36 @@ function LoginForm(){
     };
 
     const handleSubmit = (e: React.FormEvent) => {
-        
         e.preventDefault(); // Voorkom de standaard formulierverzending
-        const saveData = async () => {
-            try {
-                // Verzend het formulier naar het endpoint
-                const res = await fetch('http://localhost:7150/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData) // Zet de formData om naar JSON
+        
+        try {
+            fetch('http://localhost:7150/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json()) // Verwerk de response als JSON
+                .then(data => {
+                    if (data.statusCode !== 200) {
+                        console.log("Auth response: ", data);
+                        setErrorMsg(data.value);
+                    }
+            
+                    // Successful login
+                    if (data.statusCode === 200) {
+                        login(data.value.token);
+                        navigate("/", { replace: true });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);  // Log eventuele fouten
+                    setErrorMsg("Er heeft zich een onbekende fout opgetreden!");
                 });
-        
-                const data = await res.json(); // Ontvang de JSON-response
-        
-                // Validation error
-                if (data.statusCode !== 200) {
-                    console.log("Auth response: ", data);
-                    setErrorMsg(data.value);
-                }
-        
-                // Successful login
-                if (data.statusCode === 200) {
-                    login(data.value.token);
-                    navigate("/", { replace: true });
-                }
-            } catch (error) {
-                console.error('Er is een fout opgetreden:', error);
-            }
+        } catch (error) {
+            console.error('Er is een fout opgetreden:', error);
         }
-        saveData();
     };    
 
     return (
