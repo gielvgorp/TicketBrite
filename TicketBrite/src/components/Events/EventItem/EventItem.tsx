@@ -3,7 +3,7 @@ import styles from './EventItem.module.css'
 import { useEffect, useState } from 'react';
 import { Event } from '../../../Types'
 type Props = {
-    id: String;
+    id: string;
 }
 
 
@@ -14,7 +14,6 @@ function EventItem({id}: Props){
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
     useEffect(() => {      
-        console.log(id); 
           fetch(`http://localhost:7150/get-event/${id}`)
               .then(response => response.json())
               .then(data => {

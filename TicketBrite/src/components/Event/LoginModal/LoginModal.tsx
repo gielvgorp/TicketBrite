@@ -7,7 +7,7 @@ type Props = {
 }
 
 function TicketPurchaseComponent({setShowModal}: Props){
-    const [showNotLoggedInModal, setShowNotLoggedInModal] = useState(true);
+    const [, setShowNotLoggedInModal] = useState(true);
 
     const handleLogin = () => {
       // Hier implementeer je de logica voor inloggen, bijvoorbeeld een redirect naar een loginpagina

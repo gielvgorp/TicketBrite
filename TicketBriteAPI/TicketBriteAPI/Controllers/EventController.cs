@@ -28,13 +28,22 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(eventService.GetEvents()));
         }
 
-        [HttpGet("/event/get-all-verified/{category?}")]
-        public JsonResult GetAllVerifiedEvents(string category = "")
+        [HttpGet("/event/get-all-verified/{category}")]
+        public JsonResult GetAllVerifiedEvents(string category)
         {
             List<EventDTO> events = eventService.GetAllVerifiedEvents(category);
 
             return new JsonResult(Ok(events));
         }
+
+        [HttpGet("/event/get-all-verified")]
+        public JsonResult GetAllVerifiedEvents()
+        {
+            List<EventDTO> events = eventService.GetAllVerifiedEvents("");
+
+            return new JsonResult(Ok(events));
+        }
+
 
         [HttpGet("/get-events/{category}")]
         public JsonResult GetEvents(string category)

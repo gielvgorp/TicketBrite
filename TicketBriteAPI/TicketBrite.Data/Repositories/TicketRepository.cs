@@ -75,9 +75,6 @@ namespace TicketBrite.Data.Repositories
 
             EventTicket existingTicket = _dbContext.Tickets.Find(ticket.ticketID);
 
-            if (existingTicket == null)
-                throw new Exception("Ticket not found!");
-
             existingTicket.ticketName = ticket.ticketName;
             existingTicket.ticketPrice = ticket.ticketPrice;
             existingTicket.ticketStatus = ticket.ticketStatus;

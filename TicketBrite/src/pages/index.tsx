@@ -10,6 +10,7 @@ function Index(){
         fetch(`http://localhost:7150/event/get-all-verified/`)
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             setEvents(data.value);
             setLoading(false);
         })

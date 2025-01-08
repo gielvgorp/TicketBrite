@@ -2,14 +2,9 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, Event, ApiResponse } from '../../../Types';
+import { Event, ApiResponse } from '../../../Types';
 import { ErrorNotification, SuccessNotification } from '../../Notifications/Notifications';
 import ProtectedRoute from '../../../hooks/useAuth';
-
-interface NewEventRequest {
-    event: Event;
-    tickets: Ticket[];
-}
 
 interface Events {
     verifiedEvents: Event[];

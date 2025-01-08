@@ -180,7 +180,9 @@ function VerifyEvents(){
           <Button
             variant="success"
             onClick={() => {
-              approveEvent(selectedEvent!.eventID);
+              if(selectedEvent){
+                approveEvent(selectedEvent.eventID);
+              }
               handleCloseModal();
             }}
           >
@@ -189,7 +191,9 @@ function VerifyEvents(){
           <Button
             variant="danger"
             onClick={() => {
-              declineEvent(selectedEvent!.eventID);
+              if(selectedEvent){
+                declineEvent(selectedEvent.eventID);
+              }
               handleCloseModal();
             }}
           >

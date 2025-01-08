@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import styles from './GridItem.module.css'
 
 type Props = {
-    artist: String;
+    artist: string;
     category: string;
-    eventID: String;
+    eventID: string;
     image: string;
 }
 

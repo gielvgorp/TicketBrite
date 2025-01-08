@@ -8,7 +8,7 @@ RUN chmod +x /wait-for-it.sh
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR ./
+WORKDIR /app
 COPY TicketBriteAPI.sln ./
 COPY TicketBriteAPI/Controllers/ ./TicketBriteAPI/Controllers/
 COPY TicketBriteAPI/Models/ ./TicketBriteAPI/Models/
@@ -38,5 +38,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "TicketBriteAPI.dll"]
 ENTRYPOINT ["/wait-for-it.sh", "sqlserver-container:1433", "--", "dotnet", "TicketBriteAPI.dll"]
