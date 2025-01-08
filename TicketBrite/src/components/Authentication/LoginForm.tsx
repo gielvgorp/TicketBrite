@@ -19,35 +19,38 @@ function LoginForm(){
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // Voorkom de standaard formulierverzending
-
+        
         try {
-            // Verzend het formulier naar het endpoint
-            const res = await fetch('http://localhost:7150/api/auth/login', {
+            fetch('http://localhost:7150/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData) // Zet de formData om naar JSON
-            });
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json()) // Verwerk de response als JSON
+                .then(data => {
+                    if (data.statusCode !== 200) {
+                        console.log("Auth response: ", data);
+                        setErrorMsg(data.value);
+                    }
             
-            const data = await res.json(); // Ontvang de JSON-response
-            // validation error
-            if(data.statusCode !== 200){
-                console.log("Auth reponse: ", data);
-                setErrorMsg(data.value);
-            }
-
-            // successful registered
-            if(data.statusCode === 200){
-                login(data.value.token);
-                navigate("/", {replace: true});
-            }           
+                    // Successful login
+                    if (data.statusCode === 200) {
+                        login(data.value.token);
+                        navigate("/", { replace: true });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);  // Log eventuele fouten
+                    setErrorMsg("Er heeft zich een onbekende fout opgetreden!");
+                });
         } catch (error) {
             console.error('Er is een fout opgetreden:', error);
         }
-    };
+    };    
 
     return (
         <>

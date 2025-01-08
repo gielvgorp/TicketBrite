@@ -14,11 +14,16 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
     const showWarningNotification = () => {
         WarningNotification({
             text: "Weet je zeker dat je dit item wilt verwijderen?",
-            onConfirm: async () => {
-                await handleDeleteItem(); // Zorg ervoor dat handleDeleteItem asynchroon is
+            onConfirm: () => {
+                handleDeleteItem().catch((error) => {
+                    console.error('Fout bij verwijderen:', error);
+                });
             },
-            onCancel: () => { console.log("Verwijderen geannuleerd."); },
-        });        
+            onCancel: () => {
+                console.log("Verwijderen geannuleerd.");
+            },
+        });
+            
     }
 
     const handleDeleteItem = async () => {

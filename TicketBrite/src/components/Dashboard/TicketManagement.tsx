@@ -19,9 +19,9 @@ function TicketManagement({initialTickets, eventId}: Props){
         setTickets(updatedTickets);
     }
 
-    const storeTickets = async () => {
+    const storeTickets = () => {
         try {
-            const res = await fetch('http://localhost:7150/dashboard/tickets/save', {
+            fetch('http://localhost:7150/dashboard/tickets/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,19 +29,22 @@ function TicketManagement({initialTickets, eventId}: Props){
                 body: JSON.stringify(
                     tickets
                 )
-            });
-            
-            const data: ApiResponse<string> = await res.json(); 
-
-            // validation error
+            })
+            .then(response => response.json()) // Verwerk de response als JSON
+            .then(data => {
+                // validation error
             if(data.statusCode !== 200){
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             }
 
             // successful registered
             if(data.statusCode === 200){
-               SuccessNotification({text: 'Gegevens opgeslagen!'});
-            }       
+            SuccessNotification({text: 'Gegevens opgeslagen!'});
+            }         
+            })
+            .catch(error => {
+                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+            });
         } catch (error) {
             ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }

@@ -17,28 +17,28 @@ function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
         }));
     };
 
-    const handleSave = async () => {
+    const handleSave = () => {
         try {
-            // Verzend het formulier naar het endpoint
-            const res = await fetch('http://localhost:7150/dashboard/event/save', {
+            fetch('http://localhost:7150/dashboard/event/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(
-                    formValues
-                )
-            });
-
-            const data = await res.json() as ApiResponse<string>;
-
-            if(data.statusCode !== 200){
+                body: JSON.stringify(formValues)
+            })
+            .then(response => response.json()) // Verwerk de response als JSON
+            .then(data => {
+                if (data.statusCode !== 200) {
+                    ErrorNotification({ text: "Gegevens kunnen niet worden opgeslagen!" });
+                }
+    
+                if (data.statusCode === 200) {
+                    SuccessNotification({ text: 'Gegevens opgeslagen!' });
+                }   
+            })
+            .catch(error => {
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
-            }
-
-            if(data.statusCode === 200){
-               SuccessNotification({text: 'Gegevens opgeslagen!'});
-            }           
+            });
         } catch (error) {
             ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
         }

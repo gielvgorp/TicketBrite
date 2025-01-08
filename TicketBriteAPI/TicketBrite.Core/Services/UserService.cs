@@ -19,6 +19,7 @@ namespace TicketBrite.Core.Services
         public UserService(IUserRepository c_userRepository)
         {
             _userRepository = c_userRepository;
+            _passwordHasher = new PasswordHasher();
         }
 
         public void AddUser(CreateUserDTO user)
