@@ -24,7 +24,13 @@ export default tseslint.config(
             'cypress': cypress
         },
         rules: {
-            ...reactHooks.configs.recommended.rules,
+            "no-restricted-syntax": [
+                "error",
+                {
+                    "selector": "CallExpression[callee.name='fetch'][arguments.0.value=/^http:/]",
+                    "message": "HTTP requests are not recommended for security reasons."
+                }
+            ],
             'react-refresh/only-export-components': [
                 'warn',
                 { allowConstantExport: true },

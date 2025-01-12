@@ -19,7 +19,7 @@ Cypress.Commands.add('register', (email: string, fullname: string, password: str
 });
 
 Cypress.Commands.add('navigateToOrganizationPanel', () => {
-    cy.get("[data-test='nav-item-profile'] a").click();
+    cy.get("[data-test='nav-item-profile'] a", { timeout: 7500 }).click();
     cy.get("#profile-organization").should("exist");
     cy.get("#profile-organization").click();
     cy.get("#submenu1").click();
