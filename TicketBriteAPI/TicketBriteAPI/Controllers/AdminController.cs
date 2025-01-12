@@ -22,7 +22,7 @@ namespace TicketBriteAPI.Controllers
             _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 
-        [HttpGet("get-unverified-events")]
+        [HttpGet("events/unverified")]
         [Authorize]
         [ProducesResponseType(typeof(List<EventDTO>), 200)]
         [ProducesResponseType(typeof(string), 401)]
@@ -42,9 +42,9 @@ namespace TicketBriteAPI.Controllers
 
                 return new JsonResult(Ok(result));
             }
-            catch(UnauthorizedAccessException ex)
+            catch(UnauthorizedAccessException)
             {
-                return new JsonResult(Unauthorized(ExceptionMessages.UserNoPermission));
+                return new JsonResult(Unauthorized(ExceptionMessages.ForbiddenAccess));
             }
             catch (Exception)
             {
@@ -53,12 +53,12 @@ namespace TicketBriteAPI.Controllers
          
         }
 
-        [HttpPut("update-event-status/{eventID}")]
+        [HttpPut("events/{eventID}/status")]
         [Authorize]
         [ProducesResponseType(typeof(void), 204)]
         [ProducesResponseType(typeof(string), 401)]
         [ProducesResponseType(typeof(string), 400)]
-        public JsonResult UpdateEventStatus(Guid eventID, bool isVerified)
+        public JsonResult UpdateEventStatus(Guid eventID, [FromBody] bool isVerified)
         {
             try
             {
@@ -72,9 +72,9 @@ namespace TicketBriteAPI.Controllers
                 _adminService.UpdateEventVerificationStatus(isVerified, eventID);
                 return new JsonResult(NoContent());
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
-                return new JsonResult(Unauthorized(ExceptionMessages.UserNoPermission));
+                return new JsonResult(Unauthorized(ExceptionMessages.ForbiddenAccess));
             }
             catch (Exception)
             {

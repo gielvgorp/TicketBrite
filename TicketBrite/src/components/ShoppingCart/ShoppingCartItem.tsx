@@ -30,7 +30,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch(`http://localhost:7150/shopping-cart/${ticket.reservedTicket.reservedID}`, {
+            const response = await fetch(`http://localhost:7150/api/ShoppingCart/${ticket.reservedTicket.reservedID}/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,

@@ -38,18 +38,29 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
 
     const fetchEvents = async () => {
         try {
-            fetch(`http://localhost:7150/organization/get-events/overview/${organizationID}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.value);
-                setEvents(data.value);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);  
-            });
-        } catch (error) {
-            console.error("Er is een fout opgetreden bij het ophalen van evenementen:", error);
-        }
+          const token = localStorage.getItem('jwtToken');
+
+          const res = await fetch(`http://localhost:7150/api/Organization/events/${organizationID}/overview`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+          });
+
+          const data = await res.json() as ApiResponse<Events>;
+     
+          if(data.value && data.statusCode === 400){
+              ErrorNotification({text: "Er is een onverwachte fout opgetreden bij het ophalen van de evenementen!"});
+              console.log(data);
+          }
+
+          if(data.value && data.statusCode === 200){
+            setEvents(data.value);
+          }           
+      } catch (error) {
+          console.error('Er is een fout opgetreden:', error);
+      }
     };
 
     // Toggle modal visibility
@@ -80,11 +91,13 @@ const EventsOverview: React.FC<{ organizationID: string }> = ({ organizationID }
         };
 
         try {
-            // Verzend het formulier naar het endpoint
+            const token = localStorage.getItem('jwtToken');
+
             const res = await fetch('http://localhost:7150/api/Organization/event/new', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(model)
             });

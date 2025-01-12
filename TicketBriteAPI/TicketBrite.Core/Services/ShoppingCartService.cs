@@ -1,22 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicketBrite.Core.Interfaces;
+﻿using TicketBrite.Core.Interfaces;
+using TicketBrite.Core.Entities;
 
 namespace TicketBrite.Core.Services
 {
     public class ShoppingCartService
     {
-        IShoppingCartRepository _shoppingCartRepository;
-        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository) 
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly ITicketRepository _ticketRepository;
+        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, ITicketRepository ticketRepository) 
         {
             _shoppingCartRepository = shoppingCartRepository;
+            _ticketRepository = ticketRepository;
         }
 
-        public void RemoveItemInCart(Guid reservaionID)
+        public void RemoveItemInCart(Guid reservaionID, Guid userID)
         {
+            Entities.ReservedTicket reservatedTicket = _ticketRepository.GetReservedTicket(reservaionID);
+
+            if(reservatedTicket == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            if(reservatedTicket.userID != userID)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             _shoppingCartRepository.RemoveItemInCart(reservaionID);
         }
     }

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
-using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -35,6 +33,16 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
+                if(string.IsNullOrEmpty(model.UserEmail)) 
+                {
+                    throw new ValidationException(string.Format(ExceptionMessages.FieldRequired, "Email adres"));
+                }
+
+                if (string.IsNullOrEmpty(model.Password))
+                {
+                    throw new ValidationException(string.Format(ExceptionMessages.FieldRequired, "Wachtwoord"));
+                }
+
                 bool verified = _authService.VerifyUser(model.UserEmail, model.Password);
 
                 if (!verified)
@@ -45,6 +53,10 @@ namespace TicketBriteAPI.Controllers
                 string token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail));
 
                 return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (ValidationException ex)
+            {
+                return new JsonResult(NotFound(ex.Message));
             }
             catch (UnauthorizedAccessException)
             {
@@ -65,6 +77,11 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
+                if(guestID == Guid.Empty || verificationID == Guid.Empty)
+                {
+                    throw new ValidationException();
+                }
+
                 GuestDTO guest = _authService.VerifyGuest(guestID, verificationID);
 
                 string token = _jwtTokenService.GenerateJwtToken(guest);
@@ -73,6 +90,10 @@ namespace TicketBriteAPI.Controllers
             catch (UnauthorizedAccessException)
             {
                 return new JsonResult(NotFound(ExceptionMessages.GuestAuthenticationFailed));
+            }
+            catch (ValidationException)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.InvalidInputValue));
             }
             catch (Exception)
             {
@@ -88,11 +109,6 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
-                {
-                    throw new ValidationException(ExceptionMessages.FieldsEmpty);
-                }
-
                 CreateUserDTO user = new CreateUserDTO
                 {
                     UserName = model.FullName,
@@ -107,16 +123,16 @@ namespace TicketBriteAPI.Controllers
                 if(result == null)
                     throw new KeyNotFoundException(ExceptionMessages.UserNotFound);
 
-                var token = _jwtTokenService.GenerateJwtToken(result);
+                string token = _jwtTokenService.GenerateJwtToken(result);
                 return new JsonResult(Ok(new { Token = token }));
             }
             catch (ValidationException ex)
             {
-                return new JsonResult(NoContent());
+                return new JsonResult(BadRequest(ex.Message));
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                return new JsonResult(NoContent());
+                return new JsonResult(NotFound(ex.Message));
             }
             catch (Exception ex)
             {

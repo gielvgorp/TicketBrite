@@ -40,5 +40,8 @@ Cypress.Commands.add('hideAllNotificaitons', () => {
             cy.log('Toast not found, skipping hide action');
         }
     });
-
 });
+
+Cypress.Commands.add("logout", () => {
+    localStorage.removeItem("jwtToken");
+})

@@ -61,6 +61,33 @@ namespace TicketBriteAPI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} succesvol aangemaakt..
+        /// </summary>
+        public static string CreatedSuccelfully {
+            get {
+                return ResourceManager.GetString("CreatedSuccelfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} succesvol verwijderd..
+        /// </summary>
+        public static string DeletedSuccesfully {
+            get {
+                return ResourceManager.GetString("DeletedSuccesfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evenement met ID &apos;{0}&apos; kan niet gevonden worden!.
+        /// </summary>
+        public static string EventNotFound {
+            get {
+                return ResourceManager.GetString("EventNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Veld &quot;{0}&quot; is verplicht maar is leeg!.
         /// </summary>
         public static string FieldRequired {
@@ -75,6 +102,15 @@ namespace TicketBriteAPI {
         public static string FieldsEmpty {
             get {
                 return ResourceManager.GetString("FieldsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Je hebt geen toegang om deze actie uit te voeren!.
+        /// </summary>
+        public static string ForbiddenAccess {
+            get {
+                return ResourceManager.GetString("ForbiddenAccess", resourceCulture);
             }
         }
         
@@ -97,11 +133,56 @@ namespace TicketBriteAPI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ongeldige invoerwaardes..
+        /// </summary>
+        public static string InvalidInputValue {
+            get {
+                return ResourceManager.GetString("InvalidInputValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De ticket hoeveelheid moet groter zijn dan 0!.
+        /// </summary>
+        public static string InvalidTicketQuantity {
+            get {
+                return ResourceManager.GetString("InvalidTicketQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to De betaling kan niet succelvol worden afgerond. Probeer later opnieuw!.
+        /// </summary>
+        public static string PaymentFailed {
+            get {
+                return ResourceManager.GetString("PaymentFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gereserveerde ticket niet gevonden!.
+        /// </summary>
+        public static string ReservatedTicketNotFound {
+            get {
+                return ResourceManager.GetString("ReservatedTicketNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Er kunnen geen reserveringen plaats vinden voor deze ticket!.
         /// </summary>
         public static string ReservationNotAllowed {
             get {
                 return ResourceManager.GetString("ReservationNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Er zijn geen tickets gevonden met deze reservering!.
+        /// </summary>
+        public static string ReservationNotFound {
+            get {
+                return ResourceManager.GetString("ReservationNotFound", resourceCulture);
             }
         }
         
@@ -115,29 +196,38 @@ namespace TicketBriteAPI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email of wachtwoord is onjuist!.
+        ///   Looks up a localized string similar to De hoeveelheid aantal aangevraagde tickets zijn niet meer beschikbaar!.
         /// </summary>
-        public static string UserAuthenticationFailed {
+        public static string TicketSoldOut {
             get {
-                return ResourceManager.GetString("UserAuthenticationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gebruiker heeft geen toegang tot deze actie!.
-        /// </summary>
-        public static string UserNoPermission {
-            get {
-                return ResourceManager.GetString("UserNoPermission", resourceCulture);
+                return ResourceManager.GetString("TicketSoldOut", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Gebruiker kan niet worden geverifieerd!.
         /// </summary>
-        public static string UserNotAuthenticated {
+        public static string UnauthorizedAccess {
             get {
-                return ResourceManager.GetString("UserNotAuthenticated", resourceCulture);
+                return ResourceManager.GetString("UnauthorizedAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} succesvol bijgewerkt..
+        /// </summary>
+        public static string UpdatedSuccesfully {
+            get {
+                return ResourceManager.GetString("UpdatedSuccesfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email of wachtwoord is onjuist!.
+        /// </summary>
+        public static string UserAuthenticationFailed {
+            get {
+                return ResourceManager.GetString("UserAuthenticationFailed", resourceCulture);
             }
         }
         

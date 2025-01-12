@@ -112,7 +112,6 @@ namespace TicketBrite.Data.Repositories
 
             if (tickets.Any())
             {
-                // Verwijder alle gevonden tickets
                 _dbContext.ReservedTickets.RemoveRange(tickets);
                 _dbContext.SaveChanges();
             }

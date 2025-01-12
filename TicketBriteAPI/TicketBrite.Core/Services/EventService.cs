@@ -123,7 +123,7 @@ namespace TicketBrite.Core.Services
             EventDomain eventDomain = _eventRepository.GetEventByID(eventID);
 
             if (eventDomain == null)
-                throw new KeyNotFoundException("Event niet gevonden!");
+                throw new KeyNotFoundException("Evenement niet gevonden!");
 
             return new EventDTO
             {

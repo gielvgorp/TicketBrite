@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Modal, Tab, Tabs } from "react-bootstrap";
-import { Event } from "../../../Types";
+import { ApiResponse, Event } from "../../../Types";
 import ProtectedRoute from "../../../hooks/useAuth";
-import { ErrorNotification } from "../../Notifications/Notifications";
+import { ErrorNotification, SuccessNotification } from "../../Notifications/Notifications";
 
 function VerifyEvents(){
     const [showModal, setShowModal] = useState(false);
@@ -44,7 +44,7 @@ function VerifyEvents(){
     try {
         const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch('http://localhost:7150/api/Admin/get-unverified-events', {
+        const res = await fetch('http://localhost:7150/api/Admin/events/unverified', {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -70,32 +70,30 @@ function VerifyEvents(){
     }
   }
 
-  const handleUpdateStatus = async (eventID: string, value: boolean) => {
+  const handleUpdateStatus = async (eventID: string, isVerified: boolean) => {
     try {
         const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch(`http://localhost:7150/api/Admin/update-event-status/${eventID}`, {
+        const res = await fetch(`http://localhost:7150/api/Admin/events/${eventID}/status`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-              isVerified: value
-            })
+            body: JSON.stringify(isVerified)
         });
 
-        const data = await res.json(); // Ontvang de JSON-response
-
+        const data = await res.json() as ApiResponse<string>;
+        
         // validation error
-        if(res.status !== 204){
-            ErrorNotification({text: data.value});
+        if(data.value && data.statusCode !== 204){
+            ErrorNotification({text: data.value ?? "Er heeft zich onverwachts een fout opgetreden!"});
         }else{
-          setEvents(data.value);   
+          SuccessNotification({text: "Evenement bijgewerkt!"});
         }
-
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
+        ErrorNotification({text: "Er heeft zich onverwachts een fout opgetreden!"});
     }
   }
 

@@ -17,27 +17,24 @@ function TicketStatistics({eventId}: Props){
     useEffect(() => {
         const fetchStats = async () => {
             try {
+                const token = localStorage.getItem("jwtToken");
                 // Verzend het formulier naar het endpoint
-                const res = await fetch(`http://localhost:7150/dashboard/tickets-statistics/${eventId}`, {
+                const res = await fetch(`http://localhost:7150/api/Dashboard/tickets-statistics/${eventId}`, {
                     method: 'GET',
                     headers: {
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 });
                 
-                // Voor het gebruik
                 const data = await res.json() as ApiResponse<TicketStatistic[]>;
 
-                // validation error
-                if(data.statusCode === 400){
+                if(data.statusCode !== 200){
                     ErrorNotification({text: data.value?.toString() ?? "Er is een onbekende fout opgetreden!"})
-                }
-    
-                // successful registered
-                if(data.statusCode === 200){
+                }else{
                     setLoading(false);
                     setStats(data.value ?? []);
-                }           
+                }   
             } catch (error) {
                 console.error('Er is een fout opgetreden:', error);
             }

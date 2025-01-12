@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TicketBrite.Core.Entities;
+using TicketBrite.Core.Enums;
+using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -13,85 +16,117 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly EventService eventService;
-        private readonly TicketService ticketService;
+        private readonly EventService _eventService;
+        private readonly TicketService _ticketService;
+        private readonly AuthService _authService;
 
         public EventController(ApplicationDbContext context)
         {
-            eventService = new EventService(new EventRepository(context));
-            ticketService = new TicketService(new TicketRepository(context));
+            _eventService = new EventService(new EventRepository(context));
+            _ticketService = new TicketService(new TicketRepository(context));
+            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
+
         }
 
-        [HttpGet("/get-events")]
+        [HttpGet("get-events")]
         public JsonResult GetEvents()
         {
-            return new JsonResult(Ok(eventService.GetEvents()));
+            return new JsonResult(Ok(_eventService.GetEvents()));
         }
 
-        [HttpGet("/event/get-all-verified/{category}")]
+        [HttpGet("verified/{category}")]
         public JsonResult GetAllVerifiedEvents(string category)
         {
-            List<EventDTO> events = eventService.GetAllVerifiedEvents(category);
+            List<EventDTO> events = _eventService.GetAllVerifiedEvents(category);
 
             return new JsonResult(Ok(events));
         }
 
-        [HttpGet("/event/get-all-verified")]
+        [HttpGet("verified")]
         public JsonResult GetAllVerifiedEvents()
         {
-            List<EventDTO> events = eventService.GetAllVerifiedEvents("");
+            List<EventDTO> events = _eventService.GetAllVerifiedEvents("");
 
             return new JsonResult(Ok(events));
         }
 
 
-        [HttpGet("/get-events/{category}")]
+        [HttpGet("events/{category}")]
         public JsonResult GetEvents(string category)
         {
-            return new JsonResult(Ok(eventService.GetEvents(category)));
+            return new JsonResult(Ok(_eventService.GetEvents(category)));
         }
 
-        [HttpPost("/event/new")]
+        [HttpPost("new")]
+        [Authorize]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult AddEvent(EventDTO model)
         {
-            eventService.AddEvent(model);
+            try
+            {
+                Guid userID;
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || (!_authService.VerifyAccessPermission(userID, Roles.Admin) || !_authService.VerifyAccessPermission(userID, Roles.Organization)))
+                {
+                    throw new UnauthorizedAccessException();
+                }
 
-            return new JsonResult(Ok());
+                _eventService.AddEvent(model);
+                return new JsonResult(Ok(string.Format(ExceptionMessages.CreatedSuccelfully, "Evenement")));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+            
         }
 
-        [HttpGet("/get-event/{eventID}")]
+        [HttpGet("event/{eventID}")]
+        [ProducesResponseType(typeof(EventInfoViewModel), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GetEvent(Guid eventID)
         {
-            EventInfoViewModel result = new EventInfoViewModel();
-            List<TicketModel> ticketModel = new List<TicketModel>();
-            var tickets = ticketService.GetTicketsOfEvent(eventID);
-
-            foreach (var item in tickets)
+            try
             {
-                TicketModel ticket = new TicketModel
+                EventInfoViewModel result = new EventInfoViewModel();
+                List<TicketModel> ticketModel = new List<TicketModel>();
+                List<EventTicket> tickets = _ticketService.GetTicketsOfEvent(eventID);
+
+                foreach (var item in tickets)
                 {
-                    ticketID = item.ticketID,
-                    eventID = item.eventID,
-                    ticketMaxAvailbale = item.ticketMaxAvailable,
-                    ticketName = item.ticketName,
-                    ticketPrice = item.ticketPrice,
-                    ticketStatus = item.ticketStatus,
-                    ticketsRemaining = ticketService.CalculateRemainingTickets(item.ticketID)
-                };
+                    TicketModel ticket = new TicketModel
+                    {
+                        ticketID = item.ticketID,
+                        eventID = item.eventID,
+                        ticketMaxAvailbale = item.ticketMaxAvailable,
+                        ticketName = item.ticketName,
+                        ticketPrice = item.ticketPrice,
+                        ticketStatus = item.ticketStatus,
+                        ticketsRemaining = _ticketService.CalculateRemainingTickets(item.ticketID)
+                    };
 
-                ticketModel.Add(ticket);
+                    ticketModel.Add(ticket);
+                }
+
+                result.Event = _eventService.GetEvent(eventID);
+                result.Tickets = ticketModel;
+
+                return new JsonResult(Ok(result));
             }
-
-            result.Event = eventService.GetEvent(eventID);
-            result.Tickets = ticketModel;
-
-
-            if (result == null)
+            catch (KeyNotFoundException)
             {
-                return new JsonResult(NotFound());
+                return new JsonResult(NotFound(ExceptionMessages.EventNotFound));
             }
-
-            return new JsonResult(Ok(result));
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
         }
     }
 }

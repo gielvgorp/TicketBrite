@@ -21,9 +21,12 @@ function TicketManagement({initialTickets, eventId}: Props){
 
     const storeTickets = () => {
         try {
-            fetch('http://localhost:7150/dashboard/tickets/save', {
-                method: 'POST',
+            const token = localStorage.getItem("jwtToken");
+
+            fetch('http://localhost:7150/api/Dashboard/tickets/save', {
+                method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(

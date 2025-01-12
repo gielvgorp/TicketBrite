@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,9 +23,26 @@ namespace TicketBrite.Core.Services
             _passwordHasher = new PasswordHasher();
         }
 
+        private void ValidateUser(CreateUserDTO _user)
+        {
+            if (_user == null)
+                throw new ValidationException("Event kan niet null zijn!");
+
+            if (string.IsNullOrWhiteSpace(_user.UserName))
+                throw new ValidationException("Je volledige naam mag niet leeg zijn!");
+
+            if (string.IsNullOrWhiteSpace(_user.UserEmail))
+                throw new ValidationException("Email adres mag niet leeg zijn!");
+
+            if (string.IsNullOrWhiteSpace(_user.Password))
+                throw new ValidationException("Wachtwoord mag niet leeg zijn!");
+
+            VerifyEmail(_user.UserEmail);
+        }
+
         public void AddUser(CreateUserDTO user)
         {
-            VerifyEmail(user.UserEmail);
+            ValidateUser(user);
 
             string passwordHash = _passwordHasher.Hash(user.Password);
 
@@ -46,7 +64,7 @@ namespace TicketBrite.Core.Services
             UserDomain user = _userRepository.GetUserByEmail(email);
 
             if (user == null)
-                throw new InvalidOperationException("Gebruiker is niet gevonden!");
+                throw new KeyNotFoundException();
 
             return new UserDTO
             {
@@ -63,7 +81,7 @@ namespace TicketBrite.Core.Services
             UserDomain user = _userRepository.GetUser(uid);
 
             if(user == null)
-                throw new InvalidOperationException("Gebruiker is niet gevonden!");
+                throw new KeyNotFoundException();
 
             return new UserDTO
             {
