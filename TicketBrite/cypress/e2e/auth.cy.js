@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Authentication register and login', () => {
     it('should switch between login and register', () => {
         cy.logout();

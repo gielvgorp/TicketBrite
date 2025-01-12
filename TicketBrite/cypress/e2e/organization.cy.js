@@ -73,7 +73,6 @@ describe("Test organization role", () => {
 
         cy.get("#btn-save-event-info").click();
 
-        // check for saved changes
         cy.navigateToOrganizationPanel();
 
         cy.get("#list-group-unverified-events").as("listGroup");

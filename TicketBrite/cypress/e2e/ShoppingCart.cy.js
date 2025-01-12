@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 describe("Test shopping cart", () => {
     it("Should add ticket to shopping cart", () => {
         cy.login(Cypress.env('testUser'), Cypress.env("testPassword"));
