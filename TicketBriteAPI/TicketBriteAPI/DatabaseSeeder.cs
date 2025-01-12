@@ -117,7 +117,7 @@ namespace TicketBriteAPI
                             userID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
                             userName = "Cypress",
                             roleID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
-                            organizationID = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                            organizationID = Guid.Parse("77726785-FA72-4244-A572-AFFEAF20D5F1"),
                             userEmail = "cypress-organization@e2e.com",
                             userPasswordHash = "$2a$11$bahOC/Ei.8SqZ3zescbH8e.r2q2q2vKgE4APF5HqF2yeRZ/lsS/QO"
                         },

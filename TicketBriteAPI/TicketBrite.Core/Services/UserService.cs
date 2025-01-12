@@ -26,16 +26,24 @@ namespace TicketBrite.Core.Services
         private void ValidateUser(CreateUserDTO _user)
         {
             if (_user == null)
+            {
                 throw new ValidationException("Event kan niet null zijn!");
+            }
 
             if (string.IsNullOrWhiteSpace(_user.UserName))
+            {
                 throw new ValidationException("Je volledige naam mag niet leeg zijn!");
+            }
 
             if (string.IsNullOrWhiteSpace(_user.UserEmail))
+            {
                 throw new ValidationException("Email adres mag niet leeg zijn!");
-
+            }
+                
             if (string.IsNullOrWhiteSpace(_user.Password))
+            {
                 throw new ValidationException("Wachtwoord mag niet leeg zijn!");
+            }
 
             VerifyEmail(_user.UserEmail);
         }
