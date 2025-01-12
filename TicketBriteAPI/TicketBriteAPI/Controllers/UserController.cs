@@ -68,7 +68,7 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
-                if(string.IsNullOrEmpty(model.guestEmail) || string.IsNullOrEmpty(model.guestEmail))
+                if(string.IsNullOrEmpty(model.guestEmail) || string.IsNullOrEmpty(model.guestName))
                 {
                     throw new ValidationException();
                 }
