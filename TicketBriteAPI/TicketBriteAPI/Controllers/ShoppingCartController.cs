@@ -26,13 +26,28 @@ namespace TicketBriteAPI.Controllers
         }
 
 
-        [HttpDelete("/shopping-cart/{reserveID}/delete")]
+        [HttpDelete("/shopping-cart/{reserveID}")]
         [Authorize]
         public JsonResult DeleteItem(Guid reserveID)
         {
-            _shoppingCartService.RemoveItemInCart(reserveID);
+            try
+            {
+                _shoppingCartService.RemoveItemInCart(reserveID);
 
-            return new JsonResult(Ok());
+                return new JsonResult(new
+                {
+                    StatusCode = 204
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return new JsonResult(NotFound(ex.Message));
+            }
+            catch(Exception)
+            {
+                return new JsonResult(BadRequest("Er heeft zich een onverwachtse fout opgetreden!"));
+            }
+
         }
 
         [HttpGet("/shopping-cart/get-items")]
@@ -40,7 +55,11 @@ namespace TicketBriteAPI.Controllers
         public JsonResult GetItems()
         {
             Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            if (userID == Guid.Empty) return new JsonResult(Unauthorized());
+
+            if (userID == Guid.Empty)
+            {
+                return new JsonResult(Unauthorized("Gebruiker is niet ingelogd!"));
+            }
 
             try
             {

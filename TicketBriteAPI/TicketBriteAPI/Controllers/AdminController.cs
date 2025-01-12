@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TicketBrite.Core.Entities;
+using System.Security.Claims;
+using TicketBrite.Core.Enums;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -12,27 +13,73 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly AdminService adminService;
+        private readonly AdminService _adminService;
+        private readonly AuthService _authService;
 
         public AdminController(ApplicationDbContext context)
         {
-            adminService = new AdminService(new AdminRepository(context));
+            _adminService = new AdminService(new AdminRepository(context));
+            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 
-        [HttpGet("/admin/get-unverified-events")]
+        [HttpGet("get-unverified-events")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<EventDTO>), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GetAdminUnverifiedEvents()
         {
-            List<EventDTO> result = adminService.GetAllUnVerifiedEvents();
+            try
+            {
+                Guid userID;
 
-            return new JsonResult(Ok(result));
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || !_authService.VerifyAccessPermission(userID, Roles.Admin))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                List<EventDTO> result = _adminService.GetAllUnVerifiedEvents();
+
+                return new JsonResult(Ok(result));
+            }
+            catch(UnauthorizedAccessException ex)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.UserNoPermission));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+         
         }
 
-        [HttpPost("/admin/update-event-status/{eventID}/{value}")]
-        public JsonResult UpdateEventStatus(Guid eventID, bool value)
+        [HttpPut("update-event-status/{eventID}")]
+        [Authorize]
+        [ProducesResponseType(typeof(void), 204)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
+        public JsonResult UpdateEventStatus(Guid eventID, bool isVerified)
         {
-            adminService.UpdateEventVerificationStatus(value, eventID);
+            try
+            {
+                Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            return new JsonResult(Ok("Status changed!"));
+                if (!_authService.VerifyAccessPermission(userID, Roles.Admin))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                _adminService.UpdateEventVerificationStatus(isVerified, eventID);
+                return new JsonResult(NoContent());
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.UserNoPermission));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using TicketBrite.Core.Enums;
 
 namespace TicketBriteAPI
 {
@@ -83,17 +84,17 @@ namespace TicketBriteAPI
                     context.Roles.AddRange(
                         new Role
                         {
-                            roleID = Guid.Parse("3228BA9C-A8DB-48B4-95C4-16998615BB10"),
+                            roleID = Roles.Admin,
                             roleName = "Beheerder",
                         },
                         new Role
                         {
-                            roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
+                            roleID = Roles.Customer,
                             roleName = "Klant",
                         },
                         new Role
                         {
-                            roleID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
+                            roleID = Roles.Organization,
                             roleName = "Organization",
                         }
                     );

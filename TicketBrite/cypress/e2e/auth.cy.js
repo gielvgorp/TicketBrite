@@ -15,7 +15,7 @@ describe('Authentication register and login', () => {
         cy.get('.text-secondary a').as('loginLink').should('exist');
         cy.get('@loginLink').should('have.text', 'Log hier in!');
 
-        cy.get('.col-8 h1').should('have.text', 'Account aanmaken'); // check if is on regisger page
+        cy.get('.col-8 h1').should('have.text', 'Account aanmaken');
 
         cy.get('@loginLink').click();
 

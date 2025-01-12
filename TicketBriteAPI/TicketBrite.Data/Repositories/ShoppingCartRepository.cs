@@ -20,6 +20,11 @@ namespace TicketBrite.Data.Repositories
         {
             ReservedTicket ticket = _context.ReservedTickets.Find(reservationID);
 
+            if(ticket == null)
+            {
+                throw new KeyNotFoundException("Gereserveerde ticket niet gevonden!");
+            }
+
             _context.ReservedTickets.Remove(ticket);
             _context.SaveChanges();
         }

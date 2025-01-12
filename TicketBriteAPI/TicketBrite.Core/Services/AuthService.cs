@@ -2,6 +2,7 @@
 using TicketBrite.Core.Domains;
 using TicketBrite.Core.Interfaces;
 using TicketBrite.DTO;
+using TicketBrite.Core.Enums;
 
 namespace TicketBrite.Core.Services
 {
@@ -23,7 +24,7 @@ namespace TicketBrite.Core.Services
             GuestDomain guest = _authRepository.VerifyGuest(guestID, verificationCode);
 
             if (guest == null) 
-                throw new InvalidOperationException("Gast niet gevonden!");
+                throw new UnauthorizedAccessException();
 
             GuestDTO result = new GuestDTO
             {
@@ -39,10 +40,22 @@ namespace TicketBrite.Core.Services
         {
             UserDomain user = _userRepository.GetUserByEmail(email);
 
-            if (user == null)
-                return false;
+            return user != null && _passwordHasher.Verify(enteredPassword, user.userPasswordHash);
+        }
 
-            return _passwordHasher.Verify(enteredPassword, user.userPasswordHash);
+        public bool VerifyAccessPermission(Guid userID, Guid requiredRoleID)
+        {
+            UserDomain user = _userRepository.GetUser(userID);
+            RoleDomain role = _userRepository.GetRole(requiredRoleID);
+
+            return user != null && role != null && user.roleID == role.roleID;
+        }
+
+        public bool VerifyOrganizationAccessPermission(Guid userID, Guid requiredOrganizationID)
+        {
+            UserDomain user = _userRepository.GetUser(userID);
+
+            return user != null && user.organizationID == requiredOrganizationID;
         }
     }
 }

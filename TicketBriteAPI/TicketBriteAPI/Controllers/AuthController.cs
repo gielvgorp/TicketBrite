@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
@@ -27,42 +28,69 @@ namespace TicketBriteAPI.Controllers
 
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult Login(LoginViewModel model)
         {
-            bool verified = _authService.VerifyUser(model.UserEmail, model.Password);
+            try
+            {
+                bool verified = _authService.VerifyUser(model.UserEmail, model.Password);
 
-            if (!verified) 
-                return new JsonResult(NotFound("Gebruiker niet gevonden"));
+                if (!verified)
+                {
+                    throw new UnauthorizedAccessException();
+                }
 
-            var token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail));
+                string token = _jwtTokenService.GenerateJwtToken(_userService.GetUserByEmail(model.UserEmail));
 
-            return new JsonResult(Ok(new { Token = token }));
+                return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(NotFound(ExceptionMessages.UserAuthenticationFailed));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+           
         }
 
-        [HttpPost("/auth/guest/{guestID}/{verificationID}")]
+        [HttpPost("guest/{guestID}/{verificationID}")]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GuestLogin(Guid guestID, Guid verificationID)
         {
             try
             {
                 GuestDTO guest = _authService.VerifyGuest(guestID, verificationID);
 
-                var token = _jwtTokenService.GenerateJwtToken(guest); // Token genereren
+                string token = _jwtTokenService.GenerateJwtToken(guest);
                 return new JsonResult(Ok(new { Token = token }));
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException)
             {
-                return new JsonResult(NotFound(ex.Message));
+                return new JsonResult(NotFound(ExceptionMessages.GuestAuthenticationFailed));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
             }
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(List<EventDTO>), 200)]
+        [ProducesResponseType(typeof(void), 0)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult RegisterUser(RegisterViewModel model)
         {
             try
             {
                 if (string.IsNullOrEmpty(model.FullName) || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 {
-                    throw new Exception("Een of meerdere velden zijn leeg!");
+                    throw new ValidationException(ExceptionMessages.FieldsEmpty);
                 }
 
                 CreateUserDTO user = new CreateUserDTO
@@ -77,10 +105,18 @@ namespace TicketBriteAPI.Controllers
                 UserDTO result = _userService.GetUserByEmail(model.Email);
 
                 if(result == null)
-                    throw new ArgumentNullException("Gebruiker is niet gevonden!");
+                    throw new KeyNotFoundException(ExceptionMessages.UserNotFound);
 
                 var token = _jwtTokenService.GenerateJwtToken(result);
                 return new JsonResult(Ok(new { Token = token }));
+            }
+            catch (ValidationException ex)
+            {
+                return new JsonResult(NoContent());
+            }
+            catch (KeyNotFoundException)
+            {
+                return new JsonResult(NoContent());
             }
             catch (Exception ex)
             {

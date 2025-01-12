@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Modal, Tab, Tabs } from "react-bootstrap";
 import { Event } from "../../../Types";
 import ProtectedRoute from "../../../hooks/useAuth";
+import { ErrorNotification } from "../../Notifications/Notifications";
 
 function VerifyEvents(){
     const [showModal, setShowModal] = useState(false);
@@ -41,11 +42,13 @@ function VerifyEvents(){
 
   const handleFetchEvents = async () => {
     try {
+        const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch('http://localhost:7150/admin/get-unverified-events', {
+        const res = await fetch('http://localhost:7150/api/Admin/get-unverified-events', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             }
         });
 
@@ -69,30 +72,28 @@ function VerifyEvents(){
 
   const handleUpdateStatus = async (eventID: string, value: boolean) => {
     try {
-        console.log("event ID:", eventID);
-        console.log("new value:", value);
+        const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch(`http://localhost:7150/admin/update-event-status/${eventID}/${value}`, {
-            method: 'POST',
+        const res = await fetch(`http://localhost:7150/api/Admin/update-event-status/${eventID}`, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify(eventID)
+            body: JSON.stringify({
+              isVerified: value
+            })
         });
 
         const data = await res.json(); // Ontvang de JSON-response
 
         // validation error
-        if(res.status === 400){
-            //setErrorMsg("Een of meerdere velden zijn leeg!");
+        if(res.status !== 204){
+            ErrorNotification({text: data.value});
+        }else{
+          setEvents(data.value);   
         }
 
-        // successful registered
-        if(res.status === 200){
-            setEvents(data.value);
-            console.log(data);
-            //navigate("/", {replace: true});
-        }           
     } catch (error) {
         console.error('Er is een fout opgetreden:', error);
     }
