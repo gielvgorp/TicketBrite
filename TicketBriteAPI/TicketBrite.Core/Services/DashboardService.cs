@@ -17,42 +17,6 @@ namespace TicketBrite.Core.Services
             _eventRepository = eventRepository;
         }
 
-        public void SaveTickets(List<EventTicket> tickets)
-        {
-            foreach (EventTicket ticket in tickets)
-            {
-                EventTicket result = _ticketRepository.GetTicketByID(ticket.ticketID);
-
-                if (result != null)
-                {
-                    _ticketRepository.UpdateTicket(ticket);
-                }
-                else
-                {
-                    _ticketRepository.CreateTicket(ticket);
-                }
-            }
-        }
-
-        public void SaveEvent(EventDTO _event)
-        {
-            EventDomain eventDomain = new EventDomain
-            {
-                eventID = _event.eventID,
-                organizationID = _event.organizationID,
-                isVerified = _event.isVerified,
-                eventName = _event.eventName,
-                eventLocation = _event.eventLocation,
-                eventImage = _event.eventImage,
-                eventAge = _event.eventAge,
-                eventCategory = _event.eventCategory,
-                eventDateTime = _event.eventDateTime,
-                eventDescription = _event.eventDescription
-            };
-
-            _eventRepository.UpdateEvent(eventDomain);
-        }
-
         public int GetSoldTickets(Guid ticketID)
         {
             return _ticketRepository.GetSoldTickets(ticketID).Count;

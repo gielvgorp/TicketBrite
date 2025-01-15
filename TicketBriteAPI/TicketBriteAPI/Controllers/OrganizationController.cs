@@ -19,7 +19,6 @@ namespace TicketBriteAPI.Controllers
         private readonly EventService _eventService;
         private readonly TicketService _ticketService;
         private readonly OrganizationService _organizationService;
-        private readonly AdminService _adminService;
         private readonly AuthService _authService;
 
         public OrganizationController(ApplicationDbContext context)
@@ -27,7 +26,6 @@ namespace TicketBriteAPI.Controllers
             _eventService = new EventService(new EventRepository(context));
             _ticketService = new TicketService(new TicketRepository(context));
             _organizationService = new OrganizationService(new OrganizationRepository(context));
-            _adminService = new AdminService(new AdminRepository(context));
             _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 

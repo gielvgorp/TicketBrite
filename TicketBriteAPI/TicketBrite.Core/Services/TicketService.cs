@@ -114,5 +114,22 @@ namespace TicketBrite.Core.Services
         {
             return _ticketRepository.GetPurchasesOfUser(userID);
         }
+
+        public void SaveTickets(List<EventTicket> tickets)
+        {
+            foreach (EventTicket ticket in tickets)
+            {
+                EventTicket result = _ticketRepository.GetTicketByID(ticket.ticketID);
+
+                if (result != null)
+                {
+                    _ticketRepository.UpdateTicket(ticket);
+                }
+                else
+                {
+                    _ticketRepository.CreateTicket(ticket);
+                }
+            }
+        }
     }
 }

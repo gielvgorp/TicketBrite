@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
+using TicketBrite.Core.Enums;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -19,14 +20,16 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly TicketService ticketService;
         private readonly ITicketStatisticsNotifier _ticketStatisticsNotifier;
+        private readonly AuthService _authService;
 
         public TicketController(ApplicationDbContext context, ITicketStatisticsNotifier ticketNotifier)
         {
             ticketService = new TicketService(new TicketRepository(context));
             _ticketStatisticsNotifier = ticketNotifier;
+            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 
-        [HttpPost("/ticket/new")]
+        [HttpPost("new")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public JsonResult AddTIcket(EventTicket model)
@@ -36,7 +39,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok("Ticket successfully created!"));
         }
 
-        [HttpGet("/get-ticket/{ticketID}")]
+        [HttpGet("ticket/{ticketID}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TicketModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -58,7 +61,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(result));
         }
 
-        [HttpGet("/event/{eventID}/get-tickets")]
+        [HttpGet("/event/{eventID}/tickets")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<TicketModel>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -84,7 +87,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(result));
         }
 
-        [HttpPost("/ticket/set-reserve")]
+        [HttpPost("set-reserve")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -126,7 +129,7 @@ namespace TicketBriteAPI.Controllers
           
         }
 
-        [HttpGet("/ticket/reserve-ticket/get-tickets")]
+        [HttpGet("reserve-ticket/tickets")]
         [Authorize]
         public JsonResult GetReservedTicketsOfUser()
         {
@@ -148,7 +151,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(result));
         }
 
-        [HttpPost("/tickets/buy")]
+        [HttpPost("ticket/buy")]
         [Authorize]
         public async Task<JsonResult> BuyTickets()
         {
@@ -174,7 +177,7 @@ namespace TicketBriteAPI.Controllers
             }
         }
 
-        [HttpGet("/get-purchase/{id}")]
+        [HttpGet("purchase/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<EventTicket>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -198,7 +201,63 @@ namespace TicketBriteAPI.Controllers
             }
         }
 
-        [HttpGet("/user/get-purchase")]
+        [HttpPut("tickets/save")]
+        [Authorize]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
+        public JsonResult SaveTickets(List<TicketModel> tickets)
+        {
+            try
+            {
+                Guid userID;
+
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || !_authService.VerifyAccessPermission(userID, Roles.Organization))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                List<EventTicket> col = new List<EventTicket>();
+
+                if (tickets.Count > 0)
+                {
+                    Guid eventID = tickets[0].eventID;
+
+                    foreach (TicketModel ticket in tickets)
+                    {
+                        // Als guid empty is, is het een nieuwe ticket
+                        if (ticket.ticketID == Guid.Empty)
+                        {
+                            ticket.ticketID = Guid.NewGuid();
+                        }
+
+                        col.Add(new EventTicket
+                        {
+                            ticketID = ticket.ticketID,
+                            eventID = ticket.eventID,
+                            ticketMaxAvailable = ticket.ticketMaxAvailbale,
+                            ticketName = ticket.ticketName,
+                            ticketPrice = ticket.ticketPrice,
+                            ticketStatus = ticket.ticketStatus,
+                        });
+                    }
+
+                    ticketService.SaveTickets(col);
+                }
+
+                return new JsonResult(Ok(string.Format(ExceptionMessages.UpdatedSuccesfully, "Tickets")));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+        }
+
+        [HttpGet("/user/purchase")]
         [Authorize]
         public JsonResult GetPurchaseOfUser()
         {

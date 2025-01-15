@@ -28,7 +28,7 @@ namespace TicketBriteAPI.Controllers
 
         }
 
-        [HttpGet("get-events")]
+        [HttpGet("all")]
         public JsonResult GetEvents()
         {
             return new JsonResult(Ok(_eventService.GetEvents()));
@@ -50,6 +50,66 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(events));
         }
 
+        [HttpGet("unverified")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<EventDTO>), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
+        public JsonResult GetAdminUnverifiedEvents()
+        {
+            try
+            {
+                Guid userID;
+
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || !_authService.VerifyAccessPermission(userID, Roles.Admin))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                List<EventDTO> result = _eventService.GetAllUnVerifiedEvents();
+
+                return new JsonResult(Ok(result));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.ForbiddenAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+
+        }
+
+        [HttpPut("save")]
+        [Authorize]
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
+        public JsonResult SaveEvent(EventDTO model)
+        {
+            try
+            {
+                Guid userID;
+
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || !_authService.VerifyAccessPermission(userID, Roles.Organization))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                _eventService.SaveEvent(model);
+                return new JsonResult(Ok(string.Format(ExceptionMessages.UpdatedSuccesfully, "Event")));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+
+        }
 
         [HttpGet("events/{category}")]
         public JsonResult GetEvents(string category)
@@ -122,6 +182,35 @@ namespace TicketBriteAPI.Controllers
             catch (KeyNotFoundException)
             {
                 return new JsonResult(NotFound(ExceptionMessages.EventNotFound));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+        }
+
+        [HttpPut("events/{eventID}/status")]
+        [Authorize]
+        [ProducesResponseType(typeof(void), 204)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
+        public JsonResult UpdateEventStatus(Guid eventID, [FromBody] bool isVerified)
+        {
+            try
+            {
+                Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                if (!_authService.VerifyAccessPermission(userID, Roles.Admin))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                _eventService.UpdateEventVerificationStatus(isVerified, eventID);
+                return new JsonResult(NoContent());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(Unauthorized(ExceptionMessages.ForbiddenAccess));
             }
             catch (Exception)
             {

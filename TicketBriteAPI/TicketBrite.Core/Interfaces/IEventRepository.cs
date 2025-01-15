@@ -17,5 +17,7 @@ namespace TicketBrite.Core.Interfaces
         public List<EventDomain> GetEvents(string category);
         public EventDomain GetEventByID(Guid eventID);
         public List<EventDomain> GetAllVerifiedEvents(string category);
+        public List<EventDomain> GetAllUnVerifiedEvents();
+        public void UpdateEventVerificationStatus(bool value, Guid eventID);
     }
 }

@@ -21,7 +21,7 @@ function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
         try {
             const token = localStorage.getItem("jwtToken");
             
-            fetch('http://localhost:7150/api/Dashboard/event/save', {
+            fetch('http://localhost:7150/api/Event/save', {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
