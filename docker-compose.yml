@@ -5,10 +5,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "7150:7150"
+    container_name: Ticketbrite-api
     networks:
       - app-network
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver-container,1433;Database=TicketBrite;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=TicketBrite-database,1433;Database=TicketBrite;User Id=sa;Password=YourPassword123;TrustServerCertificate=True;
       - SQL_SERVER=sqlserver-container
     depends_on:
       - sqlserver
@@ -16,17 +17,18 @@ services:
   frontend:
     build:
       context: ./TicketBrite
-      dockerfile: Dockerfile
+      target: prod
     ports:
-      - "5173:5173"
+      - "80:80"
     depends_on:
       - api
     networks:
       - app-network
+    container_name: Ticketbrite-frontend
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver-container
+    container_name: TicketBrite-database
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=YourPassword123

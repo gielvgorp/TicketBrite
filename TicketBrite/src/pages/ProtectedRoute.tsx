@@ -1,10 +1,21 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../AuthContext'; // Zorg ervoor dat je het juiste pad gebruikt
+import { Outlet } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
+import { useEffect, useState } from 'react';
 
-const ProtectedRoute: React.FC = () => {
+function ProtectedRoute() {
     const { isAuthenticated } = useAuth();
+    const [authenticated, setIsAuthenticated] = useState(false);
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
-};
+    useEffect(() => {
+        setIsAuthenticated(isAuthenticated);
+    }, [isAuthenticated])
+
+    if(authenticated){    
+        console.log("outlet");
+        return  <Outlet />
+    }
+
+    return <><h1>Toegang geweigerd!</h1></>
+}
 
 export default ProtectedRoute;

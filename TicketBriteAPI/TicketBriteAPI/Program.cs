@@ -27,7 +27,7 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",
-        builder => builder.WithOrigins("http://localhost:5173", "https://localhost:5173")
+        builder => builder.WithOrigins("http://localhost:5173", "https://localhost:5173", "http://localhost")
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials());
