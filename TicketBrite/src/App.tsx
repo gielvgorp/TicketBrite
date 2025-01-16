@@ -15,6 +15,7 @@ import DashboardPage from './pages/Dashboard'
 import GuestAuthentication from './pages/GuestAuthentication'
 import PaymentSuccess from './pages/PaymentSuccess'
 import { ToastContainer } from "react-toastify";
+import Prototype from './pages/Prototype'
 
 function App() {
   const [showNav, setShowNav] = useState(true);
@@ -24,6 +25,7 @@ function App() {
      { showNav && <NavigationBar /> }
      <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/prototype" element={<Prototype />} />
       <Route path="/Events" element={<Events />} />
       <Route path="/Events/:id" element={<Events />} />
       <Route path="/Event/:id" element={<EventInfo />} />
