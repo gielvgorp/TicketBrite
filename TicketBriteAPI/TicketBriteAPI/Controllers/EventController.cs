@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Enums;
-using TicketBrite.Core.Interfaces;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -12,7 +11,7 @@ using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class EventController : ControllerBase
     {
@@ -28,13 +27,13 @@ namespace TicketBriteAPI.Controllers
 
         }
 
-        [HttpGet("all")]
+        [HttpGet("events")]
         public JsonResult GetEvents()
         {
             return new JsonResult(Ok(_eventService.GetEvents()));
         }
 
-        [HttpGet("verified/{category}")]
+        [HttpGet("events/verified/{category}")]
         public JsonResult GetAllVerifiedEvents(string category)
         {
             List<EventDTO> events = _eventService.GetAllVerifiedEvents(category);
@@ -81,7 +80,7 @@ namespace TicketBriteAPI.Controllers
 
         }
 
-        [HttpPut("save")]
+        [HttpPut("event")]
         [Authorize]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 401)]
@@ -117,7 +116,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(_eventService.GetEvents(category)));
         }
 
-        [HttpPost("new")]
+        [HttpPost("event")]
         [Authorize]
         [ProducesResponseType(typeof(string), 200)]
         [ProducesResponseType(typeof(string), 401)]
@@ -189,7 +188,7 @@ namespace TicketBriteAPI.Controllers
             }
         }
 
-        [HttpPut("events/{eventID}/status")]
+        [HttpPut("event/{eventID}/status")]
         [Authorize]
         [ProducesResponseType(typeof(void), 204)]
         [ProducesResponseType(typeof(string), 401)]
