@@ -21,7 +21,6 @@ const useUser = () => {
     };
 
     useEffect(() => {
-        console.log("run");
         fetchUserData();
     }, []);
 

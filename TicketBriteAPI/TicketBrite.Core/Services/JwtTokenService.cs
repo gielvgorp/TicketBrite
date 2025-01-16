@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TicketBrite.Core.Entities;
-using TicketBrite.Core.Interfaces;
 using TicketBrite.DTO;
 
 namespace TicketBrite.Core.Services
