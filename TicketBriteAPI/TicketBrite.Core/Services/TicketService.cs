@@ -57,17 +57,17 @@ namespace TicketBrite.Core.Services
 
             if(ticket == null)
             {
-                throw new Exception("Ticket niet gevonden!");
+                throw new KeyNotFoundException("Ticket niet gevonden!");
             }
 
             if (!ticket.ticketStatus)
             {
-                throw new Exception("Er kunnen geen reserveringen plaats vinden voor deze ticket!");
-            }   
+                throw new InvalidOperationException("Er kunnen geen reserveringen plaats vinden voor deze ticket!");
+            }
 
-            if(CalculateRemainingTickets(ticketID) == 0)
+            if (CalculateRemainingTickets(ticketID) == 0)
             {
-                throw new Exception("Er zijn geen tickets meer beschikbaar!");
+                throw new ArgumentException("Er zijn geen tickets meer beschikbaar!");
             }
 
             _ticketRepository.SetReserveTicket(ticketID, userID, reservationID);
@@ -113,6 +113,23 @@ namespace TicketBrite.Core.Services
         public List<UserPurchaseModel> GetPurchasesOfUser(Guid userID)
         {
             return _ticketRepository.GetPurchasesOfUser(userID);
+        }
+
+        public void SaveTickets(List<EventTicket> tickets)
+        {
+            foreach (EventTicket ticket in tickets)
+            {
+                EventTicket result = _ticketRepository.GetTicketByID(ticket.ticketID);
+
+                if (result != null)
+                {
+                    _ticketRepository.UpdateTicket(ticket);
+                }
+                else
+                {
+                    _ticketRepository.CreateTicket(ticket);
+                }
+            }
         }
     }
 }

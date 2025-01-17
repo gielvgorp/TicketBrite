@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
+using TicketBrite.DTO;
 using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
@@ -22,25 +22,59 @@ namespace TicketBriteAPI.Controllers
         {
             _ticketService = new TicketService(new TicketRepository(context));
             _eventService = new EventService(new EventRepository(context));
-            _shoppingCartService = new ShoppingCartService(new ShoppingCartRepository(context));
+            _shoppingCartService = new ShoppingCartService(new ShoppingCartRepository(context), new TicketRepository(context));
         }
 
 
-        [HttpDelete("/shopping-cart/{reserveID}/delete")]
+        [HttpDelete("{reserveID}/delete")]
         [Authorize]
+        [ProducesResponseType(typeof(List<EventDTO>), 200)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult DeleteItem(Guid reserveID)
         {
-            _shoppingCartService.RemoveItemInCart(reserveID);
+            try
+            {
+                Guid userID;
 
-            return new JsonResult(Ok());
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                _shoppingCartService.RemoveItemInCart(reserveID, userID);
+
+                return new JsonResult(Ok(string.Format(ExceptionMessages.DeletedSuccesfully, "Ticket uit winkelwagen")));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new JsonResult(NotFound(ExceptionMessages.ReservationNotFound));
+            }
+            catch (KeyNotFoundException)
+            {
+                return new JsonResult(NotFound(ExceptionMessages.ReservatedTicketNotFound));
+            }
+            catch(Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
+            }
+
         }
 
-        [HttpGet("/shopping-cart/get-items")]
+        [HttpGet("items")]
         [Authorize]
+        [ProducesResponseType(typeof(ShoppingCartModel), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GetItems()
         {
             Guid userID = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            if (userID == Guid.Empty) return new JsonResult(Unauthorized());
+
+            if (userID == Guid.Empty)
+            {
+                throw new UnauthorizedAccessException();
+            }
 
             try
             {
@@ -64,9 +98,13 @@ namespace TicketBriteAPI.Controllers
 
                 return new JsonResult(Ok(shoppingCart));
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException)
             {
-                return new JsonResult(BadRequest(ex.Message));
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
             }
         }
     }

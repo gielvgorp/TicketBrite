@@ -1,4 +1,5 @@
-﻿using TicketBrite.Core.Domains;
+﻿using Microsoft.EntityFrameworkCore;
+using TicketBrite.Core.Domains;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
 
@@ -114,6 +115,42 @@ namespace TicketBrite.Data.Repositories
                 List<Event> events = _dbContext.Events.Where(e => e.isVerified && e.eventCategory == category).ToList();
                 return ConvertToDomainList(events);
             }
+        }
+
+        private List<EventDomain> GetEventsByVerificationStatus(bool isVerified)
+        {
+            return _dbContext.Events
+                .Where(e => e.isVerified == isVerified)
+                .Select(item => new EventDomain
+                {
+                    eventID = item.eventID,
+                    organizationID = item.organizationID,
+                    eventAge = item.eventAge,
+                    eventCategory = item.eventCategory,
+                    eventDateTime = item.eventDateTime,
+                    eventDescription = item.eventDescription,
+                    eventImage = item.eventImage,
+                    eventLocation = item.eventLocation,
+                    eventName = item.eventName,
+                    isVerified = item.isVerified
+                }).ToList();
+        }
+
+        public List<EventDomain> GetAllUnVerifiedEvents()
+        {
+            return GetEventsByVerificationStatus(false);
+        }
+
+        public void UpdateEventVerificationStatus(bool value, Guid eventID)
+        {
+            Event result = _dbContext.Events.Find(eventID);
+
+            if (result == null)
+                throw new InvalidOperationException("Evenement niet gevonden!");
+
+            result.isVerified = value;
+
+            _dbContext.SaveChanges();
         }
     }
 }

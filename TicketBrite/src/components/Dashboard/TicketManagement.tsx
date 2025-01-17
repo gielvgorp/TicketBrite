@@ -21,9 +21,12 @@ function TicketManagement({initialTickets, eventId}: Props){
 
     const storeTickets = () => {
         try {
-            fetch('http://localhost:7150/dashboard/tickets/save', {
-                method: 'POST',
+            const token = localStorage.getItem("jwtToken");
+
+            fetch('http://localhost:7150/api/Ticket/tickets/save', {
+                method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(
@@ -33,15 +36,15 @@ function TicketManagement({initialTickets, eventId}: Props){
             .then(response => response.json()) // Verwerk de response als JSON
             .then(data => {
                 // validation error
-            if(data.statusCode !== 200){
-                ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
-            }
+                if(data.statusCode !== 200){
+                    ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
+                }
 
-            // successful registered
-            if(data.statusCode === 200){
-            SuccessNotification({text: 'Gegevens opgeslagen!'});
-            }         
-            })
+                // successful registered
+                if(data.statusCode === 200){
+                    SuccessNotification({text: 'Gegevens opgeslagen!'});
+                }         
+                })
             .catch(error => {
                 ErrorNotification({text: "Gegevens kunnen niet worden opgeslagen!"});
             });

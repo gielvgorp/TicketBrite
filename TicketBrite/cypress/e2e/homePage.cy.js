@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Home Page', () => {
   it('should display events in a grid on the homepage', () => {
     // Bezoek de homepagina

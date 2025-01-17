@@ -1,6 +1,7 @@
 ﻿using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using TicketBrite.Core.Enums;
 
 namespace TicketBriteAPI
 {
@@ -83,17 +84,17 @@ namespace TicketBriteAPI
                     context.Roles.AddRange(
                         new Role
                         {
-                            roleID = Guid.Parse("3228BA9C-A8DB-48B4-95C4-16998615BB10"),
+                            roleID = Roles.Admin,
                             roleName = "Beheerder",
                         },
                         new Role
                         {
-                            roleID = Guid.Parse("43A72AC5-91BA-402D-83F5-20F23B637A92"),
+                            roleID = Roles.Customer,
                             roleName = "Klant",
                         },
                         new Role
                         {
-                            roleID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
+                            roleID = Roles.Organization,
                             roleName = "Organization",
                         }
                     );
@@ -116,7 +117,7 @@ namespace TicketBriteAPI
                             userID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
                             userName = "Cypress",
                             roleID = Guid.Parse("B80C80C4-2789-4596-A4BF-F3736C4DE1B1"),
-                            organizationID = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                            organizationID = Guid.Parse("77726785-FA72-4244-A572-AFFEAF20D5F1"),
                             userEmail = "cypress-organization@e2e.com",
                             userPasswordHash = "$2a$11$bahOC/Ei.8SqZ3zescbH8e.r2q2q2vKgE4APF5HqF2yeRZ/lsS/QO"
                         },

@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
 using TicketBrite.DTO;
+using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -24,7 +26,11 @@ namespace TicketBriteAPI.Controllers
         }
 
         [HttpGet("get-user")]
-        [Authorize] // Beveilig het eindpunt met JWT-authenticatie
+        [Authorize]
+        [ProducesResponseType(typeof(UserDTO), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GetUserData()
         {
             try
@@ -33,28 +39,39 @@ namespace TicketBriteAPI.Controllers
 
                 if (userID == null)
                 {
-                    throw new KeyNotFoundException("Gebruiker heeft geen geldige ID");
+                    throw new UnauthorizedAccessException();
                 }
 
                 UserDTO user = _userService.GetUser(Guid.Parse(userID));
 
                 return new JsonResult(Ok(user));
             }
-            catch (KeyNotFoundException ex)
+            catch (UnauthorizedAccessException)
             {
-                return new JsonResult(NotFound(ex.Message));
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (KeyNotFoundException)
+            {
+                return new JsonResult(NotFound(ExceptionMessages.UserNotFound));
             } 
-            catch(InvalidOperationException ex)
+            catch (Exception)
             {
-                return new JsonResult(BadRequest(ex.Message));
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
             }
         }
 
         [HttpPost("/guest/create")]
+        [ProducesResponseType(typeof(ShoppingCartModel), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult CreateGuest(Guest model)
         {
             try
             {
+                if(string.IsNullOrEmpty(model.guestEmail) || string.IsNullOrEmpty(model.guestName))
+                {
+                    throw new ValidationException();
+                }
 
                 GuestDTO guestDTO = new GuestDTO
                 {
@@ -64,12 +81,16 @@ namespace TicketBriteAPI.Controllers
 
                 _userService.AddGuest(guestDTO);
 
-                var token = _jwtTokenService.GenerateJwtToken(guestDTO); // Token genereren
+                var token = _jwtTokenService.GenerateJwtToken(guestDTO);
                 return new JsonResult(Ok(new { Token = token }));
             }
-            catch (Exception ex)
+            catch (ValidationException)
             {
-                return new JsonResult(BadRequest(ex.Message));
+                return new JsonResult(BadRequest(ExceptionMessages.FieldsEmpty));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
             }
         }
     }

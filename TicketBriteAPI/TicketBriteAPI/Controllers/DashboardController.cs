@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TicketBrite.Core.Entities;
+using TicketBrite.Core.Enums;
 using TicketBrite.Core.Services;
 using TicketBrite.Data.ApplicationDbContext;
 using TicketBrite.Data.Repositories;
@@ -14,79 +16,39 @@ namespace TicketBriteAPI.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly DashboardService _dashboardService;
+        private readonly AuthService _authService;
         public DashboardController(ApplicationDbContext context) 
         { 
             _dashboardService = new DashboardService(new TicketRepository(context), new EventRepository(context));
+            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
         }
 
-        [HttpPost("/dashboard/tickets/save")]
-        public JsonResult SaveTickets(List<TicketModel> tickets)
-        {
-            try
-            {
-                List<EventTicket> col = new List<EventTicket>();
-
-                if (tickets.Count > 0)
-                {
-                    Guid eventID = tickets[0].eventID;
-
-                    foreach (TicketModel ticket in tickets)
-                    {
-                        if (ticket.ticketID == Guid.Empty) ticket.ticketID = Guid.NewGuid();
-
-                        col.Add(new EventTicket
-                        {
-                            ticketID = ticket.ticketID,
-                            eventID = ticket.eventID,
-                            ticketMaxAvailable = ticket.ticketMaxAvailbale,
-                            ticketName = ticket.ticketName,
-                            ticketPrice = ticket.ticketPrice,
-                            ticketStatus = ticket.ticketStatus,
-                        });
-                    }
-
-                    _dashboardService.SaveTickets(col);
-                }
-
-                return new JsonResult(Ok("Tickets succesfully edited!"));
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(NotFound(ex.Message));
-            }
-
-           
-        }
-
-        [HttpPost("/dashboard/event/save")]
-        public JsonResult SaveEvent(EventDTO model)
-        {
-            try
-            {
-                _dashboardService.SaveEvent(model);
-
-                return new JsonResult(Ok("Succesfully saved"));
-            }
-            catch (Exception ex)
-            {
-
-                return new JsonResult(NotFound(ex.Message));
-            }
-           
-        }
-
-        [HttpGet("/dashboard/tickets-statistics/{eventID}")]
+        [HttpGet("tickets-statistics/{eventID}")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<TicketStatistic>), 200)]
+        [ProducesResponseType(typeof(string), 401)]
+        [ProducesResponseType(typeof(string), 400)]
         public JsonResult GetTicketStats(Guid eventID)
         {
             try
             {
-                List<TicketStatistic> model = _dashboardService.GetTicketStatistics(eventID);
+                Guid userID;
 
+                if (!Guid.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out userID) || !_authService.VerifyAccessPermission(userID, Roles.Organization))
+                {
+                    throw new UnauthorizedAccessException();
+                }
+
+                List<TicketStatistic> model = _dashboardService.GetTicketStatistics(eventID);
                 return new JsonResult(Ok(model));
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException)
             {
-                return new JsonResult(NotFound(ex.Message));
+                return new JsonResult(Unauthorized(ExceptionMessages.UnauthorizedAccess));
+            }
+            catch (Exception)
+            {
+                return new JsonResult(BadRequest(ExceptionMessages.GeneralException));
             }
         }
     }

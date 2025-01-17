@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Event info page', () => {
     it('category should change after select change', () => {
         // Bezoek de homepagina

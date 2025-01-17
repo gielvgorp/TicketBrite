@@ -1,4 +1,6 @@
-﻿namespace TicketBriteAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TicketBriteAPI.Models
 {
     public class LoginViewModel
     {

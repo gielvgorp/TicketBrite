@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "es2021": true,
-        "node": true
+        "node": true,
+        "cypress/globals": true
     },
     "extends": [
         "eslint:recommended",
@@ -19,21 +20,10 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint",
-        "react-hooks"
+        "react-hooks",
+        "cypress"
     ],
-    "rules": {
-        "no-console": "warn",
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": [
-            "error"
-        ],
-        "@typescript-eslint/no-explicit-any": "off",
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"
-    },
+    "rules": {},
     "settings": {
         "react": {
             "version": "detect"

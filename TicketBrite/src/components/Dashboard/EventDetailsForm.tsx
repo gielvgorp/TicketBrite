@@ -19,9 +19,12 @@ function EventDetailsForm({ eventDetails }: EventDetailsFormProps){
 
     const handleSave = () => {
         try {
-            fetch('http://localhost:7150/dashboard/event/save', {
-                method: 'POST',
+            const token = localStorage.getItem("jwtToken");
+            
+            fetch('http://localhost:7150/api/Event/save', {
+                method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formValues)

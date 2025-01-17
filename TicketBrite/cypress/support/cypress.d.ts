@@ -11,5 +11,6 @@ declare namespace Cypress {
         navigateToOrganizationPanel(): Chainable<void>;
         navigateToAdminPanel(): Chainable<void>;
         hideAllNotificaitons(): Chainable<void>;
+        logout(): Chainable<void>;
     }
 }

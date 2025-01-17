@@ -167,7 +167,7 @@ namespace TicketBrite.Test
 
             if (!allow)
             {
-                Assert.ThrowsException<Exception>(() =>
+                Assert.ThrowsException<InvalidOperationException>(() =>
                     ticketService.SetReservedTicket(parsedTicketID, userID, parsedReservationID));
             }
             else
@@ -200,7 +200,7 @@ namespace TicketBrite.Test
                 }
                 else
                 {
-                    Assert.ThrowsException<Exception>(() =>
+                    Assert.ThrowsException<ArgumentException>(() =>
                         ticketService.SetReservedTicket(parsedTicketID, userID, Guid.NewGuid()));
                 }
             }

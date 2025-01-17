@@ -65,6 +65,25 @@ namespace TicketBrite.Core.Services
             
         }
 
+        public void SaveEvent(EventDTO _event)
+        {
+            EventDomain eventDomain = new EventDomain
+            {
+                eventID = _event.eventID,
+                organizationID = _event.organizationID,
+                isVerified = _event.isVerified,
+                eventName = _event.eventName,
+                eventLocation = _event.eventLocation,
+                eventImage = _event.eventImage,
+                eventAge = _event.eventAge,
+                eventCategory = _event.eventCategory,
+                eventDateTime = _event.eventDateTime,
+                eventDescription = _event.eventDescription
+            };
+
+            _eventRepository.UpdateEvent(eventDomain);
+        }
+
         private void ValidateEvent(EventDTO _event)
         {
             if (_event == null)
@@ -123,7 +142,7 @@ namespace TicketBrite.Core.Services
             EventDomain eventDomain = _eventRepository.GetEventByID(eventID);
 
             if (eventDomain == null)
-                throw new KeyNotFoundException("Event niet gevonden!");
+                throw new KeyNotFoundException("Evenement niet gevonden!");
 
             return new EventDTO
             {
@@ -144,6 +163,49 @@ namespace TicketBrite.Core.Services
         {
             List<EventDomain> domainList = _eventRepository.GetAllVerifiedEvents(category);
             return ConvertToDtoList(domainList);
+        }
+
+        public List<EventDTO> GetAllUnVerifiedEvents()
+        {
+            List<EventDomain> unVerifiedEvents = _eventRepository.GetAllUnVerifiedEvents();
+            return ConvertToEventDTOList(unVerifiedEvents);
+        }
+
+        public void UpdateEventVerificationStatus(bool value, Guid eventID)
+        {
+            try
+            {
+                if (eventID == Guid.Empty)
+                    throw new ArgumentException("Event ID is leeg!");
+
+                _eventRepository.UpdateEventVerificationStatus(value, eventID);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new InvalidOperationException($"Ongeldige {ex.ParamName}: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                // Algemene foutmelding bij andere fouten
+                throw new InvalidOperationException("Er is een fout opgetreden bij het updaten van de evenementstatus.", ex);
+            }
+        }
+
+        private List<EventDTO> ConvertToEventDTOList(List<EventDomain> events)
+        {
+            return events.Select(item => new EventDTO
+            {
+                eventID = item.eventID,
+                organizationID = item.organizationID,
+                eventAge = item.eventAge,
+                eventCategory = item.eventCategory,
+                eventDateTime = item.eventDateTime,
+                eventDescription = item.eventDescription,
+                eventImage = item.eventImage,
+                eventLocation = item.eventLocation,
+                eventName = item.eventName,
+                isVerified = item.isVerified
+            }).ToList();
         }
     }
 }

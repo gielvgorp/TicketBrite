@@ -41,7 +41,7 @@ namespace TicketBrite.Test
         }
 
         [TestMethod("Reserve Ticket that doesnt exist")]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(KeyNotFoundException))]
         public void SetReservedTicket_TicketDoesntExist()
         {
             Guid ticketID = Guid.NewGuid();

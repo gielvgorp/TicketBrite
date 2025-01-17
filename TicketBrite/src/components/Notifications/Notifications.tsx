@@ -38,7 +38,7 @@ export function ErrorNotification({ text }: Props) {
             toastId: 2
         });
     } else {
-        return toast.error("Actie is succesvol geslaagd, maar er is iets misgegaan met het weergeven van de melding!");
+        return toast.error("Actie is niet geslaagd, en de melding kan niet correct worden weergegeven!");
     }
 }
 
