@@ -4,10 +4,6 @@ using System.Security.Claims;
 using TicketBrite.Core.Entities;
 using TicketBrite.Core.Enums;
 using TicketBrite.Core.Services;
-using TicketBrite.Data.ApplicationDbContext;
-using TicketBrite.Data.Repositories;
-using TicketBrite.DTO;
-using TicketBriteAPI.Models;
 
 namespace TicketBriteAPI.Controllers
 {
@@ -17,10 +13,10 @@ namespace TicketBriteAPI.Controllers
     {
         private readonly DashboardService _dashboardService;
         private readonly AuthService _authService;
-        public DashboardController(ApplicationDbContext context) 
+        public DashboardController(DashboardService dashboardService, AuthService authService) 
         { 
-            _dashboardService = new DashboardService(new TicketRepository(context), new EventRepository(context));
-            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
+            _dashboardService = dashboardService;
+            _authService = authService;
         }
 
         [HttpGet("tickets-statistics/{eventID}")]

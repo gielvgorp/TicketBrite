@@ -17,11 +17,11 @@ namespace TicketBriteAPI.Controllers
         private readonly UserService _userService;
         private readonly AuthService _authService;
 
-        public AuthController(IConfiguration iConfig, ApplicationDbContext context)
+        public AuthController(IConfiguration iConfig, UserService userService, AuthService authService)
         {
-            _userService = new UserService(new UserRepository(context));
-            _jwtTokenService = new JwtTokenService(iConfig, _userService);
-            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
+            _userService = userService;
+            _jwtTokenService = new JwtTokenService(iConfig, userService);
+            _authService = authService;
         }
 
 

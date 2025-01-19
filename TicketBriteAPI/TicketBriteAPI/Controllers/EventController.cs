@@ -19,11 +19,11 @@ namespace TicketBriteAPI.Controllers
         private readonly TicketService _ticketService;
         private readonly AuthService _authService;
 
-        public EventController(ApplicationDbContext context)
+        public EventController(EventService eventService, TicketService ticketService, AuthService authService)
         {
-            _eventService = new EventService(new EventRepository(context));
-            _ticketService = new TicketService(new TicketRepository(context));
-            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
+            _eventService = eventService;
+            _ticketService = ticketService;
+            _authService = authService;
 
         }
 
@@ -41,7 +41,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(events));
         }
 
-        [HttpGet("verified")]
+        [HttpGet("events/verified")]
         public JsonResult GetAllVerifiedEvents()
         {
             List<EventDTO> events = _eventService.GetAllVerifiedEvents("");
@@ -49,7 +49,7 @@ namespace TicketBriteAPI.Controllers
             return new JsonResult(Ok(events));
         }
 
-        [HttpGet("unverified")]
+        [HttpGet("events/unverified")]
         [Authorize]
         [ProducesResponseType(typeof(List<EventDTO>), 200)]
         [ProducesResponseType(typeof(string), 401)]
@@ -163,7 +163,7 @@ namespace TicketBriteAPI.Controllers
                     {
                         ticketID = item.ticketID,
                         eventID = item.eventID,
-                        ticketMaxAvailbale = item.ticketMaxAvailable,
+                        ticketMaxAvailable = item.ticketMaxAvailable,
                         ticketName = item.ticketName,
                         ticketPrice = item.ticketPrice,
                         ticketStatus = item.ticketStatus,

@@ -52,6 +52,7 @@ const ProtectedRoute = ({ roleRequired, children }: ProtectedRouteProps) => {
         return <>{children}</>;
     }
 
+    // wanneer gebruiker geen rechten heeft
     return;
 };
 

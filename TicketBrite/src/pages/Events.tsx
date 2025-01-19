@@ -27,7 +27,7 @@ function Events() {
 
     const fetchEvents = () => {
         console.log(id);
-        fetch(`http://localhost:7150/api/Event/verified/${id === undefined ? "" : id}`)
+        fetch(`http://localhost:7150/api/events/verified/${id === undefined ? "" : id}`)
         .then(response => response.json())
         .then(data => {
             setEvent(data.value);
@@ -63,7 +63,6 @@ function Events() {
                 <div className="w-75 m-auto d-flex flex-column p-3 mt-5 bg-white shadow gap-3">
                     <div className="d-flex w-100 justify-content-between">
                         <span className="text-secondary">{events.length} evenementen gevonden</span>
-                        <input type="date" className={`${styles.dateSelctor} form-control p-2 w-25`} />
                     </div>
                     {/* Example of mapping over events */}
                     {events.map((event: Event) => <EventItem key={event.eventID} id={event.eventID} />)}

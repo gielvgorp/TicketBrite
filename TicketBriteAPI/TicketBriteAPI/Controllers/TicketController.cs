@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Claims;
 using TicketBrite.Core.Entities;
@@ -18,15 +15,15 @@ namespace TicketBriteAPI.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        private readonly TicketService ticketService;
+        private readonly TicketService _ticketService;
         private readonly ITicketStatisticsNotifier _ticketStatisticsNotifier;
         private readonly AuthService _authService;
 
-        public TicketController(ApplicationDbContext context, ITicketStatisticsNotifier ticketNotifier)
+        public TicketController(ApplicationDbContext context, ITicketStatisticsNotifier ticketNotifier, TicketService ticketService, AuthService authService)
         {
-            ticketService = new TicketService(new TicketRepository(context));
+            _ticketService = ticketService;
             _ticketStatisticsNotifier = ticketNotifier;
-            _authService = new AuthService(new AuthRepository(context), new UserRepository(context));
+            _authService = authService;
         }
 
         [HttpPost("new")]
@@ -34,7 +31,7 @@ namespace TicketBriteAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public JsonResult AddTIcket(EventTicket model)
         {
-            ticketService.CreateTicket(model);
+            _ticketService.CreateTicket(model);
 
             return new JsonResult(Ok("Ticket successfully created!"));
         }
@@ -45,17 +42,17 @@ namespace TicketBriteAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public JsonResult GetTicket(Guid ticketID)
         {
-            EventTicket ticket = ticketService.GetTicket(ticketID);
+            EventTicket ticket = _ticketService.GetTicket(ticketID);
 
             TicketModel result = new TicketModel
             {
                 ticketID = ticket.ticketID,
                 eventID = ticket.eventID,
                 ticketName = ticket.ticketName,
-                ticketMaxAvailbale = ticket.ticketMaxAvailable,
+                ticketMaxAvailable = ticket.ticketMaxAvailable,
                 ticketPrice = ticket.ticketPrice,
                 ticketStatus = ticket.ticketStatus,
-                ticketsRemaining = ticketService.CalculateRemainingTickets(ticketID)
+                ticketsRemaining = _ticketService.CalculateRemainingTickets(ticketID)
             };
 
             return new JsonResult(Ok(result));
@@ -67,7 +64,7 @@ namespace TicketBriteAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public JsonResult GetTicketsOfEvent(Guid eventID)
         {
-            List<EventTicket> tickets = ticketService.GetTicketsOfEvent(eventID);
+            List<EventTicket> tickets = _ticketService.GetTicketsOfEvent(eventID);
             List<TicketModel> result = new List<TicketModel>();
 
             foreach (EventTicket ticket in tickets)
@@ -77,10 +74,10 @@ namespace TicketBriteAPI.Controllers
                     ticketID = ticket.ticketID,
                     eventID = ticket.eventID,
                     ticketName = ticket.ticketName,
-                    ticketMaxAvailbale = ticket.ticketMaxAvailable,
+                    ticketMaxAvailable = ticket.ticketMaxAvailable,
                     ticketPrice = ticket.ticketPrice,
                     ticketStatus = ticket.ticketStatus,
-                    ticketsRemaining = ticketService.CalculateRemainingTickets(ticket.ticketID)
+                    ticketsRemaining = _ticketService.CalculateRemainingTickets(ticket.ticketID)
                 });
             }
 
@@ -103,17 +100,17 @@ namespace TicketBriteAPI.Controllers
 
                 foreach (ReservedTicketModel ticket in model)
                 {
-                    int remaining = ticketService.CalculateRemainingTickets(ticket.ticketID);
+                    int remaining = _ticketService.CalculateRemainingTickets(ticket.ticketID);
 
                     if (remaining < ticket.quantity) 
                         throw new Exception("Er zijn niet genoeg tickets meer over!");
 
                     for (int i = 0; i < ticket.quantity; i++)
                     {
-                        ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), Guid.NewGuid());
+                        _ticketService.SetReservedTicket(ticket.ticketID, Guid.Parse(userID), Guid.NewGuid());
                     }
 
-                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
+                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, _ticketService.GetSoldTickes(ticket.ticketID).Count, _ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
                 }
 
                 return new JsonResult(Ok());
@@ -137,14 +134,14 @@ namespace TicketBriteAPI.Controllers
             if (userID == null) return new JsonResult(Unauthorized());
 
             List<UserReservedTicketViewModel> result = new List<UserReservedTicketViewModel>();
-            List<ReservedTicket> reservedTickets = ticketService.GetReservedTicketsOfUser(Guid.Parse(userID));
+            List<ReservedTicket> reservedTickets = _ticketService.GetReservedTicketsOfUser(Guid.Parse(userID));
 
             foreach (ReservedTicket ticket in reservedTickets) 
             {
                 result.Add(new UserReservedTicketViewModel
                 {
                     reservation = ticket,
-                    ticket = ticketService.GetTicket(ticket.ticketID)
+                    ticket = _ticketService.GetTicket(ticket.ticketID)
                 });
             }
 
@@ -162,11 +159,11 @@ namespace TicketBriteAPI.Controllers
 
                 if (userID == null || userID == Guid.Empty) return new JsonResult(Unauthorized("Gebruiker niet ingelogd!"));
 
-                ticketService.UpdateReservedTicketsToPursche(userID, purchaseID);
+                _ticketService.UpdateReservedTicketsToPursche(userID, purchaseID);
 
-                foreach (EventTicket ticket in ticketService.GetPurchaseByID(purchaseID))
+                foreach (EventTicket ticket in _ticketService.GetPurchaseByID(purchaseID))
                 {
-                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, ticketService.GetSoldTickes(ticket.ticketID).Count, ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
+                    await _ticketStatisticsNotifier.NotifyStatisticsUpdated(ticket.ticketID, _ticketService.GetSoldTickes(ticket.ticketID).Count, _ticketService.GetReservedTicketsByTicket(ticket.ticketID).Count);
                 }
 
                 return new JsonResult(Ok(purchaseID));
@@ -191,7 +188,7 @@ namespace TicketBriteAPI.Controllers
         {
             try
             {
-                List<EventTicket> result = ticketService.GetPurchaseByID(id);
+                List<EventTicket> result = _ticketService.GetPurchaseByID(id);
 
                 return new JsonResult(Ok(result));
             }
@@ -235,14 +232,14 @@ namespace TicketBriteAPI.Controllers
                         {
                             ticketID = ticket.ticketID,
                             eventID = ticket.eventID,
-                            ticketMaxAvailable = ticket.ticketMaxAvailbale,
+                            ticketMaxAvailable = ticket.ticketMaxAvailable,
                             ticketName = ticket.ticketName,
                             ticketPrice = ticket.ticketPrice,
                             ticketStatus = ticket.ticketStatus,
                         });
                     }
 
-                    ticketService.SaveTickets(col);
+                    _ticketService.SaveTickets(col);
                 }
 
                 return new JsonResult(Ok(string.Format(ExceptionMessages.UpdatedSuccesfully, "Tickets")));
@@ -267,7 +264,7 @@ namespace TicketBriteAPI.Controllers
 
                 if (userID == null || userID == Guid.Empty) return new JsonResult(Unauthorized("Gebruiker niet ingelogd!"));
 
-                List<UserPurchaseModel> result = ticketService.GetPurchasesOfUser(userID);
+                List<UserPurchaseModel> result = _ticketService.GetPurchasesOfUser(userID);
 
                 return new JsonResult(Ok(result));
             }

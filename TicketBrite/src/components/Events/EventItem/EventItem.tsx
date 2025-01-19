@@ -14,7 +14,7 @@ function EventItem({id}: Props){
     const [loading, setLoading] = useState(true); // State to show loading spinner or message
 
     useEffect(() => {      
-          fetch(`http://localhost:7150/api/Event/event/${id}`)
+          fetch(`http://localhost:7150/api/event/${id}`)
               .then(response => response.json())
               .then(data => {
                     setLoading(false);

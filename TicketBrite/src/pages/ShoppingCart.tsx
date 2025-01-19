@@ -71,7 +71,7 @@ function ShoppingCart(){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch('http://localhost:7150/ticket/buy', {
+            const response = await fetch('http://localhost:7150/api/Ticket/ticket/buy', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

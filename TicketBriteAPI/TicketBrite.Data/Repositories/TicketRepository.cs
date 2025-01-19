@@ -1,12 +1,5 @@
-﻿using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TicketBrite.Core.Entities;
+﻿using TicketBrite.Core.Entities;
 using TicketBrite.Core.Interfaces;
-using TicketBrite.Data.Migrations;
 
 namespace TicketBrite.Data.Repositories
 {

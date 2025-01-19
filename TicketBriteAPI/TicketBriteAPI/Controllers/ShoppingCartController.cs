@@ -18,11 +18,11 @@ namespace TicketBriteAPI.Controllers
         EventService _eventService;
         ShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(ApplicationDbContext context)
+        public ShoppingCartController(TicketService ticketService, EventService eventService, ShoppingCartService shoppingCartService)
         {
-            _ticketService = new TicketService(new TicketRepository(context));
-            _eventService = new EventService(new EventRepository(context));
-            _shoppingCartService = new ShoppingCartService(new ShoppingCartRepository(context), new TicketRepository(context));
+            _ticketService = ticketService;
+            _eventService = eventService;
+            _shoppingCartService = shoppingCartService;
         }
 
 

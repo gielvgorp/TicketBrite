@@ -19,7 +19,7 @@ function PaymentSuccess(){
         try {
             const token = localStorage.getItem("jwtToken");
 
-            const response = await fetch(`http://localhost:7150/get-purchase/${id}`, {
+            const response = await fetch(`http://localhost:7150/api/Ticket/purchase/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

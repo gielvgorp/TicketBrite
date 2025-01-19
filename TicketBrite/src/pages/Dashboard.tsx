@@ -17,7 +17,7 @@ function DashboardPage(){
     }, []);
 
     const fetchData = () => {
-        fetch(`http://localhost:7150/api/Event/event/${eventId}`)
+        fetch(`http://localhost:7150/api/event/${eventId}`)
         .then(response => response.json())
         .then(data => {
             console.log(data.value);

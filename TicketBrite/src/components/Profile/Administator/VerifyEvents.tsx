@@ -44,7 +44,7 @@ function VerifyEvents(){
     try {
         const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch('http://localhost:7150/api/Event/unverified', {
+        const res = await fetch('http://localhost:7150/api/events/unverified', {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -74,7 +74,7 @@ function VerifyEvents(){
     try {
         const token = localStorage.getItem('jwtToken');
         // Verzend het formulier naar het endpoint
-        const res = await fetch(`http://localhost:7150/api/Event/events/${eventID}/status`, {
+        const res = await fetch(`http://localhost:7150/api/event/${eventID}/status`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${token}`,

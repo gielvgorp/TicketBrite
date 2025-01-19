@@ -59,7 +59,7 @@ function ShoppingCartItem({ticket, onRemoveItem}: Props){
                 <span className="ticket-name"><span data-test="cart-item-ticket-name">{ticket.eventTicket.ticketName}</span> - <strong data-test="cart-item-event-name">{ticket.event.eventName}</strong></span>
             </div>
             <div className='col-1 text-center'>
-            <span className="price"><strong>00:00</strong></span>
+            <span className="price"><strong></strong></span>
             </div>
             <div className='col-1 text-end'>
                 <span data-test="cart-item-ticket-price" className="price">€{(ticket.eventTicket.ticketPrice)}</span>

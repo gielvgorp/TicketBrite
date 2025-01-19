@@ -7,7 +7,7 @@ namespace TicketBriteAPI.Models
         public Guid eventID { get; set; }
         public string ticketName { get; set; }
         public decimal ticketPrice { get; set; }
-        public int ticketMaxAvailbale { get; set; }
+        public int ticketMaxAvailable { get; set; }
         public int ticketsRemaining { get; set; }
         public Boolean ticketStatus { get; set; }
     }

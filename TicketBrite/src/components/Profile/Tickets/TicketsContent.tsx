@@ -25,7 +25,7 @@ const fetchEvents = async () => {
 
     try {
       // Verzend het formulier naar het endpoint
-      const res = await fetch(`http://localhost:7150/user/get-purchase`, {
+      const res = await fetch(`http://localhost:7150/user/purchase`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -110,9 +110,9 @@ const fetchEvents = async () => {
             <>
               <div className="d-flex justify-content-between mb-3 d-flex align-items-center">
                 <h5>Aankoop ID: {selectedPurchase.userPurchase.purchaseID}</h5>
-                <Badge bg="danger">Verlopen</Badge>
+                <Badge bg="success">Geldig</Badge>
               </div>
-              <p>Aankoopdatum: {"01-01-2024"}</p>
+              <p>Aankoopdatum: {"21-01-2025"}</p>
               <ListGroup variant="flush">
                 {selectedPurchase.eventTickets.map((ticket: Ticket) => (
                   <ListGroup.Item key={ticket.ticketID} className="d-flex justify-content-between align-items-center">
@@ -121,7 +121,7 @@ const fetchEvents = async () => {
                          <i className="fa-solid fa-ticket text-primary"></i> {ticket.ticketName}
                       </h6>
                       <p>
-                        <i className="fa-solid fa-calendar text-secondary"></i> Datum & Tijd: {"01-01-2024"}
+                        <i className="fa-solid fa-calendar text-secondary"></i> Datum & Tijd: {"22-01-2025"}
                       </p>
                     </div>
                     <Button

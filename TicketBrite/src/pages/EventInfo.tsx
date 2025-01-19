@@ -27,7 +27,7 @@ function EventInfo(){
 
     useEffect(() => {      
         console.log(id); 
-          fetch(`http://localhost:7150/api/Event/event/${id}`)
+          fetch(`http://localhost:7150/api/event/${id}`)
               .then(response => response.json())
               .then(data => {
                 setLoading(false);
@@ -75,7 +75,7 @@ function EventInfo(){
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch('http://localhost:7150/ticket/set-reserve', {
+            const response = await fetch('http://localhost:7150/api/Ticket/set-reserve', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

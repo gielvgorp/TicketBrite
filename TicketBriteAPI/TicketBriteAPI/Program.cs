@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TicketBriteAPI.Hubs;
 using TicketBriteAPI;
+using TicketBrite.Core.Services;
+using TicketBrite.Data.Repositories;
+using TicketBrite.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,21 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Add services to the container.
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ITicketStatisticsNotifier, TicketStatisticsNotifier>();
+
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<TicketService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+builder.Services.AddScoped<OrganizationService>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<ShoppingCartService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddScoped<DashboardService>();
 
 
 builder.Services.AddControllers();

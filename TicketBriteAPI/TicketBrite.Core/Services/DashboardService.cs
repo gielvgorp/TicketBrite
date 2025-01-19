@@ -10,11 +10,9 @@ namespace TicketBrite.Core.Services
     public class DashboardService
     {
         private readonly ITicketRepository _ticketRepository;
-        private readonly IEventRepository _eventRepository;
-        public DashboardService(ITicketRepository ticketRepository, IEventRepository eventRepository)
+        public DashboardService(ITicketRepository ticketRepository)
         {
             _ticketRepository = ticketRepository;
-            _eventRepository = eventRepository;
         }
 
         public int GetSoldTickets(Guid ticketID)

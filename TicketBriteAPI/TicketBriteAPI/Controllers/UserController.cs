@@ -19,10 +19,10 @@ namespace TicketBriteAPI.Controllers
         private UserService _userService;
         private JwtTokenService _jwtTokenService;
 
-        public UserController(ApplicationDbContext context, IConfiguration iConig) 
+        public UserController(UserService userService, JwtTokenService jwtTokenService) 
         {
-            _userService = new UserService(new UserRepository(context));
-            _jwtTokenService = new JwtTokenService(iConig, _userService);
+            _userService = userService;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpGet("get-user")]

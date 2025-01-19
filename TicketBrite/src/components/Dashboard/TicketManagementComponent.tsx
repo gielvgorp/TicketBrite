@@ -1,41 +1,43 @@
 import { useEffect, useState } from "react";
-import { Ticket } from "../../Types"
+import { Ticket } from "../../Types";
 
 type TicketManagementItemProps = {
-    _ticket: Ticket
+    _ticket: Ticket;
     index: number;
     saveTicket: (ticket: Ticket, index: number) => void;
-}
+};
 
-function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItemProps){
-    
+function TicketManagementItem({ _ticket, index, saveTicket }: TicketManagementItemProps) {
     const [ticket, setTicket] = useState<Ticket>({
-        ticketID: '',
-        eventID: '',
+        ticketID: "",
+        eventID: "",
         ticketMaxAvailable: 0,
-        ticketName: '',
-        ticketPrice: '',
+        ticketName: "",
+        ticketPrice: "",
         ticketsRemaining: 0,
         ticketStatus: true,
     });
-    
-    const handleInputChange = <K extends keyof Ticket>(property: K, value: string | number | boolean) => {    
-        setTicket(prevTicket => ({
-            ...prevTicket, 
+
+    const handleInputChange = <K extends keyof Ticket>(property: K, value: string | number | boolean) => {
+        setTicket((prevTicket) => ({
+            ...prevTicket,
             [property]: value,
         }));
+    };
 
-        handleSave(ticket, index);
-    };
+    const [prevTicket, setPrevTicket] = useState<Ticket | null>(null);
+
+    useEffect(() => {
+        if (prevTicket && JSON.stringify(prevTicket) !== JSON.stringify(ticket)) {
+            saveTicket(ticket, index);
+        }
+        setPrevTicket(ticket);
+    }, [ticket, index, saveTicket]);
     
-    // set endpoint api to save ticket
-    const handleSave = (ticket: Ticket, index: number) => {
-        saveTicket(ticket, index);
-    };
-    
+
     useEffect(() => {
         setTicket(_ticket);
-    }, []);
+    }, [_ticket]);
 
     return (
         <div key={ticket.ticketID} className="mb-3">
@@ -44,7 +46,7 @@ function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItem
                 <input
                     type="text"
                     value={ticket.ticketName}
-                    onChange={(e) => handleInputChange('ticketName', e.target.value)}
+                    onChange={(e) => {handleInputChange("ticketName", e.target.value)}}
                     className="form-control"
                 />
             </div>
@@ -53,7 +55,7 @@ function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItem
                 <input
                     type="text"
                     value={ticket.ticketPrice}
-                    onChange={(e) => handleInputChange('ticketPrice', e.target.value)}
+                    onChange={(e) => handleInputChange("ticketPrice", e.target.value)}
                     className="form-control"
                 />
             </div>
@@ -62,7 +64,7 @@ function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItem
                 <input
                     type="text"
                     value={ticket.ticketMaxAvailable}
-                    onChange={(e) => handleInputChange('ticketMaxAvailable', e.target.value)}
+                    onChange={(e) => handleInputChange("ticketMaxAvailable", e.target.value)}
                     className="form-control"
                 />
             </div>
@@ -71,12 +73,12 @@ function TicketManagementItem({_ticket, index, saveTicket}: TicketManagementItem
                     type="checkbox"
                     className="form-check-input"
                     checked={ticket.ticketStatus}
-                    onChange={(e) => handleInputChange('ticketStatus', e.target.checked)}
+                    onChange={(e) => handleInputChange("ticketStatus", e.target.checked)}
                 />
                 <label className="form-check-label">Ticket Actief</label>
             </div>
         </div>
-    )
+    );
 }
 
-export default TicketManagementItem
+export default TicketManagementItem;
